@@ -1,0 +1,51 @@
+﻿@model MukMafiaTool.Models.ViewModels.HomeViewModel
+
+@using System.Linq
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<br />
+Keyword Search (note: This does not work properly yet!):
+    @using(Html.BeginForm("index", "post", FormMethod.Get))
+    {
+        @Html.TextBox("searchTerm");
+        <input type="submit" value="Search"  />
+    }
+
+<br />
+
+Last Updated: @Model.LastUpdated.ToLocalTime().ToString("dddd dd MMMM - HH:mm") (UTC time)
+
+<br />
+<br />
+
+Current Vote Situation (cannot guarantee 100% accuracy):
+
+<ul>
+
+    @foreach (var voteGroup in Model.Votes)
+    {
+        var listOfVoters = string.Join(", ", voteGroup.Select(g => "<a href=\"http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid=" + g.ForumPostNumber + "\">" + g.Voter + "</a>"));
+
+        <li><strong>@voteGroup.Key (@voteGroup.Count())</strong> - @Html.Raw(listOfVoters) </li>
+    }
+
+</ul>
+
+Not Voted (@Model.NotVoted.Count) - @string.Join(", ", Model.NotVoted.Select(p => p.Name))
+
+<br />
+<br />
+
+List of Participants:
+
+<ol>
+
+    @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
+    {
+        <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, null) (@player.PostCount)</li>
+    }
+
+</ol>

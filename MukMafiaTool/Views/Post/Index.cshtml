@@ -1,0 +1,40 @@
+﻿@model System.Collections.Generic.IList<MukMafiaTool.Model.ForumPost>
+
+@using System.Linq
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="stylesheet" type="text/css" title="Main" media="screen" href="http://www.rllmukforum.com/public/style_css/css_22/calendar_select.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+    <link rel="stylesheet" type="text/css" title="Main" media="screen,print" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_common.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+    <link rel="stylesheet" type="text/css" title="Main" media="screen,print" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_styles.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+    <link rel="stylesheet" type="text/css" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_ckeditor.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+    <link rel="stylesheet" type="text/css" href="http://www.rllmukforum.com/public/style_css/prettify.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+
+    <title></title>
+</head>
+<body>
+    <div class="post_wrap">
+        @foreach (var post in @Model.OrderByDescending(p => p.ForumPostNumber))
+        {
+            <div class="post_block hentry clear clearfix">
+                <h3 class="row2">
+                @{ var postUrl = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", post.ForumPostNumber); }
+                    <span itemprop="name">@post.Poster - Day @post.Day - @post.DateTime.ToLocalTime().ToString("dddd dd MMMM - HH:mm") - <a href="@postUrl">@post.ForumPostNumber</a></span>
+                </h3>
+                <div class="post_body">
+                    @post.Content
+                </div>
+            </div>
+            <br>
+        }
+    </div>
+</body>
+</html>
