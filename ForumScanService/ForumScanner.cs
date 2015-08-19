@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Web;
 using MukMafiaTool.Database;
 using MukMafiaTool.Model;
+using MukMafiaTool.Common;
 
 namespace MukMafiaTool.ForumScanService
 {
@@ -44,7 +45,7 @@ namespace MukMafiaTool.ForumScanService
 
             if (latestPost != null)
             {
-                currentPageNumber = latestPost.PageNumber;
+                currentPageNumber = latestPost.PageNumber - 10;
             }
 
             string pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);

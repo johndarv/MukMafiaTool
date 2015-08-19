@@ -62,11 +62,47 @@ namespace MukMafiaTool.ForumScanService
             newPost.DateTime = ConvertDate(dateTimeString);
 
             // Find Content
-            var content = postDiv.SelectSingleNode(".//div[@itemprop='commentText']").InnerHtml;
-
-            newPost.Content = new HtmlString(content);
+            newPost.Content = RetrieveContent(postDiv);
 
             return newPost;
+        }
+
+        private static HtmlString RetrieveContent(HtmlNode postDiv)
+        {
+            HtmlDocument doc = new HtmlDocument();
+            var commentDiv = postDiv.SelectSingleNode(".//div[@itemprop='commentText']");
+            doc.LoadHtml(commentDiv.OuterHtml);
+
+            var blockquotes = doc.DocumentNode.SelectNodes(".//blockquote");
+
+            HtmlNode parentNode = null;
+
+            if (blockquotes == null)
+            {
+                parentNode = postDiv.SelectSingleNode(".//div[@itemprop='commentText']");
+            }
+            else
+            {
+                foreach (var blockquote in blockquotes)
+                {
+                    var author = blockquote.GetAttributeValue("data-author", string.Empty);
+                    //var datetime = blockquote.GetAttributeValue("data-time", string.Empty);
+
+                    //DateTime dateTime = default(DateTime);
+                    //if (DateTime.TryParse(datetime, out dateTime))
+                    //{
+                    //    var newNode = HtmlNode.CreateNode(string.Format("<p class=\"citation\">{0} on {1} said:", author, dateTime.ToString("dd MMM yyyy - hh:mm")));
+                    //    blockquote.InsertBefore(newNode, blockquote);
+                    //}
+
+                    var newNode = HtmlNode.CreateNode(string.Format("<p class=\"citation\">{0} said:</p>", author));
+                    doc.DocumentNode.Descendants().Single(n => n == blockquote).ParentNode.InsertBefore(newNode, blockquote);
+                }
+
+                parentNode = doc.DocumentNode.SelectSingleNode(".//div[@itemprop='commentText']");
+            }
+
+            return new HtmlString(parentNode.InnerHtml);
         }
 
         private int DetermineDay(string forumPostNumber)

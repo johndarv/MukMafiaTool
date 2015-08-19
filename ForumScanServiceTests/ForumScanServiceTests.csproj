@@ -68,6 +68,13 @@
       <Project>{152292e7-fcd4-4a8d-a758-c3574cc324ca}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MukMafiaTool.Common\MukMafiaTool.Common.csproj">
+      <Project>{44622a9a-2a61-4a88-9aba-e689b18582c3}</Project>
+      <Name>MukMafiaTool.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
