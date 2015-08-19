@@ -21,7 +21,7 @@ namespace MukMafiaTool.Controllers
         }
 
         // GET: Player
-        public ActionResult Index(string playerName, string searchString, string forumPostNumber, bool searchInQuoteBlocks = false)
+        public ActionResult Index(string playerName, string searchString, string forumPostNumber, bool includeQuoteBlocks = false)
         {
             IList<ForumPost> posts = _repo.FindAllPosts();
 
@@ -32,7 +32,7 @@ namespace MukMafiaTool.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                posts = FilterOnSearchString(searchString, searchInQuoteBlocks, posts);
+                posts = FilterOnSearchString(searchString, includeQuoteBlocks, posts);
             }
 
             if (!string.IsNullOrEmpty(forumPostNumber))
@@ -43,7 +43,7 @@ namespace MukMafiaTool.Controllers
             return View(posts);
         }
 
-        private static IList<ForumPost> FilterOnSearchString(string searchString, bool searchInQuoteBlocks, IList<ForumPost> posts)
+        private static IList<ForumPost> FilterOnSearchString(string searchString, bool includeQuoteBlocks, IList<ForumPost> posts)
         {
             CultureInfo culture = CultureInfo.InvariantCulture;
 
@@ -52,7 +52,7 @@ namespace MukMafiaTool.Controllers
             posts = posts.Where(
                 (p) =>
                 {
-                    string content = searchInQuoteBlocks ? p.Content.ToHtmlString() : p.Content.ToHtmlString().FilterOutContentInQuoteBlocks();
+                    string content = includeQuoteBlocks ? p.Content.ToHtmlString() : p.Content.ToHtmlString().FilterOutContentInQuoteBlocks();
                     var plainText = content.StripHtml(true);
 
                     bool include = true;
