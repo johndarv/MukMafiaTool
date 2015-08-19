@@ -14,7 +14,7 @@ using System.Web;
 using MukMafiaTool.Database;
 using MukMafiaTool.Model;
 
-namespace MukMafiaTool.InternalForumScanner
+namespace MukMafiaTool.ForumScanService
 {
     public class ForumScanner : IForumScanner
     {

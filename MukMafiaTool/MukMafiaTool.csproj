@@ -137,15 +137,9 @@
     <Compile Include="App_Start\UnityMvcActivator.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
-    <Compile Include="InternalForumScanner\ForumAccessor.cs" />
-    <Compile Include="InternalForumScanner\Extensions.cs" />
-    <Compile Include="InternalForumScanner\ForumScanner.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="InternalForumScanner\IForumScanner.cs" />
-    <Compile Include="InternalForumScanner\PageScanner.cs" />
-    <Compile Include="InternalForumScanner\StringExtensions.cs" />
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\ThreadPage.cs" />
     <Compile Include="Models\ViewModels\HomeViewModel.cs" />

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Database;
-using MukMafiaTool.InternalForumScanner;
+using MukMafiaTool.ForumScanService;
+using ForumScanService;
 using MukMafiaTool.Model;
 
 namespace MukMafiaToolTests
@@ -11,6 +12,7 @@ namespace MukMafiaToolTests
     [TestClass]
     public class InternalForumScannerTests
     {
+        [Ignore]
         [TestMethod]
         public void DoWholeUpdateTest()
         {

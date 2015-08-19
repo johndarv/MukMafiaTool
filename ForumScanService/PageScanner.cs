@@ -5,7 +5,7 @@ using System.Web;
 using HtmlAgilityPack;
 using MukMafiaTool.Model;
 
-namespace MukMafiaTool.InternalForumScanner
+namespace MukMafiaTool.ForumScanService
 {
     public class PageScanner
     {

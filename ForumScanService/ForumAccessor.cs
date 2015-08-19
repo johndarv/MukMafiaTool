@@ -10,7 +10,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Web;
 
-namespace MukMafiaTool.InternalForumScanner
+namespace MukMafiaTool.ForumScanService
 {
     public class ForumAccessor
     {

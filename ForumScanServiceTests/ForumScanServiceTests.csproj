@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CF24DE55-4B9E-4CC1-8D54-F02664D87D42}</ProjectGuid>
+    <ProjectGuid>{83AE6EC1-8926-4519-971A-97F7980CDFAE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MukMafiaToolTests</RootNamespace>
-    <AssemblyName>MukMafiaToolTests</AssemblyName>
+    <RootNamespace>ForumScanServiceTests</RootNamespace>
+    <AssemblyName>ForumScanServiceTests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -51,6 +51,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="ForumScannerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensionsTests.cs" />
   </ItemGroup>
@@ -59,13 +60,13 @@
       <Project>{c7031144-b2c5-4c73-9541-67c520585934}</Project>
       <Name>Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ForumScanService\ForumScanService.csproj">
+      <Project>{c33cb376-00b5-48dd-9b4c-cb6417a04f6a}</Project>
+      <Name>ForumScanService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{152292e7-fcd4-4a8d-a758-c3574cc324ca}</Project>
       <Name>Model</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MukMafiaTool\MukMafiaTool.csproj">
-      <Project>{96f7d281-7d63-402f-ad5d-cc7fb3365725}</Project>
-      <Name>MukMafiaTool</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

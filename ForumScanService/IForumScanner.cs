@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MukMafiaTool.InternalForumScanner
+namespace MukMafiaTool.ForumScanService
 {
     public interface IForumScanner
     {

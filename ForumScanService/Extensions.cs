@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 
-namespace MukMafiaTool.InternalForumScanner
+namespace MukMafiaTool.ForumScanService
 {
     public static class Extensions
     {
