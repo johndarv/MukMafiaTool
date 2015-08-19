@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Database;
 using MukMafiaTool.ForumScanService;
-using ForumScanService;
 using MukMafiaTool.Model;
 
 namespace MukMafiaToolTests
@@ -312,6 +312,37 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
             var votes = ForumScanner.GetVotes(post, playerNames);
 
             Assert.IsTrue(votes.Count == 1);
+        }
+
+        [TestMethod]
+        public void GetVotesTestUnvoteNewLine()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "TehStu",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"<div class=""post_body"">
+                    
+					May merge. Heh, posting on a phone you very no notification of other posts while you write yours.<br><br>
+Unvote<br><br>
+Who did you hide behind on night 2, plums? Or did you mean you hid behind bennette last night?
+					
+					<br>
+					
+				
+                </div>"),
+            };
+
+            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork" };
+
+            var votes = ForumScanner.GetVotes(post, playerNames);
+
+            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.First().IsUnvote == true);
         }
     }
 }
