@@ -7,21 +7,27 @@
 }
 
 <br />
-Keyword Search (note: This does not work properly yet!):
+Keyword Search:
     @using(Html.BeginForm("index", "post", FormMethod.Get))
     {
-        @Html.TextBox("searchTerm");
-        <input type="submit" value="Search"  />
+        @Html.TextBox("searchString")
+        @Html.DropDownList("playerName", @Model.PlayerNames, "Select a poster name to filter by")
+        <input type="submit" value="Search" />
+        <br/>
+        @Html.CheckBox("searchInQuoteBlocks", false)
+        @Html.Label("includeQuoteBlocks", "Include quote blocks when searching", new { style = "font-weight:normal;" })
     }
 
-<br />
+(Separate search terms using spaces. Search for a phrase by using speech marks.)
 
+<br />
+<br />
 Last Updated: @Model.LastUpdated.ToLocalTime().ToString("dddd dd MMMM - HH:mm") (UTC time)
 
 <br />
 <br />
 
-Current Vote Situation (cannot guarantee 100% accuracy):
+Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here try posting it again using "vote: name"):
 
 <ul>
 

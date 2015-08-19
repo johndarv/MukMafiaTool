@@ -4,9 +4,9 @@ using System.Linq;
 using System.Net.Http;
 using System.Web;
 
-namespace MukMafiaTool.ForumScanService
+namespace MukMafiaTool.Common
 {
-    public static class Extensions
+    public static class MiscExtensions
     {
         public static HttpResponseMessage Send(this HttpClient client, HttpRequestMessage message)
         {

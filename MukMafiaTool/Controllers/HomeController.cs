@@ -27,6 +27,10 @@ namespace MukMafiaTool.Controllers
             var postGroups = allPosts.GroupBy(p => p.Poster);
             viewModel.Players = postGroups.Select(g => new Player() { Name = g.First().Poster, PostCount = g.Count() }).ToList();
 
+            var playerNames = postGroups.Select(g => new SelectListItem() { Value = g.First().Poster, Text = g.First().Poster }).ToList();
+            playerNames.Add(new SelectListItem() { Value = string.Empty, Text = string.Empty });
+            viewModel.PlayerNames = playerNames.ToArray();
+
             var allVotes = _repo.FindAllVotes();
             viewModel.Votes = allVotes.GroupBy(v => v.Recipient).OrderByDescending(g => g.Count());
 

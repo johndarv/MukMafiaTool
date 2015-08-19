@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Web;
 
-namespace MukMafiaTool.ForumScanService
+namespace MukMafiaTool.Common
 {
     public static class StringExtensions
     {
@@ -111,6 +112,62 @@ namespace MukMafiaTool.ForumScanService
             }
 
             return false;
+        }
+
+        public static string StripHtml(this string htmlText, bool decode = true)
+        {
+            Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
+            var stripped = reg.Replace(htmlText, "");
+            return decode ? HttpUtility.HtmlDecode(stripped) : stripped;
+        }
+
+        public static IList<string> SplitOnSeparatorExceptInSpeechMarks(this string str, char separator)
+        {
+            IList<string> result = new List<string>();
+
+            int i = 0;
+            bool inSpeechMarks = false;
+            string currentElement = string.Empty;
+
+            while (i < str.Length)
+            {
+                char character = str[i];
+                i++;
+
+                if (char.Equals(character, separator))
+                {
+                    if (inSpeechMarks)
+                    {
+                        currentElement = currentElement + character;
+                    }
+                    else
+                    {
+                        result.Add(currentElement);
+                        currentElement = string.Empty;
+                    }
+                }
+                else if (char.Equals(character, '"'))
+                {
+                    if (inSpeechMarks)
+                    {
+                        currentElement = currentElement + character;
+                        inSpeechMarks = false;
+                    }
+                    else
+                    {
+                        currentElement = currentElement + character;
+                        inSpeechMarks = true;
+                    }
+                }
+                else
+                {
+                    currentElement = currentElement + character;
+                }
+            }
+
+            result.Add(currentElement);
+
+            return result;
         }
     }
 }
