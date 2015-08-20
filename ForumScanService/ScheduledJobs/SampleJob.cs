@@ -14,7 +14,7 @@ namespace ForumScanService.ScheduledJobs
     {
         public override Task ExecuteAsync()
         {
-            Services.Log.Info("Hello from scheduled job!");
+            Services.Log.Info(string.Format("Starting job at {0}.", DateTime.UtcNow));
 
             try
             {
@@ -25,6 +25,8 @@ namespace ForumScanService.ScheduledJobs
             {
                 Services.Log.Error(string.Format("Could not update: {0}", e.Message));
             }
+
+            Services.Log.Info(string.Format("Job completed at {0}.", DateTime.UtcNow));
 
             return Task.FromResult(true);
         }
