@@ -86,17 +86,21 @@ namespace MukMafiaTool.ForumScanService
                 foreach (var blockquote in blockquotes)
                 {
                     var author = blockquote.GetAttributeValue("data-author", string.Empty);
-                    //var datetime = blockquote.GetAttributeValue("data-time", string.Empty);
+                    var forumPostNumber = blockquote.GetAttributeValue("data-cid", string.Empty);
 
-                    //DateTime dateTime = default(DateTime);
-                    //if (DateTime.TryParse(datetime, out dateTime))
-                    //{
-                    //    var newNode = HtmlNode.CreateNode(string.Format("<p class=\"citation\">{0} on {1} said:", author, dateTime.ToString("dd MMM yyyy - hh:mm")));
-                    //    blockquote.InsertBefore(newNode, blockquote);
-                    //}
+                    string html = "<p class=\"citation\">Quote<span></span></p>";
+                    if (!string.IsNullOrEmpty(author) && !string.IsNullOrEmpty(forumPostNumber))
+                    {
+                        html = string.Format(
+                        "<p class=\"citation\">{0} said:<a class=\"snapback right\" rel=\"citation\" href=\"{1}{2}\"><img src=\"http://www.rllmukforum.com/public/style_images/master/snapback.png\"></a></p>",
+                        author,
+                        "http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=",
+                        forumPostNumber);
+                    }
+                    
+                    var citationNode = HtmlNode.CreateNode(html);
 
-                    var newNode = HtmlNode.CreateNode(string.Format("<p class=\"citation\">{0} said:</p>", author));
-                    doc.DocumentNode.Descendants().Single(n => n == blockquote).ParentNode.InsertBefore(newNode, blockquote);
+                    doc.DocumentNode.Descendants().Single(n => n == blockquote).ParentNode.InsertBefore(citationNode, blockquote);
                 }
 
                 parentNode = doc.DocumentNode.SelectSingleNode(".//div[@itemprop='commentText']");
