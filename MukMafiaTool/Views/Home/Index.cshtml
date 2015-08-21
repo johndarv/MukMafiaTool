@@ -55,3 +55,14 @@ List of Participants:
     }
 
 </ol>
+
+Days:
+
+<ul>
+    @foreach(var day in @Model.Days.OrderBy(d => d.Number))
+    {
+        var FirstPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
+        
+        <li>Day day.Number - <a href="@FirstPostLink">First Post</a></li>
+    }
+</ul>

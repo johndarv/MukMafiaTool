@@ -49,6 +49,8 @@ namespace MukMafiaTool.Controllers
 
             viewModel.LastUpdated = _repo.FindLastUpdatedDateTime();
 
+            viewModel.Days = _repo.FindAllDays();
+
             return View(viewModel);
         }
 

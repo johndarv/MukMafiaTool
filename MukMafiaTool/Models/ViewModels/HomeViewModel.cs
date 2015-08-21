@@ -15,5 +15,6 @@ namespace MukMafiaTool.Models.ViewModels
         public IEnumerable<IGrouping<string, Vote>> Votes { get; set; }
         public IList<Player> NotVoted { get; set; }
         public DateTime LastUpdated { get; set; }
+        public IList<Day> Days { get; set; }
     }
 }
