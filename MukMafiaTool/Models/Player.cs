@@ -9,5 +9,8 @@ namespace MukMafiaTool.Models
     {
         public string Name { get; set; }
         public int PostCount { get; set; }
+        public bool Excluded { get; set; }
+        public bool Dead { get; set; }
+        public string ExclusionNotes { get; set; }
     }
 }

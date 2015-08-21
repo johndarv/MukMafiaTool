@@ -51,7 +51,17 @@ List of Participants:
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
-        <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, null) (@player.PostCount)</li>
+        if (!string.IsNullOrEmpty(player.ExclusionNotes))
+        {
+            var htmlAttributes = player.Dead ? null : new { style = "text-decoration: line-through" };
+            
+            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount) - @player.ExclusionNotes</li>
+        }
+        else
+        {
+            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, null) (@player.PostCount)</li>
+        }
+
     }
 
 </ol>
