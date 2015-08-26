@@ -142,17 +142,21 @@ namespace MukMafiaTool.ForumScanService
                     recipientSubString = recipientSubString.Trim();
                     recipientSubString = recipientSubString.Substring(0, Math.Min(6, recipientSubString.Length));
 
-                    var newVote = new Vote
+                    // If somebody writes vote: name, don't count it
+                    if (!string.Equals(recipientSubString.Substring(0, Math.Min(4, recipientSubString.Length)), "name".Substring(0, Math.Min(4, recipientSubString.Length)), StringComparison.OrdinalIgnoreCase))
                     {
-                        Voter = post.Poster,
-                        DateTime = post.DateTime,
-                        IsUnvote = false,
-                        Recipient = DetermineRecipient(recipientSubString.Trim(), playerNames),
-                        ForumPostNumber = post.ForumPostNumber,
-                        PostContentIndex = index,
-                    };
+                        var newVote = new Vote
+                        {
+                            Voter = post.Poster,
+                            DateTime = post.DateTime,
+                            IsUnvote = false,
+                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNames),
+                            ForumPostNumber = post.ForumPostNumber,
+                            PostContentIndex = index,
+                        };
 
-                    votes.Add(newVote);
+                        votes.Add(newVote);
+                    }
                 }
                 else if ((index + 4) <= content.Length && content[index + 4] == ' ')
                 {
