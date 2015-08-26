@@ -51,7 +51,7 @@ List of Participants:
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
-        if (!string.IsNullOrEmpty(player.ExclusionNotes))
+        if (!Model.NotVoted.Any(p => string.Equals(p.Name, player.Name, StringComparison.OrdinalIgnoreCase)))
         {
             var htmlAttributes = player.Dead ? null : new { style = "text-decoration: line-through" };
             
