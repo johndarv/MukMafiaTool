@@ -51,28 +51,31 @@ List of Participants:
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
-        @*if (!string.IsNullOrEmpty(player.ExclusionNotes))
+        if (!Model.NotVoted.Any(p => string.Equals(p.Name, player.Name, StringComparison.OrdinalIgnoreCase)))
         {
             var htmlAttributes = player.Dead ? null : new { style = "text-decoration: line-through" };
             
             <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount) - @player.ExclusionNotes</li>
         }
         else
-        {*@
+        {
             <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, null) (@player.PostCount)</li>
-        //}
+        }
 
     }
 
 </ol>
 
-Post Links:
+<br />
+<br />
+
+Days:
 
 <ul>
     @foreach(var day in @Model.Days.OrderBy(d => d.Number))
     {
         var FirstPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
         
-        <li>Day @day.Number - <a href="@FirstPostLink">First Post</a></li>
+        <li>Day day.Number - <a href="@FirstPostLink">First Post</a></li>
     }
 </ul>
