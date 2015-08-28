@@ -24,8 +24,17 @@ namespace MukMafiaTool.Controllers
             HomeViewModel viewModel = new HomeViewModel();
 
             var allPosts = _repo.FindAllPosts();
+
+            var exclusions = _repo.FindAllExclusions();
+
             var postGroups = allPosts.GroupBy(p => p.Poster);
-            viewModel.Players = postGroups.Select(g => new Player() { Name = g.First().Poster, PostCount = g.Count() }).ToList();
+            viewModel.Players = postGroups.Select(
+                g => new Player()
+                {
+                    Name = g.First().Poster,
+                    PostCount = g.Count(),
+                    Excluded = exclusions.Any(e => string.Equals(e, g.First().Poster, StringComparison.OrdinalIgnoreCase)),
+                }).ToList();
 
             var playerNames = postGroups.Select(g => new SelectListItem() { Value = g.First().Poster, Text = g.First().Poster }).ToList();
             playerNames.Add(new SelectListItem() { Value = string.Empty, Text = string.Empty });
@@ -42,7 +51,6 @@ namespace MukMafiaTool.Controllers
             }
 
             var voted = allVotes.Select(v => v.Voter);
-            var exclusions = _repo.FindAllExclusions();
             var notVoted = viewModel.Players.Where(p => !voted.Any(v => string.Equals(v, p.Name, StringComparison.OrdinalIgnoreCase))).ToList();
             notVoted = notVoted.Where(p => !exclusions.Any(e => string.Equals(e, p.Name, StringComparison.OrdinalIgnoreCase))).ToList();
             viewModel.NotVoted = notVoted.OrderBy(p => p.PostCount).ToList();

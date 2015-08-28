@@ -51,11 +51,11 @@ List of Participants:
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
-        if (!Model.NotVoted.Any(p => string.Equals(p.Name, player.Name, StringComparison.OrdinalIgnoreCase)))
+        if (player.Excluded)
         {
             var htmlAttributes = player.Dead ? null : new { style = "text-decoration: line-through" };
             
-            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount) - @player.ExclusionNotes</li>
+            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount)</li>
         }
         else
         {
