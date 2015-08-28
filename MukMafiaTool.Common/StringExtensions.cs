@@ -46,6 +46,52 @@ namespace MukMafiaTool.Common
             return builder.ToString();
         }
 
+        public static string FilterOutSpanTags(this string content)
+        {
+            StringBuilder builder = new StringBuilder();
+
+            int i = 0;
+            int chevronLevel = 0;
+
+            while (i < content.Length)
+            {
+                if (content.Length - i >= 5 && (string.Equals(content.Substring(i, 5), "<span")))
+                {
+                    chevronLevel++;
+                    i = i + 5;
+                }
+                else if (content.Length - i >= 6 && (string.Equals(content.Substring(i, 6), "</span")))
+                {
+                    chevronLevel++;
+                    i = i + 6;
+                }
+                else if (char.Equals(content[i], '>'))
+                {
+                    if (chevronLevel > 0)
+                    {
+                        chevronLevel--;
+                    }
+                    else
+                    {
+                        builder.Append(content[i]);
+                    }
+
+                    i++;
+                }
+                else
+                {
+                    if (chevronLevel == 0)
+                    {
+                        builder.Append(content[i]);
+                    }
+
+                    i++;
+                }
+            }
+
+            return builder.ToString();
+        }
+
         public static string RemoveWhiteSpace(this string str)
         {
             return str.Replace(" ", string.Empty);

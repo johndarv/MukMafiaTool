@@ -12,6 +12,7 @@ namespace MukMafiaToolTests
     [TestClass]
     public class InternalForumScannerTests
     {
+        [Ignore]
         [TestMethod]
         public void DoWholeUpdateTest()
         {
@@ -342,6 +343,66 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 
             Assert.IsTrue(votes.Count == 1);
             Assert.IsTrue(votes.First().IsUnvote == true);
+        }
+
+        [TestMethod]
+        public void GetVotesTest9()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Strategos",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"<div itemprop=""commentText"" class='post entry-content '>
+					<blockquote  class=""ipsBlockquote"">
+<p>&#160;</p>
+<p><span  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">I have explained my reasoning above. My vote for GMass was a weak one, I wasn't convinced but felt swayed by the crowd. When he started talking like he did I felt that he wasn't the SK. So I switched my vote to the next highest lynchee, a target I'd had my eye on for a while. It felt more comfortable to me and more correct.</span></p>
+<p  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">&#160;</p>
+<p  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">HAVING SAID THAT, wtf GMass are you doing voting for yourself? You've gone very anti-town in your play and I'm guessing you've gotten a bit bored of the game. If you are the SK then you're playing with fire, if you're not then you sound like you want out of the game, which is not pro-town.&#160;&#160; <img src='http://www.rllmukforum.com/public/style_emoticons/default/quote.gif' class='bbc_emoticon' alt=':quote:' /></p>
+<p  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">&#160;</p>
+<p  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">I'd like to know where you lot were Weds night?</p>
+<p  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">&#160;</p>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Uncle Mike</div>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Benny</div>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Don Wisk</div>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Strategos</div>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Plums</div>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">&#160;</div>
+<div  style=""margin:0px;color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Are you playing the game? Or were you happy to sit back and let the town lynch somebody you knew wasn't on your team? At least one of you is scum, I'm certain of it.</div>
+</blockquote>
+<p>&#160;</p>
+<p>&#160;</p>
+<p>Danster what are you saying ? &#160;Where was I ? I had already voted for Sith, I was sticking to my guns. While you were being swayed by the crowd and making weak votes apparently.</p>
+<p>&#160;</p>
+<p>GMass is a really easy target, I'm beginning to wonder if he really is just floundering around ? &#160;I don't know why he is voting for himself though. Is this clever or stupid ? I have no idea.</p>
+<p>&#160;</p>
+<p>I'm not sure about Gerry trying to sway gospvgs investigation. It strikes me as scummy. I'm not simply retaliating because he was accusing me but have a feeling it's the sort of thing the mafia would do.</p>
+<p>.&#160;</p>
+<p>&#160;</p>
+<blockquote  class=""ipsBlockquote"">
+<p>&#160;</p>
+<p>&#160;</p>
+<span  style=""color:rgb(40,40,40);font-family:helvetica, arial, sans-serif"">Popped iin to vote at the last minute isn't playing the game - is it?</span></blockquote>
+<p>&#160;</p>
+<p>&#160;GMass is gunning for Dino for the same reason - (why is not voting for him ?) . We do seem to have a few players that are just skirting the mod kill rule - this has been going on for a couple of days as well - it's not cricket. At the moment I'm happy to vote for Don W.</p>
+<p>&#160;</p>
+<p><strong>Vote:<span  style=""font-family:helvetica"">Don Wiskerando</span></strong></p>
+					
+					<br />
+					
+				</div>"),
+            };
+
+            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork", "Don Wiskerando" };
+
+            var votes = ForumScanner.GetVotes(post, playerNames);
+
+            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.First().IsUnvote == false);
+            Assert.IsTrue(votes.First().Recipient == "Don Wiskerando");
         }
     }
 }
