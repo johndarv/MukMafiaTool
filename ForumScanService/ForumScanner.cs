@@ -42,7 +42,7 @@ namespace MukMafiaTool.ForumScanService
 
             if (latestPost != null)
             {
-                currentPageNumber = latestPost.PageNumber - 1;
+                currentPageNumber = Math.Max(latestPost.PageNumber - 1, 1);
             }
 
             string pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);
