@@ -12,7 +12,6 @@ namespace MukMafiaToolTests
     [TestClass]
     public class InternalForumScannerTests
     {
-        [Ignore]
         [TestMethod]
         public void DoWholeUpdateTest()
         {
@@ -21,6 +20,7 @@ namespace MukMafiaToolTests
             scanner.DoWholeUpdate();
         }
 
+        [Ignore]
         [TestMethod]
         public void DoEndOfGameScan()
         {

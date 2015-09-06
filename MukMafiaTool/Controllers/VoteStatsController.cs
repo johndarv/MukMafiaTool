@@ -20,6 +20,7 @@ namespace MukMafiaTool.Controllers
         }
 
         // GET: VoteStats
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();
@@ -94,6 +95,7 @@ namespace MukMafiaTool.Controllers
             {
                 var factionVoteStats = new FactionVoteStatsViewModel();
                 factionVoteStats.Name = factionName;
+                factionVoteStats.Allegiance = Allegiance.Unknown;
 
                 var votesByFaction = votes.Where(v => string.Equals(v.GetVoteInfo(allPlayers).VoterFactionName, factionName));
 
@@ -101,6 +103,13 @@ namespace MukMafiaTool.Controllers
 
                 factionVoteStats.PercentageOfVotesOntoOwnFaction =
                     VoteAnalyser.CalculatePercentage(votesByFaction, (v) => v.TargetFactionName == factionName, allPlayers);
+
+                var firstFactionVote = votesByFaction.FirstOrDefault();
+
+                if (firstFactionVote != null)
+                {
+                    factionVoteStats.Allegiance = firstFactionVote.GetVoteInfo(allPlayers).VoterFactionAllegiance;
+                }
 
                 factionVoteStatsCollection.Add(factionVoteStats);
             }

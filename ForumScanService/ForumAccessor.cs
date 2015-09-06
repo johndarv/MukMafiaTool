@@ -36,7 +36,9 @@ namespace MukMafiaTool.ForumScanService
                 {
                     client.BaseAddress = new Uri("http://www.rllmukforum.com/");
 
-                    HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, string.Format("index.php?/topic/287562-/page-{0}", pageNumber));
+                    var url = string.Format("{0}/page-{1}", ConfigurationManager.AppSettings["ThreadBaseAddress"], pageNumber);
+
+                    HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
 
                     var requestUri = message.RequestUri;
 
