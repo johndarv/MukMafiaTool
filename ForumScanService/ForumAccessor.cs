@@ -49,7 +49,8 @@ namespace MukMafiaTool.ForumScanService
 
                     var currentUri = response.RequestMessage.RequestUri.AbsoluteUri;
                     var index = currentUri.IndexOf("page", StringComparison.OrdinalIgnoreCase);
-                    var currentActualPageNumber = int.Parse(currentUri.Substring(index + 5, currentUri.Length - (index + 5)));
+
+                    var currentActualPageNumber = index == -1 ? 1 : int.Parse(currentUri.Substring(index + 5, currentUri.Length - (index + 5)));
 
                     if (pageNumber != currentActualPageNumber)
                     {

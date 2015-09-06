@@ -15,12 +15,11 @@ namespace MukMafiaTool.Database
     {
         private IMongoCollection<BsonDocument> _posts;
         private IMongoCollection<BsonDocument> _votes;
+        private IMongoCollection<BsonDocument> _players;
         private IMongoCollection<BsonDocument> _metadata;
         private IMongoCollection<BsonDocument> _exclusions;
         private IMongoCollection<BsonDocument> _days;
         private IMongoCollection<BsonDocument> _logs;
-
-        private ForumPost _latestPostAtTimeOfCreation;
 
         public MongoRepository()
         {
@@ -28,35 +27,39 @@ namespace MukMafiaTool.Database
 
             MongoClient client = new MongoClient(connectionString);
 
-            var database = client.GetDatabase("MongoLab-o");
+            var database = client.GetDatabase("Simpsonscum");
 
-            _posts = database.GetCollection<BsonDocument>("posts");
-            _votes = database.GetCollection<BsonDocument>("votes");
-            _metadata = database.GetCollection<BsonDocument>("metadata");
-            _exclusions = database.GetCollection<BsonDocument>("exclusions");
-            _days = database.GetCollection<BsonDocument>("days");
-            _logs = database.GetCollection<BsonDocument>("logs");
-
-            _latestPostAtTimeOfCreation = FindAllPosts().OrderBy(p => p.ThreadPostNumber).LastOrDefault();
+            _posts = database.GetCollection<BsonDocument>("Posts");
+            _votes = database.GetCollection<BsonDocument>("Votes");
+            _players = database.GetCollection<BsonDocument>("Players");
+            _metadata = database.GetCollection<BsonDocument>("Metadata");
+            _exclusions = database.GetCollection<BsonDocument>("Exclusions");
+            _days = database.GetCollection<BsonDocument>("Days");
+            _logs = database.GetCollection<BsonDocument>("Logs");
         }
 
-        public IList<ForumPost> FindAllPosts()
+        public IEnumerable<ForumPost> FindAllPosts()
         {
-            var task = _posts.Find(new BsonDocument()).ToListAsync();
-            task.Wait();
-            var documents = task.Result;
+            var documents = _posts.Find(new BsonDocument()).ToListAsync().Result;
 
-            var posts = new List<ForumPost>();
-
-            foreach (var document in documents)
-            {
-                posts.Add(ConvertBsonDocToForumPost(document));
-            }
-
-            return posts;
+            return documents.Select(d => d.ToForumPost());
         }
 
-        public IList<string> FindAllPlayerNames()
+        public IEnumerable<Player> FindAllPlayers()
+        {
+            var documents = _players.Find(new BsonDocument()).ToListAsync().Result;
+
+            return documents.Select(d => d.ToPlayer());
+        }
+
+        public IEnumerable<Vote> FindAllVotes()
+        {
+            var documents = _votes.Find(new BsonDocument()).ToListAsync().Result;
+
+            return documents.Select(d => d.ToVote());
+        }
+
+        public IList<string> FindAllPlayerNamesFromPosts()
         {
             return FindAllPosts().Select(p => p.Poster).Distinct().ToList();
         }
@@ -90,91 +93,56 @@ namespace MukMafiaTool.Database
         public ForumPost FindSpecificPost(string forumPostNumber)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", forumPostNumber);
-            var task = _posts.Find(filter).FirstOrDefaultAsync();
-            task.Wait();
-            var result = task.Result;
-            var post = ConvertBsonDocToForumPost(result);
-            return post;
-        }
+            var result = _posts.Find(filter).FirstOrDefaultAsync().Result;
 
-        public void UpsertPosts(IList<ForumPost> posts)
-        {
-            var options = new UpdateOptions();
-            options.IsUpsert = true;
-
-            foreach (var post in posts)
+            if (result == null)
             {
-                var newDoc = new BsonDocument
-                    {
-                        { "ForumPostNumber", post.ForumPostNumber },
-                        { "ThreadPostNumber", post.ThreadPostNumber },
-                        { "Poster", post.Poster },
-                        { "DateTime", post.DateTime.ToUniversalTime() },
-                        { "Content", post.Content.ToString() },
-                        { "Day", post.Day },
-                        { "PageNumber", post.PageNumber },
-                    };
-
-                var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", post.ForumPostNumber);
-
-                var task = _posts.ReplaceOneAsync(filter, newDoc, options);
-                task.Wait();
+                return null;
             }
+
+            return result.ToForumPost();
         }
 
-        public bool InsertNewPosts(IList<ForumPost> posts)
+        public void UpsertPost(ForumPost post)
         {
-            bool pageHasAllNewPosts = true;
+            var newDoc = new BsonDocument
+                {
+                    { "ForumPostNumber", post.ForumPostNumber },
+                    { "ThreadPostNumber", post.ThreadPostNumber },
+                    { "Poster", post.Poster },
+                    { "DateTime", post.DateTime.ToUniversalTime() },
+                    { "Content", post.Content.ToString() },
+                    { "Day", post.Day },
+                    { "PageNumber", post.PageNumber },
+                    { "LastScanned", post.LastScanned.ToUniversalTime() },
+                };
 
+            var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", post.ForumPostNumber);
+
+            Upsert(newDoc, filter);
+        }
+
+        public void InsertPlayers(IList<ForumPost> posts)
+        {
             foreach (var post in posts)
             {
-                if (WhetherToInsertPost(post))
+                var filter = Builders<BsonDocument>.Filter.Eq("Name", post.Poster);
+
+                var docs = _posts.Find(new BsonDocument()).ToListAsync().Result;
+
+                if (docs.Count == 0)
                 {
                     var newDoc = new BsonDocument
                     {
-                        { "ForumPostNumber", post.ForumPostNumber },
-                        { "ThreadPostNumber", post.ThreadPostNumber },
-                        { "Poster", post.Poster },
-                        { "DateTime", post.DateTime.ToUniversalTime() },
-                        { "Content", post.Content.ToString() },
-                        { "Day", post.Day },
-                        { "PageNumber", post.PageNumber },
+                        { "Name", post.ForumPostNumber }
                     };
-
-                    var task = _posts.InsertOneAsync(newDoc);
-
-                    task.Wait();
-                }
-                else
-                {
-                    pageHasAllNewPosts = false;
                 }
             }
-
-            return pageHasAllNewPosts;
         }
 
         public void WipeVotes()
         {
-            var task = _votes.DeleteManyAsync(new BsonDocument());
-            task.Wait();
-        }
-
-        public IList<Vote> FindAllVotes()
-        {
-            IList<Vote> allVotes = new List<Vote>();
-
-            var task = _votes.Find(new BsonDocument()).ToListAsync();
-            task.Wait();
-
-            var documents = task.Result;
-            
-            foreach(var doc in documents)
-            {
-                allVotes.Add(ConvertBsonDocToVote(doc));
-            }
-
-            return allVotes;
+            _votes.DeleteManyAsync(new BsonDocument()).Wait();
         }
 
         public void ProcessVote(Vote vote)
@@ -187,8 +155,7 @@ namespace MukMafiaTool.Database
             {
                 // Delete all voter's vote up until this point
                 var filter = Builders<BsonDocument>.Filter.Eq("Voter", vote.Voter);
-                var deleteTask = _votes.DeleteManyAsync(filter);
-                deleteTask.Wait();
+                _votes.DeleteManyAsync(filter).Wait();
 
                 var doc = new BsonDocument
                 {
@@ -199,8 +166,7 @@ namespace MukMafiaTool.Database
                     { "PostContentIndex", vote.PostContentIndex },
                 };
 
-                var insertTask = _votes.InsertOneAsync(doc);
-                insertTask.Wait();
+                _votes.InsertOneAsync(doc).Wait();
             }
         }
 
@@ -214,30 +180,21 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", 1);
 
-            var options = new UpdateOptions();
-            options.IsUpsert = true;
-
-            var task = _metadata.ReplaceOneAsync(filter, doc, options);
-            task.Wait();
+            Upsert(doc, filter);
         }
 
         public DateTime FindLastUpdatedDateTime()
         {
             var filter = Builders<BsonDocument>.Filter.Eq("_id", 1);
 
-            var task = _metadata.Find(filter).FirstOrDefaultAsync();
-            task.Wait();
+            var doc = _metadata.Find(filter).FirstOrDefaultAsync().Result;
 
-            var document = task.Result;
-
-            return document["LastUpdatedDateTime"].ToLocalTime();
+            return doc["LastUpdatedDateTime"].ToLocalTime();
         }
 
         public IList<string> FindAllExclusions()
         {
-            var task = _exclusions.Find(new BsonDocument()).ToListAsync();
-            task.Wait();
-            var documents = task.Result;
+            var documents = _exclusions.Find(new BsonDocument()).ToListAsync().Result;
 
             IList<string> result = new List<string>();
 
@@ -251,15 +208,13 @@ namespace MukMafiaTool.Database
 
         public IList<Day> FindAllDays()
         {
-            var task = _days.Find(new BsonDocument()).ToListAsync();
-            task.Wait();
-            var documents = task.Result;
+            var documents = _days.Find(new BsonDocument()).ToListAsync().Result;
 
             var days = new List<Day>();
 
-            foreach (var document in documents)
+            foreach (var doc in documents)
             {
-                days.Add(ConvertBsonDocDay(document));
+                days.Add(doc.ToDay());
             }
 
             return days;
@@ -277,10 +232,138 @@ namespace MukMafiaTool.Database
         {
             var sortDefinition = Builders<BsonDocument>.Sort.Descending(d => d["ForumPostNumber"]);
 
-            var task = _posts.Find(new BsonDocument()).Sort(sortDefinition).FirstOrDefaultAsync();
-            task.Wait();
-            var doc = task.Result;
-            return ConvertBsonDocToForumPost(doc);
+            var doc = _posts.Find(new BsonDocument()).Sort(sortDefinition).FirstOrDefaultAsync().Result;
+            
+            if (doc == null)
+            {
+                return null;
+            }
+
+            return doc.ToForumPost();
+        }
+
+        public void UpsertVote(Vote vote)
+        {
+            var newDoc = new BsonDocument
+            {
+                { "IsUnvote", vote.IsUnvote },
+                { "DateTime", vote.DateTime },
+                { "Recipient", vote.Recipient },
+                { "Voter", vote.Voter },
+                { "ForumPostNumber", vote.ForumPostNumber },
+                { "PostContentIndex", vote.PostContentIndex },
+            };
+
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber) & builder.Eq("PostContentIndex", vote.PostContentIndex);
+
+            Upsert(newDoc, filter);
+        }
+
+        public void EnsurePlayersInRepo(IList<ForumPost> posts)
+        {
+            foreach (var post in posts)
+            {
+                if (FindPlayer(post.Poster) == null)
+                {
+                    var recruitmentDoc = new BsonDocument
+                    {
+                        { "FactionName", "Town" },
+                        { "Allegiance", Allegiance.Town.ToString() },
+                        { "ForumPostNumber", "10515623" },
+                    };
+
+                    var playerDoc = new BsonDocument
+                    {
+                        { "Name", post.Poster },
+                        { "Recruitments", new BsonArray { recruitmentDoc } },
+                        { "Participating", true },
+                        { "Fatality", string.Empty },
+                        { "Character", string.Empty },
+                        { "Notes", string.Empty },
+                        { "Aliases", new BsonArray() }
+                    };
+
+                    _players.InsertOneAsync(playerDoc).Wait();
+                }
+            }
+        }
+
+        public void EnsurePlayersInRepo(IEnumerable<string> playerNames)
+        {
+            foreach (var playerName in playerNames)
+            {
+                var recruitmentDoc = new BsonDocument
+                    {
+                        { "FactionName", "Town" },
+                        { "Allegiance", Allegiance.Town.ToString() },
+                        { "ForumPostNumber", "10515623" },
+                    };
+
+                var playerDoc = new BsonDocument
+                    {
+                        { "Name", playerName },
+                        { "Recruitments", new BsonArray { recruitmentDoc } },
+                        { "Participating", true },
+                        { "Fatality", string.Empty },
+                        { "Character", string.Empty },
+                        { "Notes", string.Empty },
+                        { "Aliases", new BsonArray() }
+                    };
+
+                _players.InsertOneAsync(playerDoc).Wait();
+            }
+        }
+
+        public void UpsertPlayer(Player player)
+        {
+            BsonArray recruitments = new BsonArray();
+
+            foreach (var recruitment in player.Recruitments)
+            {
+                recruitments.Add(new BsonDocument
+                    {
+                        { "FactionName", recruitment.FactionName },
+                        { "Allegiance", recruitment.Allegiance.ToString() },
+                        { "ForumPostNumber", recruitment.ForumPostNumber },
+                    });
+            }
+
+            BsonArray aliases = new BsonArray();
+
+            foreach (var alias in aliases)
+            {
+                aliases.Add(alias.ToString());
+            }
+
+            var newDoc = new BsonDocument
+            {
+                { "Name", player.Name },
+                { "Recruitments", recruitments },
+                { "Participating", player.Participating },
+                { "Fatality", player.Fatality },
+                { "Character", player.Character },
+                { "Notes", player.Notes },
+                { "Aliases", aliases }
+            };
+
+            var filter = Builders<BsonDocument>.Filter.Eq("Name", player.Name);
+
+            Upsert(newDoc, filter);
+        }
+
+        public Player FindPlayer(string name)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("Name", name);
+
+            var player = _players.Find(filter).FirstOrDefaultAsync().Result;
+
+            if (player == null)
+            {
+                return null;
+            }
+
+            return player.ToPlayer();
         }
 
         public void LogMessage(string message)
@@ -288,85 +371,21 @@ namespace MukMafiaTool.Database
             BsonDocument doc = new BsonDocument();
             doc["Message"] = message;
 
-            var task = _logs.InsertOneAsync(doc);
-            task.Wait();
+            _logs.InsertOneAsync(doc).Wait();
+        }
+
+        private void Upsert(BsonDocument newDoc, FilterDefinition<BsonDocument> filter)
+        {
+            var options = new UpdateOptions();
+            options.IsUpsert = true;
+
+            _posts.ReplaceOneAsync(filter, newDoc, options).Wait();
         }
 
         private void ProcessUnvote(Vote vote)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("Voter", vote.Voter);
-            var task = _votes.DeleteManyAsync(filter);
-            task.Wait();
-        }
-
-        private bool WhetherToInsertPost(ForumPost post)
-        {
-            bool insertPost = false;
-
-            // If we have no posts in the database
-            if (_latestPostAtTimeOfCreation == null)
-            {
-                // always insert a post
-                insertPost = true;
-            }
-            else
-            {
-                // If the post forum number is after the latest post forum number in the db
-                if (string.Compare(post.ForumPostNumber, _latestPostAtTimeOfCreation.ForumPostNumber) > 0)
-                {
-                    insertPost = true;
-                }
-            }
-
-            // If the post doesn't have a "Day" (e.g. it was Day 0)
-            if (post.Day < 1)
-            {
-                insertPost = false;
-            }
-
-            // If the post was made < 5 minutes ago, we don't want to add it, in case there's a merge or edit to it
-            if (DateTime.Now - post.DateTime.ToLocalTime() < TimeSpan.FromMinutes(5))
-            {
-                insertPost = false;
-            }
-
-            return insertPost;
-        }
-
-        private ForumPost ConvertBsonDocToForumPost(BsonDocument doc)
-        {
-            return new ForumPost
-            {
-                ThreadPostNumber = doc["ThreadPostNumber"].ToInt32(),
-                ForumPostNumber = doc["ForumPostNumber"].ToString(),
-                Poster = doc["Poster"].ToString(),
-                DateTime = doc["DateTime"].ToUniversalTime(),
-                Content = new HtmlString(doc["Content"].ToString()),
-                Day = doc["Day"].ToInt32(),
-                PageNumber = doc["PageNumber"].ToInt32(),
-            };
-        }
-
-        private Vote ConvertBsonDocToVote(BsonDocument doc)
-        {
-            return new Vote
-            {
-                DateTime = doc["DateTime"].ToLocalTime(),
-                Recipient = doc["Recipient"].ToString(),
-                Voter = doc["Voter"].ToString(),
-                ForumPostNumber = doc["ForumPostNumber"].ToString(),
-                PostContentIndex = doc["PostContentIndex"].ToInt32(),
-            };
-        }
-
-        private Day ConvertBsonDocDay(BsonDocument doc)
-        {
-            return new Day
-            {
-                Number = doc["_id"].ToInt32(),
-                StartForumPostNumber = doc["StartForumPostNumber"].ToString(),
-                EndForumPostNumber = doc["EndForumPostNumber"].ToString(),
-            };
+            _votes.DeleteManyAsync(filter).Wait();
         }
     }
 }

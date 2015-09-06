@@ -54,6 +54,7 @@
     <Compile Include="ForumScannerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensionsTests.cs" />
+    <Compile Include="VoteScannerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj">
@@ -72,6 +73,9 @@
       <Project>{44622a9a-2a61-4a88-9aba-e689b18582c3}</Project>
       <Name>MukMafiaTool.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

@@ -64,6 +64,9 @@ namespace MukMafiaTool.ForumScanService
             // Find Content
             newPost.Content = RetrieveContent(postDiv);
 
+            // Set LastScanned time
+            newPost.LastScanned = DateTime.UtcNow;
+
             return newPost;
         }
 

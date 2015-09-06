@@ -23,7 +23,7 @@ namespace MukMafiaTool.Controllers
         // GET: Player
         public ActionResult Index(string playerName, string searchString, string forumPostNumber, bool includeQuoteBlocks = false)
         {
-            IList<ForumPost> posts = _repo.FindAllPosts();
+            var posts = _repo.FindAllPosts();
 
             if (!string.IsNullOrEmpty(playerName))
             {
@@ -32,7 +32,7 @@ namespace MukMafiaTool.Controllers
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                posts = FilterOnSearchString(searchString, includeQuoteBlocks, posts);
+                posts = FilterOnSearchString(searchString, includeQuoteBlocks, posts.ToList());
             }
 
             if (!string.IsNullOrEmpty(forumPostNumber))
