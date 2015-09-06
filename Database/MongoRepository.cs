@@ -119,25 +119,7 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", post.ForumPostNumber);
 
-            Upsert(newDoc, filter);
-        }
-
-        public void InsertPlayers(IList<ForumPost> posts)
-        {
-            foreach (var post in posts)
-            {
-                var filter = Builders<BsonDocument>.Filter.Eq("Name", post.Poster);
-
-                var docs = _posts.Find(new BsonDocument()).ToListAsync().Result;
-
-                if (docs.Count == 0)
-                {
-                    var newDoc = new BsonDocument
-                    {
-                        { "Name", post.ForumPostNumber }
-                    };
-                }
-            }
+            Upsert(_posts, newDoc, filter);
         }
 
         public void WipeVotes()
@@ -180,7 +162,7 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", 1);
 
-            Upsert(doc, filter);
+            Upsert(_metadata, doc, filter);
         }
 
         public DateTime FindLastUpdatedDateTime()
@@ -257,7 +239,7 @@ namespace MukMafiaTool.Database
             var builder = Builders<BsonDocument>.Filter;
             var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber) & builder.Eq("PostContentIndex", vote.PostContentIndex);
 
-            Upsert(newDoc, filter);
+            Upsert(_votes, newDoc, filter);
         }
 
         public void EnsurePlayersInRepo(IList<ForumPost> posts)
@@ -293,14 +275,16 @@ namespace MukMafiaTool.Database
         {
             foreach (var playerName in playerNames)
             {
-                var recruitmentDoc = new BsonDocument
+                if (FindPlayer(playerName) == null)
+                {
+                    var recruitmentDoc = new BsonDocument
                     {
                         { "FactionName", "Town" },
                         { "Allegiance", Allegiance.Town.ToString() },
                         { "ForumPostNumber", "10515623" },
                     };
 
-                var playerDoc = new BsonDocument
+                    var playerDoc = new BsonDocument
                     {
                         { "Name", playerName },
                         { "Recruitments", new BsonArray { recruitmentDoc } },
@@ -311,7 +295,8 @@ namespace MukMafiaTool.Database
                         { "Aliases", new BsonArray() }
                     };
 
-                _players.InsertOneAsync(playerDoc).Wait();
+                    _players.InsertOneAsync(playerDoc).Wait();
+                }
             }
         }
 
@@ -349,7 +334,7 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("Name", player.Name);
 
-            Upsert(newDoc, filter);
+            Upsert(_players, newDoc, filter);
         }
 
         public Player FindPlayer(string name)
@@ -374,12 +359,12 @@ namespace MukMafiaTool.Database
             _logs.InsertOneAsync(doc).Wait();
         }
 
-        private void Upsert(BsonDocument newDoc, FilterDefinition<BsonDocument> filter)
+        private void Upsert(IMongoCollection<BsonDocument> collection, BsonDocument newDoc, FilterDefinition<BsonDocument> filter)
         {
             var options = new UpdateOptions();
             options.IsUpsert = true;
 
-            _posts.ReplaceOneAsync(filter, newDoc, options).Wait();
+            collection.ReplaceOneAsync(filter, newDoc, options).Wait();
         }
 
         private void ProcessUnvote(Vote vote)

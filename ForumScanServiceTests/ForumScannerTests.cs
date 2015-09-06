@@ -21,7 +21,6 @@ namespace MukMafiaToolTests
             scanner.DoWholeUpdate();
         }
 
-        [Ignore]
         [TestMethod]
         public void DoEndOfGameScan()
         {
