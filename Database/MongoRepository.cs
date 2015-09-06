@@ -116,34 +116,11 @@ namespace MukMafiaTool.Database
             Upsert(_posts, newDoc, filter);
         }
 
-        public void WipeVotes()
+        public void DeleteVotes(string forumPostNumber)
         {
-            _votes.DeleteManyAsync(new BsonDocument()).Wait();
-        }
+            var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", forumPostNumber);
 
-        public void ProcessVote(Vote vote)
-        {
-            if (vote.IsUnvote)
-            {
-                ProcessUnvote(vote);
-            }
-            else
-            {
-                // Delete all voter's vote up until this point
-                var filter = Builders<BsonDocument>.Filter.Eq("Voter", vote.Voter);
-                _votes.DeleteManyAsync(filter).Wait();
-
-                var doc = new BsonDocument
-                {
-                    { "DateTime", vote.DateTime },
-                    { "Voter", vote.Voter },
-                    { "Recipient", vote.Recipient },
-                    { "ForumPostNumber", vote.ForumPostNumber },
-                    { "PostContentIndex", vote.PostContentIndex },
-                };
-
-                _votes.InsertOneAsync(doc).Wait();
-            }
+            _votes.DeleteManyAsync(filter).Wait();
         }
 
         public void UpdateLastUpdated()

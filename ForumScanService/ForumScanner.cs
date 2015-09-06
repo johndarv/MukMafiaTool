@@ -25,15 +25,14 @@ namespace MukMafiaTool.ForumScanService
         public void DoWholeUpdate()
         {
             UpdateRepoFromThread();
-            CalculateVotes();
 
             _repo.UpdateLastUpdated();
         }
 
         public void DoEndOfGameScan()
         {
-            //UpdateRepoFromThread();
-            AmalgamateVotes("10515623");
+            UpdateRepoFromThread();
+            UpdateVotesForWholeGame("10515623");
         }
 
         private void UpdateRepoFromThread()
@@ -59,7 +58,18 @@ namespace MukMafiaTool.ForumScanService
                 var newPosts = latestPost == null ? validPosts : FindAllPostsAfter(validPosts, latestPost.ForumPostNumber);
                 _repo.EnsurePlayersInRepo(newPosts);
 
-                HandleValidPosts(validPosts);
+                // Get all posts that have had stuff added to them since the last scan
+                foreach (var post in scannedPosts)
+                {
+                    var repoPost = _repo.FindSpecificPost(post.ForumPostNumber);
+
+                    if (repoPost == null || repoPost.LastScanned - repoPost.DateTime < TimeSpan.FromMinutes(5))
+                    {
+                        _repo.UpsertPost(post);
+                        _repo.DeleteVotes(post.ForumPostNumber);
+                        UpsertVotes(post);
+                    }
+                }
 
                 currentPageNumber++;
                 pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);
@@ -79,40 +89,21 @@ namespace MukMafiaTool.ForumScanService
             }
         }
 
-        private void CalculateVotes()
-        {
-            // Get first post of last day
-            string startOfDayForumPostNumber = _repo.FindCurrentDay().StartForumPostNumber;
-
-            // Delete votes collection
-            _repo.WipeVotes();
-
-            var allPosts = _repo.FindAllPosts().OrderBy(p => p.ForumPostNumber).ToList();
-            var posts = FindAllPostsAfter(allPosts, startOfDayForumPostNumber);
-
-            var players = _repo.FindAllPlayers();
-            var playerNameGroups = players.Select(p => (new string[] { p.Name }).Concat(p.Aliases));
-
-            IList<Vote> votes = new List<Vote>();
-
-            foreach (var post in posts)
-            {
-                votes = votes.Concat<Vote>(VoteScanner.ScanForVotes(post, playerNameGroups)).ToList();
-            }
-
-            votes = votes.OrderBy(v => v.ForumPostNumber).ThenBy(v => v.PostContentIndex).ToList();
-
-            foreach (var vote in votes)
-            {
-                _repo.ProcessVote(vote);
-            }
-        }
-
-        private void AmalgamateVotes(string startOfGameForumPostNumber)
+        private void UpdateVotesForWholeGame(string startOfGameForumPostNumber)
         {
             var allPosts = _repo.FindAllPosts().OrderBy(p => p.ForumPostNumber).ToList();
             var relevantPosts = FindAllPostsAfter(allPosts, startOfGameForumPostNumber);
-            
+
+            UpsertVotes(relevantPosts);
+        }
+
+        private void UpsertVotes(ForumPost relevantPost)
+        {
+            UpsertVotes(new ForumPost[] { relevantPost });
+        }
+
+        private void UpsertVotes(IList<ForumPost> relevantPosts)
+        {
             var players = _repo.FindAllPlayers();
             var playerNameGroups = players.Select(p => (new string[] { p.Name }).Concat(p.Aliases));
 

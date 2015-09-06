@@ -48,7 +48,7 @@ namespace MukMafiaTool.Controllers
             viewModel.PlayerNames = playerNames.OrderBy(p => p.Text).ToArray();
 
             // Find all current votes
-            viewModel.VoteSituation = VoteAnalyser.DetermineCurrentVoteSituation(players, _repo.FindAllVotes(), days);
+            viewModel.VoteSituation = VoteAnalyser.DetermineCurrentVoteSituation(_repo.FindAllVotes(), players, days);
 
             viewModel.LastUpdated = _repo.FindLastUpdatedDateTime();
 

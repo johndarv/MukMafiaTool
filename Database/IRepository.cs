@@ -17,11 +17,10 @@ namespace MukMafiaTool.Database
         ForumPost FindLatestPost();
         ForumPost FindSpecificPost(string forumPostNumber);
         void LogMessage(string message);
-        void ProcessVote(Vote vote);
         void UpdateLastUpdated();
         void UpsertPost(ForumPost post);
-        void WipeVotes();
         void UpsertVote(Vote vote);
+        void DeleteVotes(string forumPostNumber);
         Player FindPlayer(string name);
         void UpsertPlayer(Player player);
         void EnsurePlayersInRepo(IList<ForumPost> posts);

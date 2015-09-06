@@ -30,7 +30,6 @@ Last Updated: @Model.LastUpdated.ToLocalTime().ToString("dddd dd MMMM - HH:mm") 
 Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here try posting it again using "vote: name"):
 
 <ul>
-
     @foreach (var voteGroup in Model.VoteSituation.CurrentVotes.GroupBy(v => v.Recipient))
     {
         var listOfVoters = string.Join(", ", voteGroup.Select(g => "<a href=\"http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid=" + g.ForumPostNumber + "\">" + g.Voter + "</a>"));

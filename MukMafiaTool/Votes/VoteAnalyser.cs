@@ -9,25 +9,54 @@ namespace MukMafiaTool.Votes
 {
     public static class VoteAnalyser
     {
-        public static VoteSituation DetermineCurrentVoteSituation(IEnumerable<Player> players, IEnumerable<Vote> votes, IEnumerable<Day> days)
+        public static VoteSituation DetermineCurrentVoteSituation(IEnumerable<Vote> allVotes, IEnumerable<Player> players, IEnumerable<Day> days)
         {
-            var currentSituation = new VoteSituation();
-            currentSituation.CurrentVotes = new List<Vote>();
-            currentSituation.NotVoted = new List<Player>();
+            var currentDay = days.OrderBy(d => d.Number).LastOrDefault();
 
-            var votesByPlayer = votes.GroupBy(v => v.Voter);
+            if (currentDay == null)
+            {
+                return new VoteSituation
+                {
+                    CurrentVotes = new List<Vote>(),
+                    NotVoted = new List<Player>(),
+                };
+            }
+
+            var todaysVotes = allVotes.Where(v => string.Compare(v.ForumPostNumber, currentDay.StartForumPostNumber) >= 0);
+            var todaysVotesOrdered = todaysVotes.OrderBy(v => v.ForumPostNumber).ThenBy(v => v.PostContentIndex);
             var activePlayers = players.Where(p => p.Participating && string.IsNullOrEmpty(p.Fatality));
+
+            IList<Vote> todaysCurrentVotes = new List<Vote>();
+            IList<Player> notVotedYetToday = new List<Player>();
 
             foreach (var player in activePlayers)
             {
                 // If they haven't cast a vote or an unvote - put in not voted list
-                
-                // If their latest vote was an unvote - put in not voted list
+                if (!todaysVotesOrdered.Any(v => string.Equals(v.Voter, player.Name)))
+                {
+                    notVotedYetToday.Add(player);
+                }
+                else
+                {
+                    var lastVote = todaysVotesOrdered.Last(v => string.Equals(v.Voter, player.Name));
 
-                // else put their latest vote into the current votes list
+                    // If their latest vote was an unvote - put in not voted list
+                    if (lastVote.IsUnvote)
+                    {
+                        notVotedYetToday.Add(player);
+                    }
+                    else
+                    {
+                        todaysCurrentVotes.Add(lastVote);
+                    }
+                }
             }
 
-            return currentSituation;
+            return new VoteSituation
+            {
+                CurrentVotes = todaysCurrentVotes,
+                NotVoted = notVotedYetToday,
+            };
         }
 
         public static VoteInfo GetVoteInfo(this Vote vote, IEnumerable<Player> players)
