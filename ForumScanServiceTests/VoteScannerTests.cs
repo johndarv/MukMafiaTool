@@ -13,6 +13,22 @@ namespace ForumScanServiceTests
     [TestClass]
     public class VoteScannerTests
     {
+        private string[][] _playerNames;
+
+        public VoteScannerTests()
+        {
+            _playerNames = new string[][]
+            {
+                new string[] { "John0" },
+                new string[] { "Xevious" },
+                new string[] { "snowbind" },
+                new string[] { "GMass" },
+                new string[] { "Liamness" },
+                new string[] { "spork" },
+                new string[] { "Don Wiskerando" },
+            };
+        }
+
         [TestMethod]
         public void GetVotesTest()
         {
@@ -34,9 +50,7 @@ namespace ForumScanServiceTests
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 2);
         }
@@ -75,9 +89,7 @@ namespace ForumScanServiceTests
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 2);
         }
@@ -106,9 +118,7 @@ namespace ForumScanServiceTests
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 2);
         }
@@ -142,9 +152,7 @@ What?!
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 1);
         }
@@ -171,9 +179,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 0);
         }
@@ -200,9 +206,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 2);
         }
@@ -228,9 +232,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 2);
         }
@@ -264,9 +266,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 0);
         }
@@ -299,9 +299,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 1);
         }
@@ -329,9 +327,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 </div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 1);
             Assert.IsTrue(votes.First().IsUnvote == true);
@@ -388,13 +384,57 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 				</div>"),
             };
 
-            var playerNames = new List<string>() { "John0", "Xevious", "snowbind", "GMass", "Liamness", "spork", "Don Wiskerando" };
-
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
 
             Assert.IsTrue(votes.Count == 1);
             Assert.IsTrue(votes.First().IsUnvote == false);
             Assert.IsTrue(votes.First().Recipient == "Don Wiskerando");
+        }
+
+        [TestMethod]
+        public void GetVotesAliasTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Alask",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"<div class=""post_body"">
+                    
+					<blockquote class=""ipsBlockquote"" data-author=""footle"" data-cid=""10527247"" data-time=""1439839427""><br>
+<div><br>
+<p>Please keep voting. There's always the possibility that Bennette is the Reverend, though you'd assume the reverend would vote earlier.</p>
+</div>
+</blockquote>
+<p>&#160;</p>
+<p>Not entirely clear if that'd mean the vote counts reached and therefore day ends though or not though..</p>
+<p>&#160;</p>
+<p>anyway</p>
+<p>&#160;</p>
+<p><strong class='bbc'>unvote<p>
+<p>vote : john</strong></p>
+<p>&#160;</p>
+<p>should cover it shouldn't it?</p>
+					
+					<br>
+					
+				
+                </div>"),
+            };
+
+            var playerNames = new string[][]
+            {
+                new string[] { "John0", "John" },
+                new string[] { "Xevious" },
+            };
+
+            var votes = VoteScanner.ScanForVotes(post, playerNames);
+
+            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Last().Recipient == "John0");
         }
     }
 }

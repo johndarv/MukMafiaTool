@@ -10,7 +10,7 @@ namespace ForumScanService
     public static class VoteScanner
     {
         // I apolgise to anyone ever attempting to read this method
-        public static IList<Vote> ScanForVotes(ForumPost post, IEnumerable<string> playerNames)
+        public static IList<Vote> ScanForVotes(ForumPost post, IEnumerable<IEnumerable<string>> playerNamesGroups)
         {
             var votes = new List<Vote>();
 
@@ -64,7 +64,7 @@ namespace ForumScanService
                             Voter = post.Poster,
                             DateTime = post.DateTime,
                             IsUnvote = false,
-                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNames),
+                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNamesGroups),
                             ForumPostNumber = post.ForumPostNumber,
                             PostContentIndex = index,
                         };
@@ -85,7 +85,7 @@ namespace ForumScanService
                             Voter = post.Poster,
                             DateTime = post.DateTime,
                             IsUnvote = false,
-                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNames),
+                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNamesGroups),
                             ForumPostNumber = post.ForumPostNumber,
                             PostContentIndex = index,
                         };
@@ -113,18 +113,21 @@ namespace ForumScanService
             votes.Add(newUnvote);
         }
 
-        private static string DetermineRecipient(string voteSubString, IEnumerable<string> playerNames)
+        private static string DetermineRecipient(string voteSubString, IEnumerable<IEnumerable<string>> playerNameGroups)
         {
-            foreach (var playerName in playerNames)
+            foreach (var playerNames in playerNameGroups)
             {
-                var matchLength = Math.Min(voteSubString.Length, playerName.Length);
-
-                var str1 = voteSubString.Substring(0, matchLength);
-                var str2 = playerName.Substring(0, matchLength);
-
-                if (string.Equals(str1, str2, StringComparison.OrdinalIgnoreCase))
+                foreach (var playerName in playerNames)
                 {
-                    return playerName;
+                    var matchLength = Math.Min(voteSubString.Length, playerName.Length);
+
+                    var str1 = voteSubString.Substring(0, matchLength);
+                    var str2 = playerName.Substring(0, matchLength);
+
+                    if (string.Equals(str1, str2, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return playerNames.First();
+                    }
                 }
             }
 
