@@ -5,12 +5,12 @@ using System.Web;
 
 namespace MukMafiaTool.Models
 {
-    public class Player
+    public class HomePagePlayer
     {
         public string Name { get; set; }
         public int PostCount { get; set; }
-        public bool Excluded { get; set; }
-        public bool Dead { get; set; }
-        public string ExclusionNotes { get; set; }
+        public bool IsInGame { get; set; }
+        public string Character { get; set; }
+        public string OutOfGameText { get; set; }
     }
 }

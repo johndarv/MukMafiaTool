@@ -31,7 +31,7 @@ Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here 
 
 <ul>
 
-    @foreach (var voteGroup in Model.Votes)
+    @foreach (var voteGroup in Model.VoteSituation.CurrentVotes.GroupBy(v => v.Recipient))
     {
         var listOfVoters = string.Join(", ", voteGroup.Select(g => "<a href=\"http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid=" + g.ForumPostNumber + "\">" + g.Voter + "</a>"));
 
@@ -40,7 +40,7 @@ Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here 
 
 </ul>
 
-Not Voted (@Model.NotVoted.Count) - @string.Join(", ", Model.NotVoted.Select(p => p.Name))
+Not Voted (@Model.VoteSituation.NotVoted.Count()) - @string.Join(", ", Model.VoteSituation.NotVoted.Select(p => p.Name))
 
 <br />
 <br />
@@ -51,11 +51,12 @@ List of Participants:
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
-        if (player.Excluded)
+        if (!player.IsInGame)
         {
-            var htmlAttributes = player.Dead ? null : new { style = "text-decoration: line-through" };
+            var htmlAttributes = new { style = "text-decoration: line-through" };
+            var characterText = string.IsNullOrEmpty(player.Character) ? string.Empty : string.Format(" - {0} ", player.Character);
             
-            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount)</li>
+            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount) @characterText- @player.OutOfGameText</li>
         }
         else
         {

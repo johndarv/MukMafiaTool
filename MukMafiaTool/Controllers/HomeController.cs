@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using MukMafiaTool.Database;
 using MukMafiaTool.Models;
 using MukMafiaTool.Models.ViewModels;
+using MukMafiaTool.Votes;
 
 namespace MukMafiaTool.Controllers
 {
@@ -24,40 +25,34 @@ namespace MukMafiaTool.Controllers
             HomeViewModel viewModel = new HomeViewModel();
 
             var allPosts = _repo.FindAllPosts();
-
-            var exclusions = _repo.FindAllExclusions();
-
+            var players = _repo.FindAllPlayers();
             var postGroups = allPosts.GroupBy(p => p.Poster);
-            viewModel.Players = postGroups.Select(
-                g => new Player()
+            var days = _repo.FindAllDays();
+
+            // Get all players to display and their post counts and so forth
+            viewModel.Players = players.Select(player =>
                 {
-                    Name = g.First().Poster,
-                    PostCount = g.Count(),
-                    Excluded = exclusions.Any(e => string.Equals(e, g.First().Poster, StringComparison.OrdinalIgnoreCase)),
-                }).ToList();
+                    return new HomePagePlayer
+                    {
+                        Name = player.Name,
+                        PostCount = postGroups.Single(g => g.Key == player.Name).Count(),
+                        IsInGame = player.Participating && string.IsNullOrEmpty(player.Fatality),
+                        Character = player.Character,
+                        OutOfGameText = !string.IsNullOrEmpty(player.Fatality) ? player.Fatality : player.Notes,
+                    };
+                });
 
-            var playerNames = postGroups.Select(g => new SelectListItem() { Value = g.First().Poster, Text = g.First().Poster }).ToList();
+            // Enumerate the list of player names for the drop down menu
+            var playerNames = players.Select(player => new SelectListItem() { Value = player.Name, Text = player.Name }).ToList();
             playerNames.Add(new SelectListItem() { Value = string.Empty, Text = string.Empty });
-            viewModel.PlayerNames = playerNames.ToArray();
+            viewModel.PlayerNames = playerNames.OrderBy(p => p.Text).ToArray();
 
-            var allVotes = _repo.FindAllVotes();
-            viewModel.Votes = allVotes.GroupBy(v => v.Recipient).OrderByDescending(g => g.Count());
-
-            foreach (var voteGroup in viewModel.Votes)
-            {
-                var name = voteGroup.Key;
-                var count = voteGroup.Count();
-                var list = string.Join(", ", voteGroup.Select(v => v.Voter).ToArray());
-            }
-
-            var voted = allVotes.Select(v => v.Voter);
-            var notVoted = viewModel.Players.Where(p => !voted.Any(v => string.Equals(v, p.Name, StringComparison.OrdinalIgnoreCase))).ToList();
-            notVoted = notVoted.Where(p => !exclusions.Any(e => string.Equals(e, p.Name, StringComparison.OrdinalIgnoreCase))).ToList();
-            viewModel.NotVoted = notVoted.OrderBy(p => p.PostCount).ToList();
+            // Find all current votes
+            viewModel.VoteSituation = VoteAnalyser.DetermineCurrentVoteSituation(players, _repo.FindAllVotes(), days);
 
             viewModel.LastUpdated = _repo.FindLastUpdatedDateTime();
 
-            viewModel.Days = _repo.FindAllDays();
+            viewModel.Days = days;
 
             return View(viewModel);
         }

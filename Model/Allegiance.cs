@@ -14,5 +14,6 @@ namespace MukMafiaTool.Model
         Survivor,
         ItchyScratchy,
         Cult,
+        Unknown,
     }
 }

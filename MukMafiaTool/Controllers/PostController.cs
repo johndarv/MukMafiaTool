@@ -40,7 +40,7 @@ namespace MukMafiaTool.Controllers
                 posts = posts.Where(p => string.Equals(forumPostNumber, p.ForumPostNumber, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            return View(posts);
+            return View(posts.ToList());
         }
 
         private static IList<ForumPost> FilterOnSearchString(string searchString, bool includeQuoteBlocks, IList<ForumPost> posts)

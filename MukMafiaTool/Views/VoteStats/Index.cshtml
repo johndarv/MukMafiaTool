@@ -1,0 +1,81 @@
+﻿@model MukMafiaTool.Models.ViewModels.VoteStatsViewModel
+
+@using System.Linq
+
+@{
+    ViewBag.Title = "RLLMUK Mafiascum Helper";
+}
+
+<link rel="stylesheet" type="text/css" title="Main" media="screen" href="http://www.rllmukforum.com/public/style_css/css_22/calendar_select.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+<link rel="stylesheet" type="text/css" title="Main" media="screen,print" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_common.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+<link rel="stylesheet" type="text/css" title="Main" media="screen,print" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_styles.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+<link rel="stylesheet" type="text/css" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_ckeditor.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+<link rel="stylesheet" type="text/css" href="http://www.rllmukforum.com/public/style_css/prettify.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+
+Totals:
+<br />
+<table>
+    <tr>
+        <td>Total number of votes</td>
+        <td>@Model.NumberOfVotes</td>
+    </tr>
+    <tr>
+        <td>Votes onto Town</td>
+        <td>@Model.PercentageOfVotesOntoTown.ToString("P")</td>
+    </tr>
+    <tr>
+        <td>Votes onto Mafia</td>
+        <td>@Model.PercentageOfVotesOntoMafia.ToString("P")</td>
+    </tr>
+    <tr>
+        <td>Votes onto all Non-Town factions</td>
+        <td>@Model.PercentageOfVotesOntoNonTown.ToString("P")</td>
+    </tr>
+</table>
+<br />
+
+Individual Stats:
+<br />
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Number Of Votes</td>
+        <td>Votes onto Mafia</td>
+        <td>Votes onto Town</td>
+        <td>Votes onto own Allegiance</td>
+        <td>Votes onto own Faction</td>
+    </tr>
+
+    @foreach (var individual in Model.IndividualVoteStats)
+    {
+        <tr>
+            <td>@individual.Name</td>
+            <td>@individual.NumberOfVotes</td>
+            <td>@individual.PercentageOfVotesOntoMafia.ToString("P")</td>
+            <td>@individual.PercentageOfVotesOntoTown.ToString("P")</td>
+            <td>@individual.PercentageOfVotesOntoOwnAllegiance.ToString("P")</td>
+            <td>@individual.PercentageOfVotesOntoOwnFaction.ToString("P")</td>
+        </tr>
+    }
+</table>
+<br />
+Faction Stats:
+<br />
+<table>
+    <tr>
+        <td>Name</td>
+        <td>Allegiance</td>
+        <td>Number Of Votes</td>
+        <td>Votes onto own Faction</td>
+    </tr>
+
+    @foreach (var faction in Model.FactionVoteStats)
+    {
+        <tr>
+            <td>@faction.Name</td>
+            <td>@faction.Allegiance</td>
+            <td>@faction.VotesCast</td>
+            <td>@faction.PercentageOfVotesOntoOwnFaction.ToString("P")</td>
+        </tr>
+    }
+</table>
