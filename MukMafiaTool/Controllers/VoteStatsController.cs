@@ -61,7 +61,7 @@ namespace MukMafiaTool.Controllers
                 stats.Name = player.Name;
 
                 var individualVotes = votes.Where(v => string.Equals(v.Voter, player.Name));
-                stats.NumberOfVotes = individualVotes.Count();
+                stats.VotesCast = individualVotes.Count();
 
                 stats.PercentageOfVotesOntoMafia =
                     VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Mafia, allPlayers);

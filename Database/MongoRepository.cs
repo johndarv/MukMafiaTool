@@ -24,16 +24,15 @@ namespace MukMafiaTool.Database
         public MongoRepository()
         {
             var connectionString = ConfigurationManager.AppSettings["MongoConnectionString"];
+            var databaseName = ConfigurationManager.AppSettings["MongoDatabaseName"];
 
             MongoClient client = new MongoClient(connectionString);
-
-            var database = client.GetDatabase("Simpsonscum");
+            var database = client.GetDatabase(databaseName);
 
             _posts = database.GetCollection<BsonDocument>("Posts");
             _votes = database.GetCollection<BsonDocument>("Votes");
             _players = database.GetCollection<BsonDocument>("Players");
             _metadata = database.GetCollection<BsonDocument>("Metadata");
-            _exclusions = database.GetCollection<BsonDocument>("Exclusions");
             _days = database.GetCollection<BsonDocument>("Days");
             _logs = database.GetCollection<BsonDocument>("Logs");
         }
@@ -57,11 +56,6 @@ namespace MukMafiaTool.Database
             var documents = _votes.Find(new BsonDocument()).ToListAsync().Result;
 
             return documents.Select(d => d.ToVote());
-        }
-
-        public IList<string> FindAllPlayerNamesFromPosts()
-        {
-            return FindAllPosts().Select(p => p.Poster).Distinct().ToList();
         }
 
         public IList<ForumPost> FindAllPosts(string playerName)
@@ -172,20 +166,6 @@ namespace MukMafiaTool.Database
             var doc = _metadata.Find(filter).FirstOrDefaultAsync().Result;
 
             return doc["LastUpdatedDateTime"].ToLocalTime();
-        }
-
-        public IList<string> FindAllExclusions()
-        {
-            var documents = _exclusions.Find(new BsonDocument()).ToListAsync().Result;
-
-            IList<string> result = new List<string>();
-
-            foreach (var doc in documents)
-            {
-                result.Add(doc["Name"].ToString());
-            }
-
-            return result;
         }
 
         public IList<Day> FindAllDays()

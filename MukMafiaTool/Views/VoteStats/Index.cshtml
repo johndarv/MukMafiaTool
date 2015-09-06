@@ -46,11 +46,11 @@ Individual Stats:
         <td>Votes onto own Faction</td>
     </tr>
 
-    @foreach (var individual in Model.IndividualVoteStats)
+    @foreach (var individual in Model.IndividualVoteStats.OrderByDescending(s => s.VotesCast))
     {
         <tr>
             <td>@individual.Name</td>
-            <td>@individual.NumberOfVotes</td>
+            <td>@individual.VotesCast</td>
             <td>@individual.PercentageOfVotesOntoMafia.ToString("P")</td>
             <td>@individual.PercentageOfVotesOntoTown.ToString("P")</td>
             <td>@individual.PercentageOfVotesOntoOwnAllegiance.ToString("P")</td>
@@ -69,7 +69,7 @@ Faction Stats:
         <td>Votes onto own Faction</td>
     </tr>
 
-    @foreach (var faction in Model.FactionVoteStats)
+    @foreach (var faction in Model.FactionVoteStats.OrderByDescending(s => s.VotesCast))
     {
         <tr>
             <td>@faction.Name</td>

@@ -7,8 +7,6 @@ namespace MukMafiaTool.Database
     public interface IRepository
     {
         IList<Day> FindAllDays();
-        IList<string> FindAllExclusions();
-        IList<string> FindAllPlayerNamesFromPosts();
         IEnumerable<ForumPost> FindAllPosts();
         IEnumerable<Player> FindAllPlayers();
         IEnumerable<Vote> FindAllVotes();

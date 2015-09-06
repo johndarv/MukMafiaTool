@@ -8,7 +8,7 @@ namespace MukMafiaTool.Models.ViewModels
     public class IndividualVoteStatsViewModel
     {
         public string Name { get; set; }
-        public int NumberOfVotes { get; set; }
+        public int VotesCast { get; set; }
         public double PercentageOfVotesOntoTown { get; set; }
         public double PercentageOfVotesOntoMafia { get; set; }
         public double PercentageOfVotesOntoOther { get; set; }
