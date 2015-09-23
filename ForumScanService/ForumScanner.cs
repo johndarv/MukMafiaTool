@@ -52,10 +52,9 @@ namespace MukMafiaTool.ForumScanService
                 PageScanner pageScanner = new PageScanner(_repo.FindAllDays());
 
                 var scannedPosts = pageScanner.RetrieveAllPosts(pageContent, currentPageNumber);
-                var validPosts = scannedPosts.Where(p => p.Day > 0).ToList();
 
                 // Ensure any new players that have posted new posts are in the repository
-                var newPosts = latestPost == null ? validPosts : FindAllPostsAfter(validPosts, latestPost.ForumPostNumber);
+                var newPosts = latestPost == null ? scannedPosts : FindAllPostsAfter(scannedPosts, latestPost.ForumPostNumber);
                 _repo.EnsurePlayersInRepo(newPosts);
 
                 // Get all posts that have had stuff added to them since the last scan

@@ -37,11 +37,18 @@ namespace MukMafiaTool.Database
             _logs = database.GetCollection<BsonDocument>("Logs");
         }
 
-        public IEnumerable<ForumPost> FindAllPosts()
+        public IEnumerable<ForumPost> FindAllPosts(bool includeDayZeros = false)
         {
             var documents = _posts.Find(new BsonDocument()).ToListAsync().Result;
 
-            return documents.Select(d => d.ToForumPost());
+            var posts = documents.Select(d => d.ToForumPost());
+
+            if (!includeDayZeros)
+            {
+                posts = posts.Where(p => p.Day > 0);
+            }
+
+            return posts;
         }
 
         public IEnumerable<Player> FindAllPlayers()
@@ -114,6 +121,13 @@ namespace MukMafiaTool.Database
             var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", post.ForumPostNumber);
 
             Upsert(_posts, newDoc, filter);
+        }
+
+        public void DeleteAllVotes()
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("ManuallyEdited", false);
+
+            _votes.DeleteManyAsync(filter).Wait();
         }
 
         public void DeleteVotes(string forumPostNumber)
@@ -191,6 +205,7 @@ namespace MukMafiaTool.Database
                 { "Voter", vote.Voter },
                 { "ForumPostNumber", vote.ForumPostNumber },
                 { "PostContentIndex", vote.PostContentIndex },
+                { "ManuallyEdited", vote.ManuallyEdited },
             };
 
             var builder = Builders<BsonDocument>.Filter;

@@ -17,6 +17,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ForumScanServiceTests", "Fo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MukMafiaTool.Common", "MukMafiaTool.Common\MukMafiaTool.Common.csproj", "{44622A9A-2A61-4A88-9ABA-E689B18582C3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MukMafiaToolTests", "MukMafiaToolTests\MukMafiaToolTests.csproj", "{5E60ADEA-1179-4947-8073-9550019872E3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonTests", "CommonTests\CommonTests.csproj", "{83278E7B-EB96-4611-8177-85A0A8EA6E95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,11 +51,21 @@ Global
 		{44622A9A-2A61-4A88-9ABA-E689B18582C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44622A9A-2A61-4A88-9ABA-E689B18582C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44622A9A-2A61-4A88-9ABA-E689B18582C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E60ADEA-1179-4947-8073-9550019872E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E60ADEA-1179-4947-8073-9550019872E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E60ADEA-1179-4947-8073-9550019872E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E60ADEA-1179-4947-8073-9550019872E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83278E7B-EB96-4611-8177-85A0A8EA6E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83278E7B-EB96-4611-8177-85A0A8EA6E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83278E7B-EB96-4611-8177-85A0A8EA6E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83278E7B-EB96-4611-8177-85A0A8EA6E95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{83AE6EC1-8926-4519-971A-97F7980CDFAE} = {37965B39-2981-4138-BD2B-374CE37CA7E0}
+		{5E60ADEA-1179-4947-8073-9550019872E3} = {37965B39-2981-4138-BD2B-374CE37CA7E0}
+		{83278E7B-EB96-4611-8177-85A0A8EA6E95} = {37965B39-2981-4138-BD2B-374CE37CA7E0}
 	EndGlobalSection
 EndGlobal

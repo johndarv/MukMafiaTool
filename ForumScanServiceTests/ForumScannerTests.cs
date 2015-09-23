@@ -12,6 +12,7 @@ namespace MukMafiaToolTests
     [TestClass]
     public class InternalForumScannerTests
     {
+        [Ignore]
         [TestMethod]
         public void DoWholeUpdateTest()
         {

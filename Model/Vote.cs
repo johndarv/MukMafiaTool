@@ -10,5 +10,6 @@ namespace MukMafiaTool.Model
         public DateTime DateTime { get; set; }
         public string ForumPostNumber { get; set; }
         public int PostContentIndex { get; set; }
+        public bool ManuallyEdited { get; set; }
     }
 }
