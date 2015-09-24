@@ -97,6 +97,11 @@ namespace MukMafiaTool.Common
             return str.Replace(" ", string.Empty);
         }
 
+        public static string ReplaceNonBreakingSpacesWithSpaces(this string str)
+        {
+            return str.Replace("&#160;", " ");
+        }
+
         public static string RemoveNewLineAndTabChars(this string str)
         {
             str = str.Replace("\n", string.Empty);

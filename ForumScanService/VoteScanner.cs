@@ -14,7 +14,14 @@ namespace ForumScanService
         {
             var votes = new List<Vote>();
 
-            var content = post.Content.ToString().FilterOutContentInQuoteBlocks().FilterOutSpanTags().RemoveNewLineAndTabChars().ToLower();
+            var content = post
+                .Content
+                .ToString()
+                .FilterOutContentInQuoteBlocks()
+                .FilterOutSpanTags()
+                .ReplaceNonBreakingSpacesWithSpaces()
+                .RemoveNewLineAndTabChars()
+                .ToLower();
 
             var indexes = content.AllIndexesOf("vote");
 

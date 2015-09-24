@@ -26,6 +26,7 @@ namespace ForumScanServiceTests
                 new string[] { "Liamness" },
                 new string[] { "spork" },
                 new string[] { "Don Wiskerando" },
+                new string[] { "The Grand Pursuivant" },
             };
         }
 
@@ -435,6 +436,38 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 
             Assert.IsTrue(votes.Count == 2);
             Assert.IsTrue(votes.Last().Recipient == "John0");
+        }
+
+        [TestMethod]
+        public void NonBreakingSpaceTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Danster",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"<div class=""post_body"">
+                    
+					<p>I finding TGP to be peculiarly quiet. His hammer hit still rankles with me, there were people in the thread discussing stuff, someone had mentioned that we might come on at half time of the footie, which I did only to find the day had ended.</p>
+<p>&#160;</p>
+<p>I want answers!</p>
+<p>&#160;</p>
+<p><strong>vote:&#160;<span style=""color:rgb(51,51,51);font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;"">The Grand Pursuivant</span></strong></p>
+
+					
+					<br>
+					
+				
+                </div>"),
+            };
+
+            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+
+            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Single().Recipient == "The Grand Pursuivant");
         }
     }
 }
