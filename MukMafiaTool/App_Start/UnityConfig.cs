@@ -1,6 +1,7 @@
 using System;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
+using MukMafiaTool.Common;
 using MukMafiaTool.Database;
 
 namespace MukMafiaTool.App_Start

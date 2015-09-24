@@ -51,7 +51,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BsonValueConverters.cs" />
-    <Compile Include="IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MongoRepository.cs" />
   </ItemGroup>
@@ -62,6 +61,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{152292e7-fcd4-4a8d-a758-c3574cc324ca}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MukMafiaTool.Common\MukMafiaTool.Common.csproj">
+      <Project>{44622a9a-2a61-4a88-9aba-e689b18582c3}</Project>
+      <Name>MukMafiaTool.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

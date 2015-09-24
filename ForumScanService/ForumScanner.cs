@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text.RegularExpressions;
 using ForumScanService;
 using MukMafiaTool.Common;
 using MukMafiaTool.Database;
@@ -57,21 +58,47 @@ namespace MukMafiaTool.ForumScanService
                 var newPosts = latestPost == null ? scannedPosts : FindAllPostsAfter(scannedPosts, latestPost.ForumPostNumber);
                 _repo.EnsurePlayersInRepo(newPosts);
 
-                // Get all posts that have had stuff added to them since the last scan
-                foreach (var post in scannedPosts)
-                {
-                    var repoPost = _repo.FindSpecificPost(post.ForumPostNumber);
+                UpdateDays(scannedPosts);
 
-                    if (repoPost == null || repoPost.LastScanned - repoPost.DateTime < TimeSpan.FromMinutes(5))
-                    {
-                        _repo.UpsertPost(post);
-                        _repo.DeleteVotes(post.ForumPostNumber);
-                        UpsertVotes(post);
-                    }
-                }
+                UpdateVotes(scannedPosts);
 
                 currentPageNumber++;
                 pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);
+            }
+        }
+
+        private void UpdateDays(IList<ForumPost> scannedPosts)
+        {
+            foreach (var post in scannedPosts)
+            {
+                Regex startOfDayRegex = new Regex("\\[start of day");
+                Regex endOfDayRegex = new Regex("\\[end of day");
+
+                var currentDay = _repo.FindCurrentDay();
+
+                if (startOfDayRegex.IsMatch(post.Content.ToString()))
+                {
+
+                    var day = new Day
+                    {
+                        Number = currentDay.Number + 1,
+                        StartForumPostNumber = post.ForumPostNumber,
+                        EndForumPostNumber = string.Empty,
+                    };
+
+                    _repo.UpsertDay(day);
+                }
+                else if (endOfDayRegex.IsMatch(post.Content.ToString()))
+                {
+                    var day = new Day
+                    {
+                        Number = currentDay.Number,
+                        StartForumPostNumber = currentDay.StartForumPostNumber,
+                        EndForumPostNumber = post.ForumPostNumber,
+                    };
+
+                    _repo.UpsertDay(day);
+                }
             }
         }
 
@@ -94,6 +121,21 @@ namespace MukMafiaTool.ForumScanService
             var relevantPosts = FindAllPostsAfter(allPosts, startOfGameForumPostNumber);
 
             UpsertVotes(relevantPosts);
+        }
+
+        private void UpdateVotes(IList<ForumPost> scannedPosts)
+        {
+            foreach (var post in scannedPosts)
+            {
+                var repoPost = _repo.FindSpecificPost(post.ForumPostNumber);
+
+                if (repoPost == null || repoPost.LastScanned - repoPost.DateTime < TimeSpan.FromMinutes(5))
+                {
+                    _repo.UpsertPost(post);
+                    _repo.DeleteVotes(post.ForumPostNumber);
+                    UpsertVotes(post);
+                }
+            }
         }
 
         private void UpsertVotes(ForumPost relevantPost)

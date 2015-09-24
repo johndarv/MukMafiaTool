@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using ForumScanService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MukMafiaTool.Common;
 using MukMafiaTool.Model;
 
-namespace ForumScanServiceTests
+namespace CommonTests
 {
     [TestClass]
     public class VoteScannerTests

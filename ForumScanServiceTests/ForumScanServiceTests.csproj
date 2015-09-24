@@ -54,7 +54,6 @@
     <Compile Include="ForumScannerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensionsTests.cs" />
-    <Compile Include="VoteScannerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj">

@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using MukMafiaTool.Model;
 
-namespace MukMafiaTool.Database
+namespace MukMafiaTool.Common
 {
     public interface IRepository
     {
         IList<Day> FindAllDays();
+        Day FindCurrentDay();
+        void UpsertDay(Day day);
         IEnumerable<ForumPost> FindAllPosts(bool includeDayZeros = false);
         IList<ForumPost> FindAllPosts(string playerName);
         IList<ForumPost> FindAllPostsContaining(string search);
         ForumPost FindLatestPost();
         IEnumerable<Player> FindAllPlayers();
         IEnumerable<Vote> FindAllVotes();
-        Day FindCurrentDay();
         DateTime FindLastUpdatedDateTime();
         ForumPost FindSpecificPost(string forumPostNumber);
         void LogMessage(string message);

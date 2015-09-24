@@ -88,6 +88,10 @@
       <Project>{c7031144-b2c5-4c73-9541-67c520585934}</Project>
       <Name>Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MukMafiaTool.Common\MukMafiaTool.Common.csproj">
+      <Project>{44622a9a-2a61-4a88-9aba-e689b18582c3}</Project>
+      <Name>MukMafiaTool.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MukMafiaTool\MukMafiaTool.csproj">
       <Project>{96f7d281-7d63-402f-ad5d-cc7fb3365725}</Project>
       <Name>MukMafiaTool</Name>

@@ -24,11 +24,10 @@ namespace MukMafiaTool.Controllers
         public HttpResponseMessage RecalculateDays()
         {
             var posts = _repo.FindAllPosts(includeDayZeros: true);
-            var days = _repo.FindAllDays();
 
             foreach (var post in posts)
             {
-                post.Day = post.DetermineDay(days);
+                post.Day = post.DetermineDay(_repo);
                 _repo.UpsertPost(post);
             }
             

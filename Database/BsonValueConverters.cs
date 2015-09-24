@@ -35,6 +35,7 @@ namespace MukMafiaTool.Database
                 ForumPostNumber = doc["ForumPostNumber"].ToString(),
                 PostContentIndex = doc["PostContentIndex"].ToInt32(),
                 ManuallyEdited = doc["ManuallyEdited"] != null ? doc["ManuallyEdited"].ToBoolean() : false,
+                Day = doc["Day"].ToInt32(),
             };
         }
 

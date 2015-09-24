@@ -8,6 +8,7 @@ using System.Web;
 using MukMafiaTool.Model;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using MukMafiaTool.Common;
 
 namespace MukMafiaTool.Database
 {
@@ -17,7 +18,6 @@ namespace MukMafiaTool.Database
         private IMongoCollection<BsonDocument> _votes;
         private IMongoCollection<BsonDocument> _players;
         private IMongoCollection<BsonDocument> _metadata;
-        private IMongoCollection<BsonDocument> _exclusions;
         private IMongoCollection<BsonDocument> _days;
         private IMongoCollection<BsonDocument> _logs;
 
@@ -178,6 +178,20 @@ namespace MukMafiaTool.Database
             var days = FindAllDays();
             days = days.OrderBy(d => d.Number).ToList();
             return days.Last();
+        }
+
+        public void UpsertDay(Day day)
+        {
+            var newDoc = new BsonDocument
+                {
+                    { "_id", day.Number },
+                    { "StartForumPostNumber", day.StartForumPostNumber },
+                    { "EndForumPostNumber", day.EndForumPostNumber },
+                };
+
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", day.Number);
+
+            Upsert(_days, newDoc, filter);
         }
 
         // Note: This finds the *current* latest page accessed, not the one when the Repository object was instantiated.</remarks>

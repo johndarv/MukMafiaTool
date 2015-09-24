@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 using MukMafiaTool.Model;
-using MukMafiaTool.Common;
 
-namespace ForumScanService
+namespace MukMafiaTool.Common
 {
     public static class VoteScanner
     {
@@ -95,6 +95,8 @@ namespace ForumScanService
                             Recipient = DetermineRecipient(recipientSubString.Trim(), playerNamesGroups),
                             ForumPostNumber = post.ForumPostNumber,
                             PostContentIndex = index,
+                            ManuallyEdited = false,
+                            Day = post.Day,
                         };
 
                         votes.Add(newVote);
@@ -115,6 +117,8 @@ namespace ForumScanService
                 Recipient = string.Empty,
                 ForumPostNumber = post.ForumPostNumber,
                 PostContentIndex = index,
+                ManuallyEdited = false,
+                Day = post.Day,
             };
 
             votes.Add(newUnvote);

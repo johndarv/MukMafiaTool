@@ -9,6 +9,11 @@ namespace MukMafiaTool.Common
 {
     public static class ForumPostHelper
     {
+        public static int DetermineDay(this ForumPost post, IRepository repo)
+        {
+            return DetermineDay(post, repo.FindAllDays());
+        }
+
         public static int DetermineDay(this ForumPost post, IEnumerable<Day> days)
         {
             return DetermineDay(post.ForumPostNumber, days);
