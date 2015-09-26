@@ -30,5 +30,6 @@ namespace MukMafiaTool.Common
         void UpsertPlayer(Player player);
         void EnsurePlayersInRepo(IList<ForumPost> posts);
         void EnsurePlayersInRepo(IEnumerable<string> playerNames);
+        Day FindDay(int dayNumber);
     }
 }

@@ -116,10 +116,21 @@ namespace MukMafiaTool.Database
                     { "Day", post.Day },
                     { "PageNumber", post.PageNumber },
                     { "LastScanned", post.LastScanned.ToUniversalTime() },
+                    { "ManuallyEdited", post.ManuallyEdited },
                 };
 
-            var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", post.ForumPostNumber);
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Eq("ForumPostNumber", post.ForumPostNumber);
 
+            var existingPost = FindSpecificPost(post.ForumPostNumber);
+
+            // In the case where the post already exists in the database, and the post has just been rescanned
+            if (existingPost != null && post.ManuallyEdited == false)
+            {
+                // Then only upsert if it hasn't been previously edited
+                filter = filter & builder.Eq("ManuallyEdited", false);
+            }
+            
             Upsert(_posts, newDoc, filter);
         }
 
@@ -335,6 +346,20 @@ namespace MukMafiaTool.Database
             }
 
             return player.ToPlayer();
+        }
+
+        public Day FindDay(int dayNumber)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", dayNumber);
+
+            var doc = _days.Find(filter).FirstOrDefaultAsync().Result;
+
+            if (doc == null)
+            {
+                return null;
+            }
+
+            return doc.ToDay();
         }
 
         public void LogMessage(string message)

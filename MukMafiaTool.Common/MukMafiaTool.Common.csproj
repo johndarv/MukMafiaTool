@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DayScanner.cs" />
     <Compile Include="ForumPostHelper.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="MiscExtensions.cs" />

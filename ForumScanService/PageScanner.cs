@@ -39,7 +39,10 @@ namespace MukMafiaTool.ForumScanService
 
         private ForumPost ConvertElementToForumPost(IList<Day> days, HtmlNode postDiv)
         {
-            var newPost = new ForumPost();
+            var newPost = new ForumPost()
+            {
+                ManuallyEdited = false,
+            };
             
             // Find poster
             newPost.Poster = postDiv.SelectSingleNode(".//span[@itemprop='creator name']").InnerText;

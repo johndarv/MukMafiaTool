@@ -21,6 +21,7 @@ namespace MukMafiaTool.Database
                 Day = doc["Day"].ToInt32(),
                 PageNumber = doc["PageNumber"].ToInt32(),
                 LastScanned = doc["LastScanned"].ToUniversalTime(),
+                ManuallyEdited = doc["ManuallyEdited"].ToBoolean(),
             };
         }
 

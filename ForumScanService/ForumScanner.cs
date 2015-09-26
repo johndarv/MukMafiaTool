@@ -15,12 +15,14 @@ namespace MukMafiaTool.ForumScanService
         IRepository _repo;
         ForumAccessor _forumAccessor;
         TimeSpan _pollInterval;
+        DayScanner _dayScanner;
 
         public ForumScanner(IRepository repository)
         {
             _repo = repository;
             _forumAccessor = new ForumAccessor();
             _pollInterval = GetInterval();
+            _dayScanner = new DayScanner(_repo);
         }
 
         public void DoWholeUpdate()
@@ -58,47 +60,12 @@ namespace MukMafiaTool.ForumScanService
                 var newPosts = latestPost == null ? scannedPosts : FindAllPostsAfter(scannedPosts, latestPost.ForumPostNumber);
                 _repo.EnsurePlayersInRepo(newPosts);
 
-                UpdateDays(scannedPosts);
+                _dayScanner.UpdateDays(scannedPosts);
 
                 UpdateVotes(scannedPosts);
 
                 currentPageNumber++;
                 pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);
-            }
-        }
-
-        private void UpdateDays(IList<ForumPost> scannedPosts)
-        {
-            foreach (var post in scannedPosts)
-            {
-                Regex startOfDayRegex = new Regex("\\[start of day");
-                Regex endOfDayRegex = new Regex("\\[end of day");
-
-                var currentDay = _repo.FindCurrentDay();
-
-                if (startOfDayRegex.IsMatch(post.Content.ToString()))
-                {
-
-                    var day = new Day
-                    {
-                        Number = currentDay.Number + 1,
-                        StartForumPostNumber = post.ForumPostNumber,
-                        EndForumPostNumber = string.Empty,
-                    };
-
-                    _repo.UpsertDay(day);
-                }
-                else if (endOfDayRegex.IsMatch(post.Content.ToString()))
-                {
-                    var day = new Day
-                    {
-                        Number = currentDay.Number,
-                        StartForumPostNumber = currentDay.StartForumPostNumber,
-                        EndForumPostNumber = post.ForumPostNumber,
-                    };
-
-                    _repo.UpsertDay(day);
-                }
             }
         }
 

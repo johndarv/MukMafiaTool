@@ -13,5 +13,6 @@ namespace MukMafiaTool.Model
         public int Day { get; set; }
         public int PageNumber { get; set; }
         public DateTime LastScanned { get; set; }
+        public bool ManuallyEdited { get; set; }
     }
 }
