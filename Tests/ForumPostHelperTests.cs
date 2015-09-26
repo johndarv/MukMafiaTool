@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Common;
 using MukMafiaTool.Model;
 
-namespace CommonTests
+namespace Tests
 {
     [TestClass]
     public class ForumPostHelperTests

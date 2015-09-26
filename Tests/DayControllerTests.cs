@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Controllers;
 using MukMafiaTool.Database;
 
-namespace MukMafiaToolTests
+namespace Tests
 {
     [TestClass]
     public class DayControllerTests

@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.ForumScanService;
 using MukMafiaTool.Common;
 
-namespace MukMafiaToolTests
+namespace Tests
 {
     [TestClass]
     public class StringExtensionsTests
