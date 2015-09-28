@@ -41,7 +41,7 @@ namespace Tests
 
             var postersNotInRepo = posters.Where(p => !playerNames.Contains(p));
 
-            repo.EnsurePlayersInRepo(postersNotInRepo);
+            repo.EnsurePlayersInRepo(postersNotInRepo, "1");
         }
     }
 }

@@ -28,8 +28,7 @@ namespace MukMafiaTool.Common
         void DeleteVotes(string forumPostNumber);
         Player FindPlayer(string name);
         void UpsertPlayer(Player player);
-        void EnsurePlayersInRepo(IList<ForumPost> posts);
-        void EnsurePlayersInRepo(IEnumerable<string> playerNames);
+        void EnsurePlayersInRepo(IEnumerable<string> playerNames, string defaultForumPostNumber);
         Day FindDay(int dayNumber);
     }
 }

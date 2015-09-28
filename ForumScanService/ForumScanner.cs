@@ -12,10 +12,11 @@ namespace MukMafiaTool.ForumScanService
 {
     public class ForumScanner : IForumScanner
     {
-        IRepository _repo;
-        ForumAccessor _forumAccessor;
-        TimeSpan _pollInterval;
-        DayScanner _dayScanner;
+        private IRepository _repo;
+        private ForumAccessor _forumAccessor;
+        private TimeSpan _pollInterval;
+        private DayScanner _dayScanner;
+        private string _firstForumPostNumber;
 
         public ForumScanner(IRepository repository)
         {
@@ -23,6 +24,7 @@ namespace MukMafiaTool.ForumScanService
             _forumAccessor = new ForumAccessor();
             _pollInterval = GetInterval();
             _dayScanner = new DayScanner(_repo);
+            _firstForumPostNumber = ConfigurationManager.AppSettings["FirstForumPostNumber"] ?? "1";
         }
 
         public void DoWholeUpdate()
@@ -58,7 +60,7 @@ namespace MukMafiaTool.ForumScanService
 
                 // Ensure any new players that have posted new posts are in the repository
                 var newPosts = latestPost == null ? scannedPosts : FindAllPostsAfter(scannedPosts, latestPost.ForumPostNumber);
-                _repo.EnsurePlayersInRepo(newPosts);
+                _repo.EnsurePlayersInRepo(newPosts.Select(p => p.Poster), _firstForumPostNumber);
 
                 _dayScanner.UpdateDays(scannedPosts);
 

@@ -234,41 +234,14 @@ namespace MukMafiaTool.Database
             };
 
             var builder = Builders<BsonDocument>.Filter;
-            var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber) & builder.Eq("PostContentIndex", vote.PostContentIndex);
+            var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber)
+                & builder.Eq("PostContentIndex", vote.PostContentIndex)
+                & builder.Eq("ManuallyEdited", false);
 
             Upsert(_votes, newDoc, filter);
         }
 
-        public void EnsurePlayersInRepo(IList<ForumPost> posts)
-        {
-            foreach (var post in posts)
-            {
-                if (FindPlayer(post.Poster) == null)
-                {
-                    var recruitmentDoc = new BsonDocument
-                    {
-                        { "FactionName", "Town" },
-                        { "Allegiance", Allegiance.Town.ToString() },
-                        { "ForumPostNumber", "10515623" },
-                    };
-
-                    var playerDoc = new BsonDocument
-                    {
-                        { "Name", post.Poster },
-                        { "Recruitments", new BsonArray { recruitmentDoc } },
-                        { "Participating", true },
-                        { "Fatality", string.Empty },
-                        { "Character", string.Empty },
-                        { "Notes", string.Empty },
-                        { "Aliases", new BsonArray() }
-                    };
-
-                    _players.InsertOneAsync(playerDoc).Wait();
-                }
-            }
-        }
-
-        public void EnsurePlayersInRepo(IEnumerable<string> playerNames)
+        public void EnsurePlayersInRepo(IEnumerable<string> playerNames, string firstForumPostNumber)
         {
             foreach (var playerName in playerNames)
             {
@@ -278,7 +251,7 @@ namespace MukMafiaTool.Database
                     {
                         { "FactionName", "Town" },
                         { "Allegiance", Allegiance.Town.ToString() },
-                        { "ForumPostNumber", "10515623" },
+                        { "ForumPostNumber", firstForumPostNumber },
                     };
 
                     var playerDoc = new BsonDocument
@@ -370,18 +343,12 @@ namespace MukMafiaTool.Database
             _logs.InsertOneAsync(doc).Wait();
         }
 
-        private void Upsert(IMongoCollection<BsonDocument> collection, BsonDocument newDoc, FilterDefinition<BsonDocument> filter)
+        private static void Upsert(IMongoCollection<BsonDocument> collection, BsonDocument newDoc, FilterDefinition<BsonDocument> filter)
         {
             var options = new UpdateOptions();
             options.IsUpsert = true;
 
             collection.ReplaceOneAsync(filter, newDoc, options).Wait();
-        }
-
-        private void ProcessUnvote(Vote vote)
-        {
-            var filter = Builders<BsonDocument>.Filter.Eq("Voter", vote.Voter);
-            _votes.DeleteManyAsync(filter).Wait();
         }
     }
 }
