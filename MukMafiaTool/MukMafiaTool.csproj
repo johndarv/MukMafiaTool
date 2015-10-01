@@ -165,6 +165,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Properties\PublishProfiles\MafiascumLV.pubxml" />
     <None Include="Properties\PublishProfiles\mukmafiascumhelper.pubxml" />
+    <None Include="Properties\PublishProfiles\mukmafiascumwebsite.pubxml" />
     <None Include="Properties\PublishProfiles\mukmafiatool.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

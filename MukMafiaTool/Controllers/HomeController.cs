@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -72,7 +73,12 @@ namespace MukMafiaTool.Controllers
             var homePagePlayers = players.Select(player => ToHomePagePlayer(player, postGroups));
 
             // filter out players with 0 posts
-            homePagePlayers = homePagePlayers.Where(p => p.PostCount > 0);
+            var zeroPosterFilter = ConfigurationManager.AppSettings["FilterZeroPosters"];
+            
+            if (!string.IsNullOrEmpty(zeroPosterFilter) && string.Equals("true", zeroPosterFilter, StringComparison.OrdinalIgnoreCase))
+            {
+                homePagePlayers = homePagePlayers.Where(p => p.PostCount > 0);
+            }
 
             return homePagePlayers;
         }

@@ -15,5 +15,6 @@ namespace MukMafiaTool.Models.ViewModels
         public VoteSituation VoteSituation { get; set; }
         public DateTime LastUpdated { get; set; }
         public IList<Day> Days { get; set; }
+        public Exception Error { get; set; }
     }
 }

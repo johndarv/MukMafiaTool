@@ -74,6 +74,8 @@ namespace MukMafiaTool.Common
                             Recipient = DetermineRecipient(recipientSubString.Trim(), playerNamesGroups),
                             ForumPostNumber = post.ForumPostNumber,
                             PostContentIndex = index,
+                            ManuallyEdited = false,
+                            Day = post.Day,
                         };
 
                         votes.Add(newVote);

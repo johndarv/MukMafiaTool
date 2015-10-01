@@ -231,7 +231,7 @@ namespace MukMafiaTool.Database
                 { "ForumPostNumber", vote.ForumPostNumber },
                 { "PostContentIndex", vote.PostContentIndex },
                 { "ManuallyEdited", vote.ManuallyEdited },
-            };
+                { "Day", vote.Day },            };
 
             var builder = Builders<BsonDocument>.Filter;
             var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber)
