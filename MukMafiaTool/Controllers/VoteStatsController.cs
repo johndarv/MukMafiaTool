@@ -21,7 +21,7 @@ namespace MukMafiaTool.Controllers
         }
 
         // GET: VoteStats
-        [Authorize(Roles = "Admin")]
+        [Authorize()]
         public ActionResult Index()
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();

@@ -12,13 +12,14 @@ using MukMafiaTool.Common;
 
 namespace MukMafiaTool.Database
 {
-    public class MongoRepository : IRepository
+    public class MongoRepository : IRepository, IDisposable
     {
         private IMongoCollection<BsonDocument> _posts;
         private IMongoCollection<BsonDocument> _votes;
         private IMongoCollection<BsonDocument> _players;
         private IMongoCollection<BsonDocument> _metadata;
         private IMongoCollection<BsonDocument> _days;
+        private IMongoCollection<BsonDocument> _users;
         private IMongoCollection<BsonDocument> _logs;
 
         public MongoRepository()
@@ -34,7 +35,12 @@ namespace MukMafiaTool.Database
             _players = database.GetCollection<BsonDocument>("Players");
             _metadata = database.GetCollection<BsonDocument>("Metadata");
             _days = database.GetCollection<BsonDocument>("Days");
+            _users = database.GetCollection<BsonDocument>("Users");
             _logs = database.GetCollection<BsonDocument>("Logs");
+        }
+
+        public void Dispose()
+        {
         }
 
         public IEnumerable<ForumPost> FindAllPosts(bool includeDayZeros = false)
@@ -333,6 +339,33 @@ namespace MukMafiaTool.Database
             }
 
             return doc.ToDay();
+        }
+
+        public void UpsertUser(User user)
+        {
+            var newDoc = new BsonDocument
+            {
+                { "UserName", user.UserName },
+                { "Password", user.Password },
+            };
+
+            var filter = Builders<BsonDocument>.Filter.Eq("UserName", user.UserName);
+
+            Upsert(_users, newDoc, filter);
+        }
+
+        public User FindUser(string userName)
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("UserName", userName);
+
+            var doc = _users.Find(filter).FirstOrDefaultAsync().Result;
+
+            if (doc == null)
+            {
+                return null;
+            }
+
+            return doc.ToUser();
         }
 
         public void LogMessage(string message)

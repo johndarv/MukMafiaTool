@@ -6,6 +6,11 @@
     ViewBag.Title = "RLLMUK Mafiascum Helper";
 }
 
+@if(User.IsInRole("Admin"))
+{
+    <p>You are logged in as an admin!</p>
+}
+
 <br />
 Keyword Search:
     @using(Html.BeginForm("index", "post", FormMethod.Get))

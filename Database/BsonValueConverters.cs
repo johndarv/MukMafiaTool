@@ -94,5 +94,14 @@ namespace MukMafiaTool.Database
                 ForumPostNumber = doc["ForumPostNumber"].ToString(),
             };
         }
+
+        public static User ToUser(this BsonValue doc)
+        {
+            return new User
+            {
+                UserName = doc["UserName"].ToString(),
+                Password = doc["Password"].ToString(),
+            };
+        }
     }
 }
