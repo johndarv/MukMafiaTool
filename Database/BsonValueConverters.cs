@@ -97,10 +97,18 @@ namespace MukMafiaTool.Database
 
         public static User ToUser(this BsonValue doc)
         {
+            IList<string> roles = new List<string>();
+
+            foreach (var role in doc["Roles"].AsBsonArray)
+            {
+                roles.Add(role.AsString);
+            }
+
             return new User
             {
                 UserName = doc["UserName"].ToString(),
                 Password = doc["Password"].ToString(),
+                Roles = roles.ToArray(),
             };
         }
     }

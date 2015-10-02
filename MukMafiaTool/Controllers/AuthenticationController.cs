@@ -58,6 +58,12 @@ namespace MukMafiaTool.Controllers
             return View("Show", userName);
         }
 
+        public ActionResult Logout()
+        {
+            Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("index", "home");
+        }
+
         private bool Authenticate(string userName, string password)
         {
             if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
@@ -65,13 +71,14 @@ namespace MukMafiaTool.Controllers
                 return false;
             }
 
-            return true;
-        }
+            var user = _repo.FindUser(userName);
 
-        public ActionResult Logout()
-        {
-            Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("index", "home");
+            if (user != null)
+            {
+                return string.Equals(user.Password, password, StringComparison.Ordinal);
+            }
+            
+            return false;
         }
     }
 }
