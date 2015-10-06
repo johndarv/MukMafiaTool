@@ -469,5 +469,53 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
             Assert.IsTrue(votes.Count == 1);
             Assert.IsTrue(votes.Single().Recipient == "The Grand Pursuivant");
         }
+
+        [TestMethod]
+        public void NamesClashTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Mr. Blonde",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"<div class=""post_body"">
+                    
+					<p class=""citation"">Mr. Cobalt said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10594607""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote"" data-author=""Mr. Cobalt"" data-cid=""10594607"" data-time=""1443993646""><br>
+<div><br>
+<p>Bit of a mixed night obviously but having a lead on mafia is useful. Based on looking through his posts here are some interesting ones:</p>
+</div>
+</blockquote>
+<p>&#160;</p>
+<p>That's four players, I think (Charcoal, Blue, Maroon and Teal) you mention there as associated with Ochre. With four mafia and 16 players remaining, that's spreading your targeting quite wide.</p>
+<p>I find it interesting that&#160;Mr. Red reads the same one-sided interchange between Ochre and Maroon and comes to the exact opposite conclusion!</p>
+<p>&#160;</p>
+<p>Then there's Viridian and his Teal fetish. Viridian has targeted the same player two days running on very flimsy reasoning.</p>
+<p>&#160;</p>
+<p>Given that if he was the FBI agent and Teal the serial killer, he'd just immediately reveal, and we had two corpses overnight (so the roleblocker can't have any information), I don't understand the logic.</p>
+<p>&#160;</p>
+<p><strong class='bbc'>vote: Mr. Viridian</strong></p>
+<p>&#160;</p>
+<p>(I seem to have some internet explorer based cut and paste problem which is stopping me quoting easily.)</p>
+					
+					<br>
+					
+				
+                </div>"),
+            };
+
+            var playerNames = new string[][]
+            {
+                new string[] { "Mr. Violet", "Mr Violet", "Violet", "Mr.Violet", "MrViolet" },
+                new string[] { "Mr. Viridian", "Mr.Viridian", "Mr Viridian", "Viridian", "MrViridian" },
+            };
+
+            var votes = VoteScanner.ScanForVotes(post, playerNames);
+
+            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Single().Recipient == "Mr. Viridian");
+        }
     }
 }
