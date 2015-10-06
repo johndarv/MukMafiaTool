@@ -9,6 +9,8 @@ namespace MukMafiaTool.Common
 {
     public static class VoteScanner
     {
+        private const int MaxLengthOfRecipientSubString = 8;
+
         // I apolgise to anyone ever attempting to read this method
         public static IList<Vote> ScanForVotes(ForumPost post, IEnumerable<IEnumerable<string>> playerNamesGroups)
         {
@@ -61,7 +63,7 @@ namespace MukMafiaTool.Common
                     }
 
                     recipientSubString = recipientSubString.Trim();
-                    recipientSubString = recipientSubString.Substring(0, Math.Min(6, recipientSubString.Length));
+                    recipientSubString = recipientSubString.Substring(0, Math.Min(MaxLengthOfRecipientSubString, recipientSubString.Length));
 
                     // If somebody writes vote: name, don't count it
                     if (!string.Equals(recipientSubString.Substring(0, Math.Min(4, recipientSubString.Length)), "name".Substring(0, Math.Min(4, recipientSubString.Length)), StringComparison.OrdinalIgnoreCase))
@@ -87,7 +89,7 @@ namespace MukMafiaTool.Common
                     if (content.IsInBold(index))
                     {
                         // and it's in bold, then we assume it's a vote and what follows directly after is the recipient
-                        var recipientSubString = content.Substring(index + 5, Math.Min(6, content.Length - (index + 5)));
+                        var recipientSubString = content.Substring(index + 5, Math.Min(MaxLengthOfRecipientSubString, content.Length - (index + 5)));
 
                         var newVote = new Vote
                         {
