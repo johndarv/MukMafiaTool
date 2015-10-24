@@ -35,9 +35,9 @@ Last Updated: @Model.LastUpdated.ToLocalTime().ToString("dddd dd MMMM - HH:mm") 
 Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here try posting it again using "vote: name"):
 
 <ul>
-    @foreach (var voteGroup in Model.VoteSituation.CurrentVotes.GroupBy(v => v.Recipient))
+    @foreach (var voteGroup in Model.VoteSituation.CurrentVotes.GroupBy(v => v.Recipient).OrderByDescending(g => g.Count()).ThenBy(g => g.First().ForumPostNumber))
     {
-        var listOfVoters = string.Join(", ", voteGroup.OrderBy(g => g.ForumPostNumber).Select(g => "<a href=\"http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid=" + g.ForumPostNumber + "\">" + g.Voter + "</a>"));
+        var listOfVoters = string.Join(", ", voteGroup.OrderBy(g => g.ForumPostNumber).Select(g => "<a href=\"http://www.officeoffline.co.uk/index.php?app=forums&module=forums&section=findpost&pid=" + g.ForumPostNumber + "\">" + g.Voter + "</a>"));
 
         <li><strong>@voteGroup.Key (@voteGroup.Count())</strong> - @Html.Raw(listOfVoters) </li>
     }
@@ -78,7 +78,7 @@ Days:
 <ul>
     @foreach(var day in @Model.Days.OrderBy(d => d.Number))
     {
-        var FirstPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
+        var FirstPostLink = string.Format("http://www.officeoffline.co.uk/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
         
         <li>Day @day.Number - <a href="@FirstPostLink">First Post</a></li>
     }

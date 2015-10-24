@@ -20,7 +20,7 @@ namespace MukMafiaTool.Controllers
         }
 
         // GET: Day
-        [Authorize()]
+        [Authorize(Roles = "Admin")]
         public HttpResponseMessage RecalculateDays()
         {
             var posts = _repo.FindAllPosts(includeDayZeros: true);

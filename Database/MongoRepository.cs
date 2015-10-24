@@ -343,10 +343,18 @@ namespace MukMafiaTool.Database
 
         public void UpsertUser(User user)
         {
+            BsonArray roles = new BsonArray();
+            
+            foreach (var role in user.Roles)
+            {
+                roles.Add(new BsonDocument { { "Role", role } });
+            }
+
             var newDoc = new BsonDocument
             {
-                { "UserName", user.UserName },
-                { "Password", user.Password },
+                { "UserName", user.UserName.ToString() },
+                { "Password", user.Password.ToString() },
+                { "Roles", roles },
             };
 
             var filter = Builders<BsonDocument>.Filter.Eq("UserName", user.UserName);

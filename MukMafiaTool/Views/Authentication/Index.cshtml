@@ -1,4 +1,5 @@
-﻿
+﻿@model string
+
 @{
     Layout = null;
 }
@@ -12,6 +13,12 @@
 </head>
 <body>
     <div>
+        @if (string.IsNullOrEmpty(Model))
+        {
+            <p>@Model</p>
+        }
+
+
         @using (Html.BeginForm("login", "authentication", FormMethod.Post))
         {
             @Html.TextBox("userName")
