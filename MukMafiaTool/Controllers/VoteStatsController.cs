@@ -63,6 +63,7 @@ namespace MukMafiaTool.Controllers
             {
                 var stats = new IndividualVoteStatsViewModel();
                 stats.Name = player.Name;
+                stats.FactionName = player.Recruitments.Last().FactionName;
 
                 var individualVotes = votes.Where(v => string.Equals(v.Voter, player.Name));
                 stats.VotesCast = individualVotes.Count();
