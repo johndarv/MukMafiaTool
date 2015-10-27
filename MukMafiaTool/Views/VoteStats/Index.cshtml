@@ -24,12 +24,12 @@ Totals:
         <td>@Model.PercentageOfVotesOntoTown.ToString("P")</td>
     </tr>
     <tr>
-        <td>Votes onto Mafia</td>
-        <td>@Model.PercentageOfVotesOntoMafia.ToString("P")</td>
-    </tr>
-    <tr>
         <td>Votes onto all Non-Town factions</td>
         <td>@Model.PercentageOfVotesOntoNonTown.ToString("P")</td>
+    </tr>
+    <tr>
+        <td>Votes onto Mafia</td>
+        <td>@Model.PercentageOfVotesOntoMafia.ToString("P")</td>
     </tr>
 </table>
 <br />
@@ -42,9 +42,10 @@ Individual Stats:
         <td>Number Cast</td>
         <td>Votes Attracted</td>
         <td>Votes onto Mafia</td>
+        <td>Votes onto Non-Town</td>
         <td>Votes onto Town</td>
         <td>Votes onto own Allegiance</td>
-        <td>Votes onto own Faction</td>
+        <!--<td>Votes onto own Faction</td>-->
     </tr>
 
     @foreach (var individual in Model.IndividualVoteStats.OrderByDescending(s => s.VotesCast))
@@ -54,9 +55,10 @@ Individual Stats:
             <td>@individual.VotesCast</td>
             <td>@individual.TimesVotedFor</td>
             <td>@individual.PercentageOfVotesOntoMafia.ToString("P")</td>
+            <td>@individual.PercentageOfVotesOntoNonTown.ToString("P")</td>
             <td>@individual.PercentageOfVotesOntoTown.ToString("P")</td>
             <td>@individual.PercentageOfVotesOntoOwnAllegiance.ToString("P")</td>
-            <td>@individual.PercentageOfVotesOntoOwnFaction.ToString("P")</td>
+            <!--<td>@individual.PercentageOfVotesOntoOwnFaction.ToString("P")</td>-->
         </tr>
     }
 </table>

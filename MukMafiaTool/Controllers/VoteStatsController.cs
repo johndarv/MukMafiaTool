@@ -68,6 +68,9 @@ namespace MukMafiaTool.Controllers
                 stats.PercentageOfVotesOntoMafia =
                     VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Mafia, allPlayers);
 
+                stats.PercentageOfVotesOntoNonTown =
+                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance != Allegiance.Town, allPlayers);
+
                 stats.PercentageOfVotesOntoTown =
                     VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Town, allPlayers);
 

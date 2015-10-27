@@ -10,6 +10,7 @@ namespace MukMafiaTool.Models.ViewModels
         public string Name { get; set; }
         public int VotesCast { get; set; }
         public double PercentageOfVotesOntoTown { get; set; }
+        public double PercentageOfVotesOntoNonTown { get; set; }
         public double PercentageOfVotesOntoMafia { get; set; }
         public double PercentageOfVotesOntoOther { get; set; }
         public double PercentageOfVotesOntoOwnAllegiance { get; set; }
