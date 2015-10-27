@@ -24,7 +24,9 @@ namespace MukMafiaTool.Models.ViewModels
         public double PercentageOfVotesOntoOwnAllegiance { get; set; }
 
         public double PercentageOfVotesOntoOwnFaction { get; set; }
-        
+
+        public string Character { get; internal set; }
+
         public int TimesVotedFor { get; set; }
     }
 }
