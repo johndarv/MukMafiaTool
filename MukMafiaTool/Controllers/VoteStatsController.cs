@@ -29,7 +29,9 @@ namespace MukMafiaTool.Controllers
             var allVotes = _repo.FindAllVotes();
             var allPlayers = _repo.FindAllPlayers();
 
-            var votes = allVotes.Where(v => !v.IsUnvote);
+            var meaningfulVotes = allVotes.Where(v => !v.IsUnvote);
+            var meaningfulVoteGroups = meaningfulVotes.GroupBy(v => new { v.Voter, v.Recipient, v.Day });
+            var votes = meaningfulVoteGroups.Select(g => g.First());
 
             CalculateTotalStats(viewModel, votes, allPlayers);
 
@@ -61,12 +63,16 @@ namespace MukMafiaTool.Controllers
             {
                 var stats = new IndividualVoteStatsViewModel();
                 stats.Name = player.Name;
+                stats.FactionName = player.Recruitments.Last().FactionName;
 
                 var individualVotes = votes.Where(v => string.Equals(v.Voter, player.Name));
                 stats.VotesCast = individualVotes.Count();
 
                 stats.PercentageOfVotesOntoMafia =
                     VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Mafia, allPlayers);
+
+                stats.PercentageOfVotesOntoNonTown =
+                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance != Allegiance.Town, allPlayers);
 
                 stats.PercentageOfVotesOntoTown =
                     VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Town, allPlayers);
