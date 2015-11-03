@@ -7,27 +7,45 @@ using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Common;
 using MukMafiaTool.Model;
+using Moq;
 
 namespace Tests
 {
     [TestClass]
     public class VoteScannerTests
     {
-        private string[][] _playerNames;
+        private VoteScanner _voteScanner;
 
         public VoteScannerTests()
         {
-            _playerNames = new string[][]
+            var players = new Player[]
             {
-                new string[] { "John0" },
-                new string[] { "Xevious" },
-                new string[] { "snowbind" },
-                new string[] { "GMass" },
-                new string[] { "Liamness" },
-                new string[] { "spork" },
-                new string[] { "Don Wiskerando" },
-                new string[] { "The Grand Pursuivant" },
+                new Player { Name = "John0", Participating = true, Aliases = new string[] { "John" } },
+                new Player { Name = "Xevious", Participating = true, Aliases = new string[0] },
+                new Player { Name = "snowbind", Participating = true, Aliases = new string[0] },
+                new Player { Name = "GMass", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Liamness", Participating = true, Aliases = new string[0] },
+                new Player { Name = "spork", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Alask", Participating = true, Aliases = new string[0] },
+                new Player { Name = "PaulM", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Danster", Participating = true, Aliases = new string[0] },
+                new Player { Name = "gospvg", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Strategos", Participating = true, Aliases = new string[0] },
+                new Player { Name = "bennette98", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Don Wiskerando", Participating = true, Aliases = new string[0] },
+                new Player { Name = "The Grand Pursuivant", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Mr. Blonde", Participating = true, Aliases = new string[0] },
+                new Player { Name = "Mr. Violet", Participating = true, Aliases =  new string[] { "Mr Violet", "Violet", "Mr.Violet", "MrViolet" } },
+                new Player { Name = "Mr. Viridian", Participating = true, Aliases = new string[] { "Mr.Viridian", "Mr Viridian", "Viridian", "MrViridian" } },
+                new Player { Name = "Moderator", Participating = false, Aliases = new string[0] },
+                new Player { Name = "Player With Aliases", Participating = true, Aliases = new string[] { "PlayerWithAliases", "PWA" } },
             };
+
+            var mockRepo = new Mock<IRepository>();
+            mockRepo.Setup(m => m.FindAllPlayers())
+                .Returns(players);
+
+            _voteScanner = new VoteScanner(mockRepo.Object);
         }
 
         [TestMethod]
@@ -51,9 +69,9 @@ namespace Tests
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Count() == 2);
         }
 
         [TestMethod]
@@ -90,9 +108,9 @@ namespace Tests
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Count() == 2);
         }
 
         [TestMethod]
@@ -119,9 +137,9 @@ namespace Tests
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Count() == 2);
         }
 
         [TestMethod]
@@ -153,9 +171,9 @@ What?!
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Count() == 1);
         }
 
         [TestMethod]
@@ -180,9 +198,9 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 0);
+            Assert.IsTrue(votes.Count() == 0);
         }
 
         [TestMethod]
@@ -207,9 +225,9 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Count() == 2);
         }
 
         [TestMethod]
@@ -233,9 +251,9 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Count() == 2);
         }
 
         [TestMethod]
@@ -267,9 +285,9 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 0);
+            Assert.IsTrue(votes.Count() == 0);
         }
 
         [TestMethod]
@@ -300,9 +318,9 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Count() == 1);
         }
 
         [TestMethod]
@@ -328,9 +346,9 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.First().IsUnvote == true);
         }
 
@@ -385,9 +403,9 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 				</div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.First().IsUnvote == false);
             Assert.IsTrue(votes.First().Recipient == "Don Wiskerando");
         }
@@ -426,15 +444,9 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 </div>"),
             };
 
-            var playerNames = new string[][]
-            {
-                new string[] { "John0", "John" },
-                new string[] { "Xevious" },
-            };
+            var votes = _voteScanner.ScanForVotes(post);
 
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
-
-            Assert.IsTrue(votes.Count == 2);
+            Assert.IsTrue(votes.Count() == 2);
             Assert.IsTrue(votes.Last().Recipient == "John0");
         }
 
@@ -464,9 +476,9 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, _playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 1);
+            Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.Single().Recipient == "The Grand Pursuivant");
         }
 
@@ -506,16 +518,37 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 </div>"),
             };
 
-            var playerNames = new string[][]
+            var votes = _voteScanner.ScanForVotes(post);
+
+            Assert.IsTrue(votes.Count() == 1);
+            Assert.IsTrue(votes.Single().Recipient == "Mr. Viridian");
+        }
+
+        [TestMethod]
+        public void NotParticipatingTest()
+        {
+            ForumPost post = new ForumPost
             {
-                new string[] { "Mr. Violet", "Mr Violet", "Violet", "Mr.Violet", "MrViolet" },
-                new string[] { "Mr. Viridian", "Mr.Viridian", "Mr Viridian", "Viridian", "MrViridian" },
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Moderator",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"<div class=""post_body"">
+                    
+					<p class=""citation"">John0, on 17 Aug 2015 - 2:33 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10526689""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""John0"" data-cid=""10526689"" data-time=""1439818425""><p>Surely we have to lynch snowbind now.</p></blockquote><br><p>I missed those nuances. As much as the lack of movement on sith for his play style frustrates me, I was prepared to vote snowbind for another daft joke (particularly after dino appeared to learn his lesson over the I'M WIGGUM thing), but it's not, is it? He's inadvertently let slip. If he swings today and turns out to be one of Tony's lot, we have a good lead on day 2.<br>&nbsp;</p><p><strong class=""bbc"">unvote: sith</strong></p><p><strong class=""bbc"">vote: snowbind</strong><br>&nbsp;</p><p class=""citation"">Jolly, on 17 Aug 2015 - 1:04 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10526541""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""Jolly"" data-cid=""10526541"" data-time=""1439813084""><p>Complete turnaround on what he thinks about Gos when the general town feeling is that his roleclaim is genuine.&nbsp; Annoyingly help out by TehStu at this point.</p></blockquote><p>I want to clarify this, though. We didn't have the best track record in the last game for mafia lynches, so cherry picking a post of snowbind's where he's talking about gos prior to the reveal isn't nearly as helpful as post-reveal. It wasn't the smoking ORLY gun it was purported to be. Everything else you've pointed out, though? On the money.</p>
+					
+					<br>
+					
+				
+                </div>"),
             };
 
-            var votes = VoteScanner.ScanForVotes(post, playerNames);
+            var votes = _voteScanner.ScanForVotes(post);
 
-            Assert.IsTrue(votes.Count == 1);
-            Assert.IsTrue(votes.Single().Recipient == "Mr. Viridian");
+            Assert.AreEqual(1, votes.Count());
+            Assert.AreEqual(true, votes.Single().IsUnvote);
         }
     }
 }

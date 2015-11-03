@@ -16,6 +16,7 @@ namespace MukMafiaTool.ForumScanService
         private ForumAccessor _forumAccessor;
         private TimeSpan _pollInterval;
         private DayScanner _dayScanner;
+        private VoteScanner _voteScanner;
         private string _firstForumPostNumber;
 
         public ForumScanner(IRepository repository)
@@ -24,6 +25,7 @@ namespace MukMafiaTool.ForumScanService
             _forumAccessor = new ForumAccessor();
             _pollInterval = GetInterval();
             _dayScanner = new DayScanner(_repo);
+            _voteScanner = new VoteScanner(_repo);
             _firstForumPostNumber = ConfigurationManager.AppSettings["FirstForumPostNumber"] ?? "1";
         }
 
@@ -114,12 +116,9 @@ namespace MukMafiaTool.ForumScanService
 
         private void UpsertVotes(IList<ForumPost> relevantPosts)
         {
-            var players = _repo.FindAllPlayers();
-            var playerNameGroups = players.Select(p => (new string[] { p.Name }).Concat(p.Aliases));
-
             foreach (var post in relevantPosts)
             {
-                foreach (var vote in VoteScanner.ScanForVotes(post, playerNameGroups))
+                foreach (var vote in _voteScanner.ScanForVotes(post))
                 {
                     _repo.UpsertVote(vote);
                 }

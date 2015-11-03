@@ -13,10 +13,12 @@ namespace MukMafiaTool.Controllers
     public class VoteController : Controller
     {
         private IRepository _repo;
+        private VoteScanner _voteScanner;
 
         public VoteController(IRepository repo)
         {
             _repo = repo;
+            _voteScanner = new VoteScanner(_repo);
         }
 
         // GET: Vote
@@ -24,13 +26,10 @@ namespace MukMafiaTool.Controllers
         public HttpResponseMessage ReDetermineVotes()
         {
             _repo.DeleteAllVotes();
-
-            var players = _repo.FindAllPlayers();
-            var playerNameGroups = players.Select(p => (new string[] { p.Name }).Concat(p.Aliases));
-
+            
             foreach (var post in _repo.FindAllPosts())
             {
-                foreach (var vote in VoteScanner.ScanForVotes(post, playerNameGroups))
+                foreach (var vote in _voteScanner.ScanForVotes(post))
                 {
                     _repo.UpsertVote(vote);
                 }

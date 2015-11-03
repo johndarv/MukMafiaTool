@@ -7,12 +7,23 @@ using MukMafiaTool.Model;
 
 namespace MukMafiaTool.Common
 {
-    public static class VoteScanner
+    public class VoteScanner
     {
         private const int MaxLengthOfRecipientSubString = 8;
 
+        private IRepository _repo;
+        private IEnumerable<Player> _players;
+        private IEnumerable<IEnumerable<string>> _playerNameGroups;
+
+        public VoteScanner(IRepository repo)
+        {
+            _repo = repo;
+            _players = _repo.FindAllPlayers();
+            _playerNameGroups = _players.Select(p => (new string[] { p.Name }).Concat(p.Aliases));
+        }
+
         // I apolgise to anyone ever attempting to read this method
-        public static IList<Vote> ScanForVotes(ForumPost post, IEnumerable<IEnumerable<string>> playerNamesGroups)
+        public IEnumerable<Vote> ScanForVotes(ForumPost post)
         {
             var votes = new List<Vote>();
 
@@ -35,12 +46,12 @@ namespace MukMafiaTool.Common
                     if (content.IsInBold(index))
                     {
                         // And it is in bold, then:
-                        AddUnvote(post, votes, index);
+                        votes.Add(CreateUnvote(post, index));
                     }
                     else if (index >= 6 && string.Equals(content.Substring(index - 6, 6), "<br>un"))
                     {
                         // or if the unvote is clearly on a new line, then:
-                        AddUnvote(post, votes, index);
+                        votes.Add(CreateUnvote(post, index));
                     }
                 }
                 else if (((index + 4) <= content.Length && content[index + 4] == ':') ||
@@ -68,19 +79,12 @@ namespace MukMafiaTool.Common
                     // If somebody writes vote: name, don't count it
                     if (!string.Equals(recipientSubString.Substring(0, Math.Min(4, recipientSubString.Length)), "name".Substring(0, Math.Min(4, recipientSubString.Length)), StringComparison.OrdinalIgnoreCase))
                     {
-                        var newVote = new Vote
-                        {
-                            Voter = post.Poster,
-                            DateTime = post.DateTime,
-                            IsUnvote = false,
-                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNamesGroups),
-                            ForumPostNumber = post.ForumPostNumber,
-                            PostContentIndex = index,
-                            ManuallyEdited = false,
-                            Day = post.Day,
-                        };
+                        Vote newVote = CreateVote(post, index, recipientSubString);
 
-                        votes.Add(newVote);
+                        if (IsValid(newVote, recipientSubString))
+                        {
+                            votes.Add(newVote);
+                        }
                     }
                 }
                 else if ((index + 4) <= content.Length && content[index + 4] == ' ')
@@ -91,19 +95,12 @@ namespace MukMafiaTool.Common
                         // and it's in bold, then we assume it's a vote and what follows directly after is the recipient
                         var recipientSubString = content.Substring(index + 5, Math.Min(MaxLengthOfRecipientSubString, content.Length - (index + 5)));
 
-                        var newVote = new Vote
-                        {
-                            Voter = post.Poster,
-                            DateTime = post.DateTime,
-                            IsUnvote = false,
-                            Recipient = DetermineRecipient(recipientSubString.Trim(), playerNamesGroups),
-                            ForumPostNumber = post.ForumPostNumber,
-                            PostContentIndex = index,
-                            ManuallyEdited = false,
-                            Day = post.Day,
-                        };
+                        Vote newVote = CreateVote(post, index, recipientSubString);
 
-                        votes.Add(newVote);
+                        if (IsValid(newVote, recipientSubString))
+                        {
+                            votes.Add(newVote);
+                        }
                     }
                 }
             }
@@ -111,9 +108,56 @@ namespace MukMafiaTool.Common
             return votes;
         }
 
-        private static void AddUnvote(ForumPost post, List<Vote> votes, int index)
+        private bool IsValid(Vote vote, string recipientSubString)
         {
-            var newUnvote = new Vote
+            if (!_players.Select(p => p.Name).Contains(vote.Recipient) && vote.IsUnvote == false)
+            {
+                var msg = string.Format(
+                    "Not adding vote because recipient is not in the player list. Voter: {0}. Recipient: {1}. Forum Post Number: {2}. Recipient substring: {3}.",
+                    vote.Voter,
+                    vote.Recipient,
+                    vote.ForumPostNumber,
+                    recipientSubString);
+
+                _repo.LogMessage(msg);
+
+                return false;
+            }
+            else if (_players.Single(p => string.Equals(p.Name, vote.Voter)).Participating == false)
+            {
+                var msg = string.Format(
+                    "Not adding vote because voter is not participating. Voter: {0}. Recipient: {1}. Forum Post Number: {2}. Recipient substring: {3}.",
+                    vote.Voter,
+                    vote.Recipient,
+                    vote.ForumPostNumber,
+                    recipientSubString);
+
+                _repo.LogMessage(msg);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private Vote CreateVote(ForumPost post, int index, string recipientSubString)
+        {
+            return new Vote
+            {
+                Voter = post.Poster,
+                DateTime = post.DateTime,
+                IsUnvote = false,
+                Recipient = DetermineRecipient(recipientSubString.Trim()),
+                ForumPostNumber = post.ForumPostNumber,
+                PostContentIndex = index,
+                ManuallyEdited = false,
+                Day = post.Day,
+            };
+        }
+
+        private static Vote CreateUnvote(ForumPost post, int index)
+        {
+            return new Vote
             {
                 Voter = post.Poster,
                 DateTime = post.DateTime,
@@ -124,13 +168,11 @@ namespace MukMafiaTool.Common
                 ManuallyEdited = false,
                 Day = post.Day,
             };
-
-            votes.Add(newUnvote);
         }
 
-        private static string DetermineRecipient(string voteSubString, IEnumerable<IEnumerable<string>> playerNameGroups)
+        private string DetermineRecipient(string voteSubString)
         {
-            foreach (var playerNames in playerNameGroups)
+            foreach (var playerNames in _playerNameGroups)
             {
                 foreach (var playerName in playerNames)
                 {

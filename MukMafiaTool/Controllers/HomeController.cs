@@ -67,8 +67,8 @@ namespace MukMafiaTool.Controllers
             var allPosts = _repo.FindAllPosts();
             var postGroups = allPosts.GroupBy(p => p.Poster);
 
-            // filter out players not participating who aren't the Games Master
-            players = players.Where(p => p.Participating || string.Equals(p.Notes, "Games Master"));
+            // filter out players not participating who aren't the Games Master/Moderator
+            players = players.Where(p => p.Participating || string.Equals(p.Notes, "Games Master") || string.Equals(p.Notes, "Moderator"));
 
             var homePagePlayers = players.Select(player => ToHomePagePlayer(player, postGroups));
 
