@@ -16,7 +16,7 @@ Totals:
 <br />
 <table>
     <tr>
-        <td>Total number of votes</td>
+        <td>Votes Cast</td>
         <td>@Model.NumberOfVotes</td>
     </tr>
     <tr>
@@ -43,12 +43,12 @@ Individual Stats:
 @foreach (var individualGroup in individualGroupings)
 {
     <br />
-    @Html.Display(individualGroup.First().FactionName)
+    @Html.Label(individualGroup.First().FactionName)
 
     <table>
         <tr>
             <td>Name</td>
-            <td>Number Cast</td>
+            <td>Votes Cast</td>
             <td>Votes Attracted</td>
             <td>Votes onto Mafia</td>
             <td>Votes onto Non-Town</td>
@@ -57,10 +57,12 @@ Individual Stats:
             <td>Votes onto own Faction</td>
         </tr>
 
-        @foreach (var individual in Model.IndividualVoteStats.OrderByDescending(s => s.VotesCast))
+        @foreach (var individual in individualGroup.Where(v => v.VotesCast > 0).OrderByDescending(s => s.VotesCast))
         {
+            var characterText = string.IsNullOrEmpty(individual.Character) ? string.Empty : string.Format(" ({0})", individual.Character);
+
             <tr>
-                <td>@individual.Name</td>
+                <td>@individual.Name @characterText</td>
                 <td>@individual.VotesCast</td>
                 <td>@individual.TimesVotedFor</td>
                 <td>@individual.PercentageOfVotesOntoMafia.ToString("P")</td>
@@ -81,7 +83,7 @@ Faction Stats:
     <tr>
         <td>Name</td>
         <td>Allegiance</td>
-        <td>Number Of Votes</td>
+        <td>Votes Cast</td>
         <td>Votes onto own Faction</td>
     </tr>
 

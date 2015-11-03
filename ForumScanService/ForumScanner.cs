@@ -64,7 +64,7 @@ namespace MukMafiaTool.ForumScanService
                 var newPosts = latestPost == null ? scannedPosts : FindAllPostsAfter(scannedPosts, latestPost.ForumPostNumber);
                 _repo.EnsurePlayersInRepo(newPosts.Select(p => p.Poster), _firstForumPostNumber);
 
-                //_dayScanner.UpdateDays(scannedPosts);
+                _dayScanner.UpdateDays(scannedPosts);
 
                 UpdateVotes(scannedPosts);
 

@@ -21,7 +21,7 @@ namespace MukMafiaTool.Controllers
         }
 
         // GET: VoteStats
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();
@@ -64,6 +64,7 @@ namespace MukMafiaTool.Controllers
                 var stats = new IndividualVoteStatsViewModel();
                 stats.Name = player.Name;
                 stats.FactionName = player.Recruitments.Last().FactionName;
+                stats.Character = player.Character;
 
                 var individualVotes = votes.Where(v => string.Equals(v.Voter, player.Name));
                 stats.VotesCast = individualVotes.Count();
