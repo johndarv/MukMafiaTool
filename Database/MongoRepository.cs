@@ -260,6 +260,15 @@ namespace MukMafiaTool.Database
                         { "ForumPostNumber", firstForumPostNumber },
                     };
 
+                    var determinedAliases = DetermineAliases(playerName);
+
+                    var aliases = new BsonArray();
+
+                    foreach(var alias in determinedAliases)
+                    {
+                        aliases.Add(BsonValue.Create(alias));
+                    }
+
                     var playerDoc = new BsonDocument
                     {
                         { "Name", playerName },
@@ -268,7 +277,7 @@ namespace MukMafiaTool.Database
                         { "Fatality", string.Empty },
                         { "Character", string.Empty },
                         { "Notes", string.Empty },
-                        { "Aliases", new BsonArray() }
+                        { "Aliases", aliases },
                     };
 
                     _players.InsertOneAsync(playerDoc).Wait();
@@ -397,6 +406,19 @@ namespace MukMafiaTool.Database
             options.IsUpsert = true;
 
             collection.ReplaceOneAsync(filter, newDoc, options).Wait();
+        }
+
+        private static IEnumerable<string> DetermineAliases(string playerName)
+        {
+            IList<string> aliases = new List<string>();
+
+            if(playerName.StartsWith("MS "))
+            {
+                aliases.Add(playerName.Substring(3));
+                aliases.Add(playerName.Remove(2, 1));
+            }
+
+            return aliases;
         }
     }
 }
