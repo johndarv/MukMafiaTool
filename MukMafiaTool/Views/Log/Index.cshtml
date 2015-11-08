@@ -1,4 +1,4 @@
-﻿@model IEnumerable<string>
+﻿@model IEnumerable<MukMafiaTool.Models.ViewModels.LogMessage>
 
 @using System.Linq
 
@@ -18,19 +18,21 @@
 </head>
 <body>
     <table>
-        @foreach(var message in Model)
+        @foreach (var logMessage in Model)
         {
-            string forumPostNumberStuff = string.Empty;
-
-            if (message.IndexOf("ForumPostNumber: ") > -1)
-            {
-                forumPostNumberStuff = "stuff";
-            }
+            var link = Html.ActionLink("Link to forum post", "index", "post", new { forumPostNumber = logMessage.ForumPostNumber }, new { });
 
             <tr>
                 <td>
-                    @string.Format("{0}{1}", message, forumPostNumberStuff);
+                    @logMessage.Message
                 </td>
+
+                @if (!string.IsNullOrEmpty(logMessage.ForumPostNumber))
+                {
+                    <td>
+                        @link
+                    </td>
+                }
             </tr>
         }
     </table>
