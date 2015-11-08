@@ -21,8 +21,8 @@ namespace MukMafiaTool.Common
         {
             foreach (var post in posts)
             {
-                Regex startOfDayRegex = new Regex("\\[start of day [0-9]+\\]", RegexOptions.IgnoreCase & RegexOptions.Multiline);
-                Regex endOfDayRegex = new Regex("\\[end of day [0-9]+\\]", RegexOptions.IgnoreCase & RegexOptions.Multiline);
+                Regex startOfDayRegex = new Regex(@"\[start of day [0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                Regex endOfDayRegex = new Regex(@"\[end of day [0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
                 var startMatched = startOfDayRegex.Match(post.Content.ToString());
                 var endMatched = endOfDayRegex.Match(post.Content.ToString());

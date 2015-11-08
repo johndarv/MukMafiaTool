@@ -51,6 +51,48 @@ namespace Tests
         }
 
         [TestMethod]
+        public void DayScannerStartDaySimpleTest2()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Danster",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"[start of day 1]"),
+            };
+
+            _target.UpdateDays(new ForumPost[] { post });
+
+            var mock = Mock.Get<IRepository>(_repo);
+
+            mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 1 && d.StartForumPostNumber == "1111111")));
+        }
+
+        [TestMethod]
+        public void DayScannerIgnoreCase()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Danster",
+                ThreadPostNumber = 100,
+                Content = new HtmlString(@"[start of Day 1]"),
+            };
+
+            _target.UpdateDays(new ForumPost[] { post });
+
+            var mock = Mock.Get<IRepository>(_repo);
+
+            mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 1 && d.StartForumPostNumber == "1111111")));
+        }
+
+        [TestMethod]
         public void DayScannerStartDayTest()
         {
             ForumPost post = new ForumPost
