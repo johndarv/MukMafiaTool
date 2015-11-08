@@ -384,6 +384,13 @@ namespace MukMafiaTool.Database
             _logs.InsertOneAsync(doc).Wait();
         }
 
+        public IEnumerable<string> FindAllLogMessages()
+        {
+            var docs = _logs.Find(new BsonDocument()).ToListAsync().Result;
+
+            return docs.Select(d => d["Message"].ToString());
+        }
+
         private static void Upsert(IMongoCollection<BsonDocument> collection, BsonDocument newDoc, FilterDefinition<BsonDocument> filter)
         {
             var options = new UpdateOptions();

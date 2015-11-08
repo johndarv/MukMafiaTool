@@ -21,6 +21,7 @@ namespace MukMafiaTool.Common
         DateTime FindLastUpdatedDateTime();
         ForumPost FindSpecificPost(string forumPostNumber);
         void LogMessage(string message);
+        IEnumerable<string> FindAllLogMessages();
         void UpdateLastUpdated();
         void UpsertPost(ForumPost post);
         void UpsertVote(Vote vote);

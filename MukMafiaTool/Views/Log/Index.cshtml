@@ -1,0 +1,38 @@
+﻿@model IEnumerable<string>
+
+@using System.Linq
+
+@{
+    Layout = null;
+}
+
+@{
+    ViewBag.Title = "RLLMUK Mafiascum Helper - Logs";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+</head>
+<body>
+    <table>
+        @foreach(var message in Model)
+        {
+            string forumPostNumberStuff = string.Empty;
+
+            if (message.IndexOf("ForumPostNumber: ") > -1)
+            {
+                forumPostNumberStuff = "stuff";
+            }
+
+            <tr>
+                <td>
+                    @string.Format("{0}{1}", message, forumPostNumberStuff);
+                </td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
