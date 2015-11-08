@@ -23,7 +23,7 @@ namespace MukMafiaTool.Controllers
 
         // GET: Vote
         [Authorize(Roles = "Admin")]
-        public HttpResponseMessage ReDetermineVotes()
+        public HttpResponseMessage RedetermineVotes()
         {
             _repo.DeleteAllVotes();
             

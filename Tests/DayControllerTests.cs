@@ -15,7 +15,7 @@ namespace Tests
         {
             var dayController = new DayController(new MongoRepository());
 
-            var result = dayController.RecalculateDays();
+            var result = dayController.RedetermineDays();
 
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }
