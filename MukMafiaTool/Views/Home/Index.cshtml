@@ -9,6 +9,12 @@
 @if(User.IsInRole("Admin"))
 {
     <p>You are logged in as an admin!</p>
+    @Html.ActionLink("Re-determine Days", "redeterminedays", "day");
+    <br />
+    @Html.ActionLink("Re-determine Votes", "redeterminevotes", "vote");
+    <br />
+    @Html.ActionLink("View Log Messages", "index", "log");
+    <br />
 }
 
 <br />
