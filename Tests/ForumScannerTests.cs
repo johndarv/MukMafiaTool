@@ -43,5 +43,13 @@ namespace Tests
 
             repo.EnsurePlayersInRepo(postersNotInRepo, "1");
         }
+
+        [TestMethod]
+        public void UpsertLastUpdatedTime()
+        {
+            var repo = new MongoRepository();
+
+            repo.UpdateLastUpdatedTime();
+        }
     }
 }

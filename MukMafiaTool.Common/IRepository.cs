@@ -22,7 +22,7 @@ namespace MukMafiaTool.Common
         ForumPost FindSpecificPost(string forumPostNumber);
         void LogMessage(string message);
         IEnumerable<string> FindAllLogMessages();
-        void UpdateLastUpdated();
+        void UpdateLastUpdatedTime();
         void UpsertPost(ForumPost post);
         void UpsertVote(Vote vote);
         void DeleteAllVotes();

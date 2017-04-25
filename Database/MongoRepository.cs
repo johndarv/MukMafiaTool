@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using MukMafiaTool.Model;
+using System.Security.Authentication;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using MukMafiaTool.Common;
+using MukMafiaTool.Model;
 
 namespace MukMafiaTool.Database
 {
@@ -27,8 +26,10 @@ namespace MukMafiaTool.Database
             var connectionString = ConfigurationManager.AppSettings["MongoConnectionString"];
             var databaseName = ConfigurationManager.AppSettings["MongoDatabaseName"];
 
-            MongoClient client = new MongoClient(connectionString);
-            var database = client.GetDatabase(databaseName);
+            MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
+            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
+            var mongoClient = new MongoClient(settings);
+            var database = mongoClient.GetDatabase(databaseName);
 
             _posts = database.GetCollection<BsonDocument>("Posts");
             _votes = database.GetCollection<BsonDocument>("Votes");
@@ -154,7 +155,7 @@ namespace MukMafiaTool.Database
             _votes.DeleteManyAsync(filter).Wait();
         }
 
-        public void UpdateLastUpdated()
+        public void UpdateLastUpdatedTime()
         {
             var doc = new BsonDocument
             {

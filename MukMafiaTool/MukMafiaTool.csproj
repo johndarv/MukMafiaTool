@@ -197,6 +197,7 @@
     <None Include="Properties\PublishProfiles\mukmafiascumhelper.pubxml" />
     <None Include="Properties\PublishProfiles\mukmafiascumwebsite.pubxml" />
     <None Include="Properties\PublishProfiles\mukmafiatool.pubxml" />
+    <None Include="Properties\PublishProfiles\RllmukMafiascum - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

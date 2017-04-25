@@ -33,7 +33,7 @@ namespace MukMafiaTool.ForumScanService
         {
             UpdateRepoFromThread();
 
-            _repo.UpdateLastUpdated();
+            _repo.UpdateLastUpdatedTime();
         }
 
         public void DoEndOfGameScan()
