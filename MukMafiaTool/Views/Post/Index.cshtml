@@ -28,19 +28,32 @@
     <title></title>
 </head>
 <body>
-    <div class="post_wrap">
+    <div data-role="commentFeed" data-controller="core.front.core.moderation" class="ipsAreaBackground_light ipsPad">
         @foreach (var post in @Model.OrderByDescending(p => p.ForumPostNumber))
         {
-            <div class="post_block hentry clear clearfix">
-                <h3 class="row2">
-                @{ var postUrl = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", post.ForumPostNumber); }
-                    <span itemprop="name">@post.Poster - Day @post.Day - @post.DateTime.ToLocalTime().ToString("dddd dd MMMM - HH:mm") - <a href="@postUrl">@post.ForumPostNumber</a></span>
-                </h3>
-                <div class="post_body">
-                    @post.Content
+            <article itemscope="" itemtype="http://schema.org/Comment" id="elComment_11373461" class="cPost ipsBox  ipsComment  ipsComment_parent ipsClearfix ipsClear ipsColumns ipsColumns_noSpacing ipsColumns_collapsePhone  ">
+
+                <aside class="ipsComment_author cAuthorPane ipsColumn ipsColumn_medium">
+                    <h3 class="ipsType_sectionHead cAuthorPane_author ipsType_blendLinks ipsType_break" itemprop="creator" itemscope="" itemtype="http://schema.org/Person">
+                        <strong itemprop="name">
+                            @post.Poster
+                        </strong>
+                    </h3>
+                    @{ var postUrl = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", post.ForumPostNumber); }
+                    <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half"><a href="@postUrl" class="ipsType_blendLinks">@post.ForumPostNumber</a></p>
+                    <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half">Day @post.Day</p>
+                    <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half">@post.DateTime.ToLocalTime().ToString("dddd dd MMMM - HH:mm")</p>
+                </aside>
+                <div class="ipsColumn ipsColumn_fluid">
+                    <div id="comment-11373461_wrap" data-controller="core.front.core.comment" data-commentapp="forums" data-commenttype="forums" data-commentid="11373461" data-quotedata="{&quot;userid&quot;:27628,&quot;username&quot;:&quot;Mr Jaguar&quot;,&quot;timestamp&quot;:1493753106,&quot;contentapp&quot;:&quot;forums&quot;,&quot;contenttype&quot;:&quot;forums&quot;,&quot;contentid&quot;:299377,&quot;contentclass&quot;:&quot;forums_Topic&quot;,&quot;contentcommentid&quot;:11373461}" class="ipsComment_content ipsType_medium  ipsFaded_withHover">
+                        <div class="cPost_contentWrap ipsPad">
+                            <div data-role="commentContent" itemprop="text" class="ipsType_normal ipsType_richText ipsContained" data-controller="core.front.core.lightboxedImages">
+                                @post.Content
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <br>
+            </article>
         }
     </div>
 </body>
