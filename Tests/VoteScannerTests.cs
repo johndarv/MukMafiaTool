@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using MukMafiaTool.Common;
 using MukMafiaTool.Model;
-using Moq;
 
 namespace Tests
 {
@@ -58,7 +55,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "John0",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p class=""citation"">John0, on 17 Aug 2015 - 2:33 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10526689""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""John0"" data-cid=""10526689"" data-time=""1439818425""><p>Surely we have to lynch snowbind now.</p></blockquote><br><p>I missed those nuances. As much as the lack of movement on sith for his play style frustrates me, I was prepared to vote snowbind for another daft joke (particularly after dino appeared to learn his lesson over the I'M WIGGUM thing), but it's not, is it? He's inadvertently let slip. If he swings today and turns out to be one of Tony's lot, we have a good lead on day 2.<br>&nbsp;</p><p><strong class=""bbc"">unvote: sith</strong></p><p><strong class=""bbc"">vote: snowbind</strong><br>&nbsp;</p><p class=""citation"">Jolly, on 17 Aug 2015 - 1:04 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10526541""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""Jolly"" data-cid=""10526541"" data-time=""1439813084""><p>Complete turnaround on what he thinks about Gos when the general town feeling is that his roleclaim is genuine.&nbsp; Annoyingly help out by TehStu at this point.</p></blockquote><p>I want to clarify this, though. We didn't have the best track record in the last game for mafia lynches, so cherry picking a post of snowbind's where he's talking about gos prior to the reveal isn't nearly as helpful as post-reveal. It wasn't the smoking ORLY gun it was purported to be. Everything else you've pointed out, though? On the money.</p>
@@ -66,7 +62,8 @@ namespace Tests
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -84,7 +81,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Alask",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<blockquote class=""ipsBlockquote"" data-author=""footle"" data-cid=""10527247"" data-time=""1439839427""><br>
@@ -105,7 +101,8 @@ namespace Tests
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -123,7 +120,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "snowbind",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p><strong>unvote</strong></p>
@@ -134,7 +130,8 @@ namespace Tests
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -152,7 +149,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Timmo",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p class=""citation"">Dinobot, on 12 Aug 2015 - 7:42 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10520532""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""Dinobot"" data-cid=""10520532"" data-time=""1439404955""><p>Well that's it done.<br>
@@ -168,7 +164,8 @@ What?!
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -186,7 +183,6 @@ What?!
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "GMass",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					I voted for Timmo because I felt he was trying to direct the vote. I unvoted later. I reckon we have perhaps 1 Mafia kill and 1 serial killer kill here.    Dr Nick being too unsure to use his power and 1 of the Mafia teams not bothering in order to muddy the waters. <br>Merge<br><br>
@@ -195,7 +191,8 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -213,7 +210,6 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "PaulM",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p>You know what, I don't know if it'll make a difference or not, but&nbsp;<strong>unvote,&nbsp;</strong><strong>vote Liamness</strong></p>
@@ -222,7 +218,8 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -240,7 +237,6 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Danster",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p>I think i'm going to <strong class=""bbc"">unvote</strong><br><br>Gos is a wasted vote. If he isn't lynched he will be whacked tonight or recruited (and so if he isn't killed overnight he'll have to be tomorrow) unless he's protected, or watched... ffs<br><br>I think snowbind is iffy, and Liamness has now done just enough to not be modkilled, spork still looks panicky AND if dino is right is our best chance of mafia.<br><br>I say {b]vote: spork[/b] if he's town, well then we can re-group and figure who was calling for his head, if he's mafia or a n other then jobs a good un.</p>
@@ -248,7 +244,8 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -266,7 +263,6 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "gospvg",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p>After the post 234 to post 264 the following vote actions occurred against Dinobot</p>
@@ -282,7 +278,8 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -300,7 +297,6 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "bennette98",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p class=""citation"">snowbind, on 16 Aug 2015 - 9:03 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10525781""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""snowbind"" data-cid=""10525781"" data-time=""1439755414"">
@@ -315,7 +311,8 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -333,7 +330,6 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "TehStu",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					May merge. Heh, posting on a phone you very no notification of other posts while you write yours.<br><br>
@@ -343,7 +339,8 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -362,7 +359,6 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Strategos",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div itemprop=""commentText"" class='post entry-content '>
 					<blockquote  class=""ipsBlockquote"">
 <p>&#160;</p>
@@ -420,7 +416,6 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Alask",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<blockquote class=""ipsBlockquote"" data-author=""footle"" data-cid=""10527247"" data-time=""1439839427""><br>
@@ -441,7 +436,8 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -460,7 +456,6 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Danster",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p>I finding TGP to be peculiarly quiet. His hammer hit still rankles with me, there were people in the thread discussing stuff, someone had mentioned that we might come on at half time of the footie, which I did only to find the day had ended.</p>
@@ -473,7 +468,8 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -492,7 +488,6 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Mr. Blonde",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p class=""citation"">Mr. Cobalt said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10594607""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote"" data-author=""Mr. Cobalt"" data-cid=""10594607"" data-time=""1443993646""><br>
@@ -515,7 +510,8 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
@@ -534,7 +530,6 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Moderator",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div class=""post_body"">
                     
 					<p class=""citation"">John0, on 17 Aug 2015 - 2:33 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10526689""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""John0"" data-cid=""10526689"" data-time=""1439818425""><p>Surely we have to lynch snowbind now.</p></blockquote><br><p>I missed those nuances. As much as the lack of movement on sith for his play style frustrates me, I was prepared to vote snowbind for another daft joke (particularly after dino appeared to learn his lesson over the I'M WIGGUM thing), but it's not, is it? He's inadvertently let slip. If he swings today and turns out to be one of Tony's lot, we have a good lead on day 2.<br>&nbsp;</p><p><strong class=""bbc"">unvote: sith</strong></p><p><strong class=""bbc"">vote: snowbind</strong><br>&nbsp;</p><p class=""citation"">Jolly, on 17 Aug 2015 - 1:04 PM, said:<a class=""snapback right"" rel=""citation"" href=""http://www.rllmukforum.com/index.php?app=forums&amp;module=forums&amp;section=findpost&amp;pid=10526541""><img src=""http://www.rllmukforum.com/public/style_images/master/snapback.png""></a></p><blockquote class=""ipsBlockquote built"" data-author=""Jolly"" data-cid=""10526541"" data-time=""1439813084""><p>Complete turnaround on what he thinks about Gos when the general town feeling is that his roleclaim is genuine.&nbsp; Annoyingly help out by TehStu at this point.</p></blockquote><p>I want to clarify this, though. We didn't have the best track record in the last game for mafia lynches, so cherry picking a post of snowbind's where he's talking about gos prior to the reveal isn't nearly as helpful as post-reveal. It wasn't the smoking ORLY gun it was purported to be. Everything else you've pointed out, though? On the money.</p>
@@ -542,13 +537,120 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 					<br>
 					
 				
-                </div>"),
+                </div>
+"),
             };
 
             var votes = _voteScanner.ScanForVotes(post);
 
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(true, votes.Single().IsUnvote);
+        }
+
+        [TestMethod]
+        public void StrongTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Liamness",
+                Content = new HtmlString(@"<p>
+	<strong>vote: snowbind</strong>
+</p>"),
+            };
+
+            var votes = _voteScanner.ScanForVotes(post);
+
+            Assert.AreEqual(1, votes.Count());
+            Assert.AreEqual(false, votes.Single().IsUnvote);
+            Assert.IsTrue(votes.First().Recipient == "snowbind");
+        }
+
+        [TestMethod]
+        public void DoubleStrongTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Liamness",
+                Content = new HtmlString(@"<p>
+	<strong>Vote:</strong> <strong>snowbind</strong>
+</p>"),
+            };
+
+            var votes = _voteScanner.ScanForVotes(post);
+
+            Assert.AreEqual(1, votes.Count());
+            Assert.AreEqual(false, votes.Single().IsUnvote);
+            Assert.IsTrue(votes.First().Recipient == "snowbind");
+        }
+
+        [TestMethod]
+        public void AtMentionTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Liamness",
+                Content = new HtmlString(@"<p>
+	<strong>Vote: <a contenteditable=""false"" data-ipshover="""" data-ipshover-target=""https://www.rllmukforum.com/index.php?/profile/27618-mr-beaver/&amp;do=hovercard"" data-mentionid=""27618"" href=""https://www.rllmukforum.com/index.php?/profile/27618-mr-beaver/"" rel="""">@snowbind</a></strong>
+</p>
+
+<p>"),
+            };
+
+            var votes = _voteScanner.ScanForVotes(post);
+
+            Assert.AreEqual(1, votes.Count());
+            Assert.AreEqual(false, votes.Single().IsUnvote);
+            Assert.IsTrue(votes.First().Recipient == "snowbind");
+        }
+
+        [TestMethod]
+        public void BoldMidLineTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "Liamness",
+                Content = new HtmlString(@"<p>
+	I would vote Mr Dog but I assume that getting 15 others to switch their vote to you now is very unlikely, so I will <strong>vote: snowbind </strong>on the basis that I feel Dog is trying to divert attention away from him.
+</p>"),
+            };
+
+            var votes = _voteScanner.ScanForVotes(post);
+
+            Assert.AreEqual(1, votes.Count());
+            Assert.AreEqual(false, votes.Single().IsUnvote);
+            Assert.IsTrue(votes.First().Recipient == "snowbind");
+        }
+
+        [TestMethod]
+        public void NewForumTest()
+        {
+            ForumPost post = new ForumPost
+            {
+                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
+                Day = 4,
+                ForumPostNumber = "1111111",
+                PageNumber = 50,
+                Poster = "John0",
+                Content = new HtmlString(@""),
+            };
+
+            throw new NotImplementedException();
         }
     }
 }

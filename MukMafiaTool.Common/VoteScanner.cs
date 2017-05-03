@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MukMafiaTool.Model;
 
 namespace MukMafiaTool.Common
 {
     public class VoteScanner
     {
-        private const int MaxLengthOfRecipientSubString = 8;
+        private const int MaxLengthOfRecipientSubString = 6;
 
         private IRepository _repo;
         private IEnumerable<Player> _players;
@@ -34,6 +32,10 @@ namespace MukMafiaTool.Common
                 .FilterOutSpanTags()
                 .ReplaceNonBreakingSpacesWithSpaces()
                 .RemoveNewLineAndTabChars()
+                .RemoveUnecessaryClosedOpenHtmlTags()
+                .ReplaceAtMentionsWithPlainNameText()
+                .FilterOutStrongTagsAfterTheWordVote()
+                .ReplaceNonBreakingSpaceCharactersWithRegularWhitespaceCharacters()
                 .ToLower();
 
             var indexes = content.AllIndexesOf("vote");
@@ -74,6 +76,7 @@ namespace MukMafiaTool.Common
                     }
 
                     recipientSubString = recipientSubString.Trim();
+
                     recipientSubString = recipientSubString.Substring(0, Math.Min(MaxLengthOfRecipientSubString, recipientSubString.Length));
 
                     // If somebody writes vote: name, don't count it
@@ -87,9 +90,8 @@ namespace MukMafiaTool.Common
                         }
                     }
                 }
-                else if ((index + 4) <= content.Length && content[index + 4] == ' ')
+                else if ((index + 4) <= content.Length && content[index + 4] == ' ') // else if it has a space right after the word vote...
                 {
-                    // else if it has a space right after the word vote...
                     if (content.IsInBold(index))
                     {
                         // and it's in bold, then we assume it's a vote and what follows directly after is the recipient

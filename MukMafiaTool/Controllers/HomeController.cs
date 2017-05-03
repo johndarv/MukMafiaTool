@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -87,13 +88,41 @@ namespace MukMafiaTool.Controllers
         {
             var posts = postGroups.SingleOrDefault(g => g.Key == player.Name);
 
+            var isInGame = player.Participating && string.IsNullOrEmpty(player.Fatality);
+
+            var extraInfoBuilder = new StringBuilder();
+            
+            if (!isInGame)
+            {
+                if (!string.IsNullOrEmpty(player.Character))
+                {
+                    extraInfoBuilder.Append($" - {player.Character}");
+                }
+
+                if (player.Recruitments.Any())
+                {
+                    var factionNames = player.Recruitments.OrderBy(r => r.ForumPostNumber).Select(r => r.FactionName);
+
+                    extraInfoBuilder.Append($", {string.Join(", ", factionNames)}");
+                }
+
+                if (!string.IsNullOrEmpty(player.Fatality))
+                {
+                    extraInfoBuilder.Append($" - {player.Fatality}");
+                }
+
+                if (!string.IsNullOrEmpty(player.Notes))
+                {
+                    extraInfoBuilder.Append($" - {player.Notes}");
+                }
+            }
+
             return new HomePagePlayer
             {
                 Name = player.Name,
                 PostCount = posts != null ? posts.Count() : 0,
-                IsInGame = player.Participating && string.IsNullOrEmpty(player.Fatality),
-                Character = player.Character,
-                OutOfGameText = !string.IsNullOrEmpty(player.Fatality) ? player.Fatality : player.Notes,
+                IsInGame = isInGame,
+                ExtraInfo = extraInfoBuilder.ToString(),
             };
         }
     }

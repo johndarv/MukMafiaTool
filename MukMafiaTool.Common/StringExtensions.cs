@@ -92,6 +92,30 @@ namespace MukMafiaTool.Common
             return builder.ToString();
         }
 
+        public static string ReplaceAtMentionsWithPlainNameText(this string value)
+        {
+            var index = value.IndexOf("<a contenteditable=\"false\" data-ipshover=\"\" data-ipshover-target=\"http");
+
+            while (index > -1)
+            {
+                var substring = value.Substring(index);
+
+                var indexOfClosedChevron = substring.IndexOf(">");
+
+                var indexOfOpenChevron = substring.IndexOf("</a>");
+
+                var playerName = substring.Substring(indexOfClosedChevron + 2, indexOfOpenChevron - (indexOfClosedChevron + 2));
+
+                var fullAtMentionLink = substring.Substring(0, indexOfOpenChevron + 4);
+
+                value = value.Replace(fullAtMentionLink, playerName);
+
+                index = value.IndexOf("<a contenteditable=\"false\" data-ipshover=\"\" data-ipshover-target=\"http\"");
+            }
+
+            return value;
+        }
+
         public static string RemoveWhiteSpace(this string str)
         {
             return str.Replace(" ", string.Empty);
@@ -109,6 +133,33 @@ namespace MukMafiaTool.Common
             str = str.Replace("\t", string.Empty);
 
             return str;
+        }
+
+        public static string RemoveUnecessaryClosedOpenHtmlTags(this string value)
+        {
+            value = value.Replace("</strong> <strong>", string.Empty);
+            value = value.Replace("</strong><strong>", string.Empty);
+            value = value.Replace("</strong>  <strong>", string.Empty);
+            value = value.Replace("</strong> <strong>", string.Empty);
+
+            return value;
+        }
+
+        public static string FilterOutStrongTagsAfterTheWordVote(this string value)
+        {
+            value = value.Replace("vote: <strong>", "vote: ");
+            value = value.Replace("vote:<strong>", "vote:");
+            value = value.Replace("vote<strong>", "vote");
+            value = value.Replace("vote <strong>", "vote ");
+
+            return value;
+        }
+
+        public static string ReplaceNonBreakingSpaceCharactersWithRegularWhitespaceCharacters(this string value)
+        {
+            value = value.Replace(" ", " ");
+
+            return value;
         }
 
         public static IEnumerable<int> AllIndexesOf(this string str, string value)

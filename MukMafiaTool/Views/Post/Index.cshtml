@@ -16,11 +16,14 @@
 <head>
     <meta name="viewport" content="width=device-width" />
 
-    <link rel="stylesheet" type="text/css" title="Main" media="screen" href="http://www.rllmukforum.com/public/style_css/css_22/calendar_select.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
-    <link rel="stylesheet" type="text/css" title="Main" media="screen,print" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_common.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
-    <link rel="stylesheet" type="text/css" title="Main" media="screen,print" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_styles.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
-    <link rel="stylesheet" type="text/css" href="http://www.rllmukforum.com/public/style_css/css_22/ipb_ckeditor.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
-    <link rel="stylesheet" type="text/css" href="http://www.rllmukforum.com/public/style_css/prettify.css?ipbv=f8232f3281cda5dedb517bcbb7d47158" />
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/341e4a57816af3ba440d891ca87450ff_framework.css.6baee13e14b3db08b90c5ed34427a005.css?v=ba4f56c94a' media='all'>
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/05e81b71abe4f22d6eb8d1a929494829_responsive.css.50f0c57a0905b6be9b8aa5e6ac525093.css?v=ba4f56c94a' media='all'>
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/90eb5adf50a8c640f633d47fd7eb1778_core.css.9d66364d8484ffd2fa11091f26b5dd99.css?v=ba4f56c94a' media='all'>
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/5a0da001ccc2200dc5625c3f3934497d_core_responsive.css.a678046e2965ddd3aaa1f526b59653f9.css?v=ba4f56c94a' media='all'>
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/62e269ced0fdab7e30e026f1d30ae516_forums.css.98556dd3253ba2c5124a7f00e90f4dd7.css?v=ba4f56c94a' media='all'>
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/76e62c573090645fb99a15a363d8620e_forums_responsive.css.def069e26c4e1538e64074ed51b3bce4.css?v=ba4f56c94a' media='all'>
+
+    <link rel='stylesheet' href='https://www.rllmukforum.com/uploads/css_built_2/258adbb6e4f3e83cd3b355f84e3fa002_custom.css.d29b95069052733260de474fab285995.css?v=ba4f56c94a' media='all'>
 
     <title></title>
 </head>
@@ -30,7 +33,7 @@
         {
             <div class="post_block hentry clear clearfix">
                 <h3 class="row2">
-                @{ var postUrl = string.Format("http://www.officeoffline.co.uk/index.php?app=forums&module=forums&section=findpost&pid={0}", post.ForumPostNumber); }
+                @{ var postUrl = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", post.ForumPostNumber); }
                     <span itemprop="name">@post.Poster - Day @post.Day - @post.DateTime.ToLocalTime().ToString("dddd dd MMMM - HH:mm") - <a href="@postUrl">@post.ForumPostNumber</a></span>
                 </h3>
                 <div class="post_body">

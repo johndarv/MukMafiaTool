@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Database;
 
 namespace Tests
@@ -12,7 +13,7 @@ namespace Tests
         {
             var repo = new MongoRepository();
 
-            repo.UpdateLastUpdatedTime();
+            repo.UpdateLastUpdatedTime(DateTime.UtcNow);
         }
     }
 }

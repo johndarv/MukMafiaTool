@@ -13,7 +13,6 @@ namespace MukMafiaTool.Database
         {
             return new ForumPost
             {
-                ThreadPostNumber = doc["ThreadPostNumber"].ToInt32(),
                 ForumPostNumber = doc["ForumPostNumber"].ToString(),
                 Poster = doc["Poster"].ToString(),
                 DateTime = doc["DateTime"].ToUniversalTime(),

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MukMafiaTool.ForumScanService;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MukMafiaTool.Common;
 
 namespace Tests
@@ -52,6 +46,23 @@ namespace Tests
         {
             string str = "h <b>only this ohhh yeahhhhh</b> aushdaysgdygs    l";
             Assert.IsTrue(str.IsInBold(12));
+        }
+
+        [TestMethod]
+        public void ReplaceAtMentionsWithPlainNameText()
+        {
+            string value = "<a contenteditable=\"false\" data-ipshover=\"\" data-ipshover-target=\"https://www.rllmukforum.com/index.php?/profile/27618-mr-beaver/&amp;do=hovercard\" data-mentionid=\"27618\" href=\"https://www.rllmukforum.com/index.php?/profile/27618-mr-beaver/\" rel=\"\">@Mr Beaver</a>";
+            var result = value.ReplaceAtMentionsWithPlainNameText();
+
+            Assert.AreEqual(result, "Mr Beaver");
+        }
+
+        [TestMethod]
+        public void FilterOutStrongTagsAfterTheWordVote()
+        {
+            var result = "vote: <strong>snowbind".FilterOutStrongTagsAfterTheWordVote();
+
+            Assert.AreEqual(result, "vote: snowbind");
         }
     }
 }

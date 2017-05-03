@@ -39,7 +39,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "John0",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"[start of day 3]"),
             };
 
@@ -60,7 +59,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Danster",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"[start of day 1]"),
             };
 
@@ -81,7 +79,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "Danster",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"[start of Day 1]"),
             };
 
@@ -102,7 +99,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "John0",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div itemprop=""commentText"" class='post entry-content '>
 					<p>[start of day 3]</p>
 <p>The town lynch TehStu he is mafia!</p>
@@ -132,7 +128,6 @@ namespace Tests
                 ForumPostNumber = "1111111",
                 PageNumber = 50,
                 Poster = "John0",
-                ThreadPostNumber = 100,
                 Content = new HtmlString(@"<div itemprop=""commentText"" class='post entry-content '>
 					<p>[end of day 10]</p>
 <p>The town lynch TehStu he is mafia!</p>

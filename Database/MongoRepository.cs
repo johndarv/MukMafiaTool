@@ -116,7 +116,6 @@ namespace MukMafiaTool.Database
             var newDoc = new BsonDocument
                 {
                     { "ForumPostNumber", post.ForumPostNumber },
-                    { "ThreadPostNumber", post.ThreadPostNumber },
                     { "Poster", post.Poster },
                     { "DateTime", post.DateTime.ToUniversalTime() },
                     { "Content", post.Content.ToString() },
@@ -157,10 +156,15 @@ namespace MukMafiaTool.Database
 
         public void UpdateLastUpdatedTime()
         {
+            UpdateLastUpdatedTime(DateTime.UtcNow);
+        }
+
+        public void UpdateLastUpdatedTime(DateTime dateTime)
+        {
             var doc = new BsonDocument
             {
                 { "_id", 1 },
-                { "LastUpdatedDateTime", DateTime.UtcNow },
+                { "LastUpdatedDateTime", dateTime },
             };
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", 1);
@@ -302,7 +306,7 @@ namespace MukMafiaTool.Database
 
             BsonArray aliases = new BsonArray();
 
-            foreach (var alias in aliases)
+            foreach (var alias in player.Aliases)
             {
                 aliases.Add(alias.ToString());
             }
@@ -357,7 +361,7 @@ namespace MukMafiaTool.Database
             
             foreach (var role in user.Roles)
             {
-                roles.Add(new BsonDocument { { "Role", role } });
+                roles.Add(role);
             }
 
             var newDoc = new BsonDocument

@@ -52,9 +52,9 @@ namespace MukMafiaTool.ForumScanService
             newPost.ForumPostNumber = postNumberElement.Attributes["data-entry-pid"].Value;
 
             // Find ThreadPostNumber
-            var postNumberString = postNumberElement.InnerText.Trim();
-            postNumberString = postNumberString.Replace("#", string.Empty);
-            newPost.ThreadPostNumber = int.Parse(postNumberString);
+            //var postNumberString = postNumberElement.InnerText.Trim();
+            //postNumberString = postNumberString.Replace("#", string.Empty);
+            //newPost.ThreadPostNumber = int.Parse(postNumberString);
 
             // Find Day
             newPost.Day = DetermineDay(newPost.ForumPostNumber);

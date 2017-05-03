@@ -1,4 +1,4 @@
-﻿namespace MukMafiaTool.ForumScanService
+﻿namespace ForumScanApi
 {
     public interface IForumScanner
     {

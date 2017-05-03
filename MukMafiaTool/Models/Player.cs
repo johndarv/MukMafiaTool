@@ -10,7 +10,6 @@ namespace MukMafiaTool.Models
         public string Name { get; set; }
         public int PostCount { get; set; }
         public bool IsInGame { get; set; }
-        public string Character { get; set; }
-        public string OutOfGameText { get; set; }
+        public string ExtraInfo { get; set; }
     }
 }
