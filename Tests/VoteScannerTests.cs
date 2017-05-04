@@ -42,7 +42,7 @@ namespace Tests
             mockRepo.Setup(m => m.FindAllPlayers())
                 .Returns(players);
 
-            _voteScanner = new VoteScanner(mockRepo.Object);
+            _voteScanner = new VoteScanner(mockRepo.Object, 8);
         }
 
         [TestMethod]
@@ -635,22 +635,6 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(false, votes.Single().IsUnvote);
             Assert.IsTrue(votes.First().Recipient == "snowbind");
-        }
-
-        [TestMethod]
-        public void NewForumTest()
-        {
-            ForumPost post = new ForumPost
-            {
-                DateTime = new DateTime(2015, 8, 18, 9, 0, 0),
-                Day = 4,
-                ForumPostNumber = "1111111",
-                PageNumber = 50,
-                Poster = "John0",
-                Content = new HtmlString(@""),
-            };
-
-            throw new NotImplementedException();
         }
     }
 }

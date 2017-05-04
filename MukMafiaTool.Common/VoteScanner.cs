@@ -7,14 +7,21 @@ namespace MukMafiaTool.Common
 {
     public class VoteScanner
     {
-        private const int MaxLengthOfRecipientSubString = 6;
+        private const int DefaultMaxLengthOfRecipientSubstring = 6;
 
+        private readonly int _maxLengthOfRecipientSubstring;
         private IRepository _repo;
         private IEnumerable<Player> _players;
         private IEnumerable<IEnumerable<string>> _playerNameGroups;
 
         public VoteScanner(IRepository repo)
+            : this(repo, DefaultMaxLengthOfRecipientSubstring)
         {
+        }
+
+        public VoteScanner(IRepository repo, int maxLengthOfRecipientString)
+        {
+            _maxLengthOfRecipientSubstring = maxLengthOfRecipientString;
             _repo = repo;
             _players = _repo.FindAllPlayers();
             _playerNameGroups = _players.Select(p => (new string[] { p.Name }).Concat(p.Aliases));
@@ -77,7 +84,7 @@ namespace MukMafiaTool.Common
 
                     recipientSubString = recipientSubString.Trim();
 
-                    recipientSubString = recipientSubString.Substring(0, Math.Min(MaxLengthOfRecipientSubString, recipientSubString.Length));
+                    recipientSubString = recipientSubString.Substring(0, Math.Min(_maxLengthOfRecipientSubstring, recipientSubString.Length));
 
                     // If somebody writes vote: name, don't count it
                     if (!string.Equals(recipientSubString.Substring(0, Math.Min(4, recipientSubString.Length)), "name".Substring(0, Math.Min(4, recipientSubString.Length)), StringComparison.OrdinalIgnoreCase))
@@ -95,7 +102,7 @@ namespace MukMafiaTool.Common
                     if (content.IsInBold(index))
                     {
                         // and it's in bold, then we assume it's a vote and what follows directly after is the recipient
-                        var recipientSubString = content.Substring(index + 5, Math.Min(MaxLengthOfRecipientSubString, content.Length - (index + 5)));
+                        var recipientSubString = content.Substring(index + 5, Math.Min(_maxLengthOfRecipientSubstring, content.Length - (index + 5)));
 
                         Vote newVote = CreateVote(post, index, recipientSubString);
 

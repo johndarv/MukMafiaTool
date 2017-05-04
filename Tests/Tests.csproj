@@ -98,7 +98,6 @@
     <Compile Include="DayScannerTests.cs" />
     <Compile Include="ForumPostHelperTests.cs" />
     <Compile Include="InternalForumScannerTests.cs" />
-    <Compile Include="PageScannerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringExtensionsTests.cs" />
     <Compile Include="VoteScannerTests.cs" />

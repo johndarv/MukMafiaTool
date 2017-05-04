@@ -41,7 +41,7 @@ namespace Tests
 
             repo.EnsurePlayersInRepo(postersNotInRepo, "1");
         }
-
+        
         [Ignore]
         [TestMethod]
         public void SetDay()
@@ -50,9 +50,9 @@ namespace Tests
 
             var day = new Day
             {
-                Number = 1,
-                StartForumPostNumber = "11368576",
-                EndForumPostNumber = "11373503",
+                Number = 2,
+                StartForumPostNumber = "11375085",
+                EndForumPostNumber = "",
             };
 
             repo.UpsertDay(day);
@@ -84,30 +84,34 @@ namespace Tests
             }
         }
         
+        [Ignore]
         [TestMethod]
         public void UpdatePlayer()
         {
             using (var repo = new MongoRepository())
             {
-                var player = repo.FindPlayer("The Grand Pursuivant");
+                var player = repo.FindPlayer("John0");
 
                 player.Recruitments = new List<Recruitment>();
+                player.Participating = false;
 
                 repo.UpsertPlayer(player);
             }
         }
         
+        [Ignore]
         [TestMethod]
         public void KillPlayer()
         {
             using (var repo = new MongoRepository())
             {
-                var player = repo.FindPlayer("Mr Antelope");
+                var player = repo.FindPlayer("Mr Eagle");
+                var players = repo.FindAllPlayers();
 
-                player.Character = "Sean Spicer (Loudener)";
+                player.Character = "Bashar Al Assad (Jailor)";
                 player.Notes = string.Empty;
-                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Town, FactionName = "Team USA", ForumPostNumber = "0" } };
-                player.Fatality = "Lynched on Day 1";
+                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Bad Dudes", ForumPostNumber = "0" } };
+                player.Fatality = "Killed on Night 1";
 
                 repo.UpsertPlayer(player);
             }
