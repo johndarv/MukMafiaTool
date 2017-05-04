@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using HtmlAgilityPack;
-using MukMafiaTool.Database;
-using MukMafiaTool.Model;
 using MukMafiaTool.Common;
+using MukMafiaTool.Model;
 
 namespace MukMafiaTool.Controllers
 {
