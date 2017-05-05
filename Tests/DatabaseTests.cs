@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MukMafiaTool.Database;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using MukMafiaTool.Database;
+
     [TestClass]
     public class DatabaseTests
     {

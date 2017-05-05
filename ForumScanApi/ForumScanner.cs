@@ -1,73 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using MukMafiaTool.Common;
-using MukMafiaTool.Model;
-
-namespace ForumScanApi
+﻿namespace ForumScanApi
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Linq;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Model;
+
     public class ForumScanner : IForumScanner
     {
-        private IRepository _repo;
-        private ForumAccessor _forumAccessor;
-        private TimeSpan _pollInterval;
-        private DayScanner _dayScanner;
-        private VoteScanner _voteScanner;
-        private string _firstForumPostNumber;
+        private IRepository repo;
+        private ForumAccessor forumAccessor;
+        private TimeSpan pollInterval;
+        private DayScanner dayScanner;
+        private VoteScanner voteScanner;
+        private string firstForumPostNumber;
 
         public ForumScanner(IRepository repository)
         {
-            _repo = repository;
-            _forumAccessor = new ForumAccessor();
-            _pollInterval = GetInterval();
-            _dayScanner = new DayScanner(_repo);
-            _voteScanner = new VoteScanner(_repo);
-            _firstForumPostNumber = ConfigurationManager.AppSettings["FirstForumPostNumber"] ?? "1";
+            this.repo = repository;
+            this.forumAccessor = new ForumAccessor();
+            this.pollInterval = this.GetInterval();
+            this.dayScanner = new DayScanner(this.repo);
+            this.voteScanner = new VoteScanner(this.repo);
+            this.firstForumPostNumber = ConfigurationManager.AppSettings["FirstForumPostNumber"] ?? "1";
         }
 
         public void DoWholeUpdate()
         {
-            UpdateRepoFromThread();
+            this.UpdateRepoFromThread();
 
-            _repo.UpdateLastUpdatedTime();
+            this.repo.UpdateLastUpdatedTime();
         }
 
         public void DoEndOfGameScan()
         {
-            UpdateRepoFromThread();
-            UpdateVotesForWholeGame("11368576");
+            this.UpdateRepoFromThread();
+            this.UpdateVotesForWholeGame("11368576");
         }
 
         private void UpdateRepoFromThread()
         {
             int currentPageNumber = 1;
-            var latestPost = _repo.FindLatestPost();
+            var latestPost = this.repo.FindLatestPost();
 
             if (latestPost != null)
             {
                 currentPageNumber = Math.Max(latestPost.PageNumber - 1, 1);
             }
 
-            string pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);
+            string pageContent = this.forumAccessor.RetrievePageHtml(currentPageNumber);
 
             while (!string.IsNullOrEmpty(pageContent))
             {
-                PageScanner pageScanner = new PageScanner(_repo.FindAllDays());
+                PageScanner pageScanner = new PageScanner(this.repo.FindAllDays());
 
                 var scannedPosts = pageScanner.RetrieveAllPosts(pageContent, currentPageNumber);
                 var postsAfterDay0 = scannedPosts.Where(p => p.Day > 0);
 
                 // Ensure any new players that have posted new posts are in the repository
-                var newPostsAfterDay0 = latestPost == null ? postsAfterDay0 : FindAllPostsAfter(postsAfterDay0, latestPost.ForumPostNumber);
-                _repo.EnsurePlayersInRepo(newPostsAfterDay0.Select(p => p.Poster), _firstForumPostNumber);
+                var newPostsAfterDay0 = latestPost == null ? postsAfterDay0 : this.FindAllPostsAfter(postsAfterDay0, latestPost.ForumPostNumber);
+                this.repo.EnsurePlayersInRepo(newPostsAfterDay0.Select(p => p.Poster), this.firstForumPostNumber);
 
-                _dayScanner.UpdateDays(postsAfterDay0);
+                this.dayScanner.UpdateDays(postsAfterDay0);
 
-                UpdateVotes(postsAfterDay0);
+                this.UpdateVotes(postsAfterDay0);
 
                 currentPageNumber++;
-                pageContent = _forumAccessor.RetrievePageHtml(currentPageNumber);
+                pageContent = this.forumAccessor.RetrievePageHtml(currentPageNumber);
             }
         }
 
@@ -75,50 +75,50 @@ namespace ForumScanApi
         {
             foreach (var post in scannedPosts)
             {
-                var repoPost = _repo.FindSpecificPost(post.ForumPostNumber);
+                var repoPost = this.repo.FindSpecificPost(post.ForumPostNumber);
 
                 if (repoPost == null || repoPost.LastScanned - repoPost.DateTime < TimeSpan.FromMinutes(5))
                 {
-                    _repo.UpsertPost(post);
+                    this.repo.UpsertPost(post);
                 }
             }
         }
 
         private void UpdateVotesForWholeGame(string startOfGameForumPostNumber)
         {
-            var allPosts = _repo.FindAllPosts().OrderBy(p => p.ForumPostNumber).ToList();
-            var relevantPosts = FindAllPostsAfter(allPosts, startOfGameForumPostNumber);
+            var allPosts = this.repo.FindAllPosts().OrderBy(p => p.ForumPostNumber).ToList();
+            var relevantPosts = this.FindAllPostsAfter(allPosts, startOfGameForumPostNumber);
 
-            UpsertVotes(relevantPosts);
+            this.UpsertVotes(relevantPosts);
         }
 
         private void UpdateVotes(IEnumerable<ForumPost> scannedPosts)
         {
             foreach (var post in scannedPosts)
             {
-                var repoPost = _repo.FindSpecificPost(post.ForumPostNumber);
+                var repoPost = this.repo.FindSpecificPost(post.ForumPostNumber);
 
                 if (repoPost == null || repoPost.LastScanned - repoPost.DateTime < TimeSpan.FromMinutes(5))
                 {
-                    _repo.UpsertPost(post);
-                    _repo.DeleteVotes(post.ForumPostNumber);
-                    UpsertVotes(post);
+                    this.repo.UpsertPost(post);
+                    this.repo.DeleteVotes(post.ForumPostNumber);
+                    this.UpsertVotes(post);
                 }
             }
         }
 
         private void UpsertVotes(ForumPost relevantPost)
         {
-            UpsertVotes(new ForumPost[] { relevantPost });
+            this.UpsertVotes(new ForumPost[] { relevantPost });
         }
 
         private void UpsertVotes(IList<ForumPost> relevantPosts)
         {
             foreach (var post in relevantPosts)
             {
-                foreach (var vote in _voteScanner.ScanForVotes(post))
+                foreach (var vote in this.voteScanner.ScanForVotes(post))
                 {
-                    _repo.UpsertVote(vote);
+                    this.repo.UpsertVote(vote);
                 }
             }
         }

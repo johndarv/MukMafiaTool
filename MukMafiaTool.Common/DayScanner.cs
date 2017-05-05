@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using MukMafiaTool.Model;
-
-namespace MukMafiaTool.Common
+﻿namespace MukMafiaTool.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
+    using MukMafiaTool.Model;
+
     public class DayScanner
     {
-        private IRepository _repo;
+        private IRepository repo;
 
         public DayScanner(IRepository repository)
         {
-            _repo = repository;
+            this.repo = repository;
         }
 
         public void UpdateDays(IEnumerable<ForumPost> posts)
@@ -43,7 +43,7 @@ namespace MukMafiaTool.Common
                             EndForumPostNumber = string.Empty,
                         };
 
-                        _repo.UpsertDay(day);
+                        this.repo.UpsertDay(day);
                     }
                 }
                 else if (endMatched.Success)
@@ -53,13 +53,13 @@ namespace MukMafiaTool.Common
                     int dayNumber;
                     if (int.TryParse(numbers.Value, out dayNumber))
                     {
-                        Day day = _repo.FindDay(dayNumber);
+                        Day day = this.repo.FindDay(dayNumber);
 
                         if (day != null)
                         {
                             day.EndForumPostNumber = post.ForumPostNumber;
 
-                            _repo.UpsertDay(day);
+                            this.repo.UpsertDay(day);
                         }
                     }
                 }

@@ -1,25 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Globalization;
-using System.Linq;
-using System.Security.Authentication;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MukMafiaTool.Common;
-using MukMafiaTool.Model;
-
-namespace MukMafiaTool.Database
+﻿namespace MukMafiaTool.Database
 {
-    public class MongoRepository : IRepository, IDisposable
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.Globalization;
+    using System.Linq;
+    using System.Security.Authentication;
+    using MongoDB.Bson;
+    using MongoDB.Driver;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Model;
+
+    public sealed class MongoRepository : IRepository, IDisposable
     {
-        private IMongoCollection<BsonDocument> _posts;
-        private IMongoCollection<BsonDocument> _votes;
-        private IMongoCollection<BsonDocument> _players;
-        private IMongoCollection<BsonDocument> _metadata;
-        private IMongoCollection<BsonDocument> _days;
-        private IMongoCollection<BsonDocument> _users;
-        private IMongoCollection<BsonDocument> _logs;
+        private readonly IMongoCollection<BsonDocument> postsCollection;
+        private readonly IMongoCollection<BsonDocument> votesCollection;
+        private readonly IMongoCollection<BsonDocument> playersCollection;
+        private readonly IMongoCollection<BsonDocument> metadataCollection;
+        private readonly IMongoCollection<BsonDocument> daysCollection;
+        private readonly IMongoCollection<BsonDocument> usersCollection;
+        private readonly IMongoCollection<BsonDocument> logsCollection;
 
         public MongoRepository()
         {
@@ -31,13 +31,13 @@ namespace MukMafiaTool.Database
             var mongoClient = new MongoClient(settings);
             var database = mongoClient.GetDatabase(databaseName);
 
-            _posts = database.GetCollection<BsonDocument>("Posts");
-            _votes = database.GetCollection<BsonDocument>("Votes");
-            _players = database.GetCollection<BsonDocument>("Players");
-            _metadata = database.GetCollection<BsonDocument>("Metadata");
-            _days = database.GetCollection<BsonDocument>("Days");
-            _users = database.GetCollection<BsonDocument>("Users");
-            _logs = database.GetCollection<BsonDocument>("Logs");
+            this.postsCollection = database.GetCollection<BsonDocument>("Posts");
+            this.votesCollection = database.GetCollection<BsonDocument>("Votes");
+            this.playersCollection = database.GetCollection<BsonDocument>("Players");
+            this.metadataCollection = database.GetCollection<BsonDocument>("Metadata");
+            this.daysCollection = database.GetCollection<BsonDocument>("Days");
+            this.usersCollection = database.GetCollection<BsonDocument>("Users");
+            this.logsCollection = database.GetCollection<BsonDocument>("Logs");
         }
 
         public void Dispose()
@@ -46,7 +46,7 @@ namespace MukMafiaTool.Database
 
         public IEnumerable<ForumPost> FindAllPosts(bool includeDayZeros = false)
         {
-            var documents = _posts.Find(new BsonDocument()).ToListAsync().Result;
+            var documents = this.postsCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             var posts = documents.Select(d => d.ToForumPost());
 
@@ -60,21 +60,21 @@ namespace MukMafiaTool.Database
 
         public IEnumerable<Player> FindAllPlayers()
         {
-            var documents = _players.Find(new BsonDocument()).ToListAsync().Result;
+            var documents = this.playersCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             return documents.Select(d => d.ToPlayer());
         }
 
         public IEnumerable<Vote> FindAllVotes()
         {
-            var documents = _votes.Find(new BsonDocument()).ToListAsync().Result;
+            var documents = this.votesCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             return documents.Select(d => d.ToVote());
         }
 
         public IList<ForumPost> FindAllPosts(string playerName)
         {
-            var allPosts = FindAllPosts();
+            var allPosts = this.FindAllPosts();
 
             return allPosts.Where(p => string.Equals(p.Poster, playerName, StringComparison.OrdinalIgnoreCase)).ToList();
         }
@@ -83,11 +83,11 @@ namespace MukMafiaTool.Database
         {
             var matchingPosts = new List<ForumPost>();
 
-            var allPosts = FindAllPosts();
+            var allPosts = this.FindAllPosts();
 
             CultureInfo culture = CultureInfo.InvariantCulture;
 
-            foreach(var post in allPosts)
+            foreach (var post in allPosts)
             {
                 if (culture.CompareInfo.IndexOf(post.Content.ToString(), search, CompareOptions.IgnoreCase) >= 0)
                 {
@@ -101,7 +101,7 @@ namespace MukMafiaTool.Database
         public ForumPost FindSpecificPost(string forumPostNumber)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", forumPostNumber);
-            var result = _posts.Find(filter).FirstOrDefaultAsync().Result;
+            var result = this.postsCollection.Find(filter).FirstOrDefaultAsync().Result;
 
             if (result == null)
             {
@@ -128,7 +128,7 @@ namespace MukMafiaTool.Database
             var builder = Builders<BsonDocument>.Filter;
             var filter = builder.Eq("ForumPostNumber", post.ForumPostNumber);
 
-            var existingPost = FindSpecificPost(post.ForumPostNumber);
+            var existingPost = this.FindSpecificPost(post.ForumPostNumber);
 
             // In the case where the post already exists in the database, and the post has just been rescanned
             if (existingPost != null && post.ManuallyEdited == false)
@@ -136,27 +136,27 @@ namespace MukMafiaTool.Database
                 // Then only upsert if it hasn't been previously edited
                 filter = filter & builder.Eq("ManuallyEdited", false);
             }
-            
-            Upsert(_posts, newDoc, filter);
+
+            Upsert(this.postsCollection, newDoc, filter);
         }
 
         public void DeleteAllVotes()
         {
             var filter = Builders<BsonDocument>.Filter.Eq("ManuallyEdited", false);
 
-            _votes.DeleteManyAsync(filter).Wait();
+            this.votesCollection.DeleteManyAsync(filter).Wait();
         }
 
         public void DeleteVotes(string forumPostNumber)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("ForumPostNumber", forumPostNumber);
 
-            _votes.DeleteManyAsync(filter).Wait();
+            this.votesCollection.DeleteManyAsync(filter).Wait();
         }
 
         public void UpdateLastUpdatedTime()
         {
-            UpdateLastUpdatedTime(DateTime.UtcNow);
+            this.UpdateLastUpdatedTime(DateTime.UtcNow);
         }
 
         public void UpdateLastUpdatedTime(DateTime dateTime)
@@ -169,21 +169,21 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", 1);
 
-            Upsert(_metadata, doc, filter);
+            Upsert(this.metadataCollection, doc, filter);
         }
 
         public DateTime FindLastUpdatedDateTime()
         {
             var filter = Builders<BsonDocument>.Filter.Eq("_id", 1);
 
-            var doc = _metadata.Find(filter).FirstOrDefaultAsync().Result;
+            var doc = this.metadataCollection.Find(filter).FirstOrDefaultAsync().Result;
 
             return doc["LastUpdatedDateTime"].ToLocalTime();
         }
 
         public IList<Day> FindAllDays()
         {
-            var documents = _days.Find(new BsonDocument()).ToListAsync().Result;
+            var documents = this.daysCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             var days = new List<Day>();
 
@@ -197,7 +197,7 @@ namespace MukMafiaTool.Database
 
         public Day FindCurrentDay()
         {
-            var days = FindAllDays();
+            var days = this.FindAllDays();
             days = days.OrderBy(d => d.Number).ToList();
             return days.Last();
         }
@@ -213,7 +213,7 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("_id", day.Number);
 
-            Upsert(_days, newDoc, filter);
+            Upsert(this.daysCollection, newDoc, filter);
         }
 
         // Note: This finds the *current* latest page accessed, not the one when the Repository object was instantiated.</remarks>
@@ -221,8 +221,8 @@ namespace MukMafiaTool.Database
         {
             var sortDefinition = Builders<BsonDocument>.Sort.Descending(d => d["ForumPostNumber"]);
 
-            var doc = _posts.Find(new BsonDocument()).Sort(sortDefinition).FirstOrDefaultAsync().Result;
-            
+            var doc = this.postsCollection.Find(new BsonDocument()).Sort(sortDefinition).FirstOrDefaultAsync().Result;
+
             if (doc == null)
             {
                 return null;
@@ -242,21 +242,22 @@ namespace MukMafiaTool.Database
                 { "ForumPostNumber", vote.ForumPostNumber },
                 { "PostContentIndex", vote.PostContentIndex },
                 { "ManuallyEdited", vote.ManuallyEdited },
-                { "Day", vote.Day },            };
+                { "Day", vote.Day },
+            };
 
             var builder = Builders<BsonDocument>.Filter;
             var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber)
                 & builder.Eq("PostContentIndex", vote.PostContentIndex)
                 & builder.Eq("ManuallyEdited", false);
 
-            Upsert(_votes, newDoc, filter);
+            Upsert(this.votesCollection, newDoc, filter);
         }
 
         public void EnsurePlayersInRepo(IEnumerable<string> playerNames, string firstForumPostNumber)
         {
             foreach (var playerName in playerNames)
             {
-                if (FindPlayer(playerName) == null)
+                if (this.FindPlayer(playerName) == null)
                 {
                     var recruitmentDoc = new BsonDocument
                     {
@@ -269,7 +270,7 @@ namespace MukMafiaTool.Database
 
                     var aliases = new BsonArray();
 
-                    foreach(var alias in determinedAliases)
+                    foreach (var alias in determinedAliases)
                     {
                         aliases.Add(BsonValue.Create(alias));
                     }
@@ -285,7 +286,7 @@ namespace MukMafiaTool.Database
                         { "Aliases", aliases },
                     };
 
-                    _players.InsertOneAsync(playerDoc).Wait();
+                    this.playersCollection.InsertOneAsync(playerDoc).Wait();
                 }
             }
         }
@@ -324,14 +325,14 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("Name", player.Name);
 
-            Upsert(_players, newDoc, filter);
+            Upsert(this.playersCollection, newDoc, filter);
         }
 
         public Player FindPlayer(string name)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("Name", name);
 
-            var player = _players.Find(filter).FirstOrDefaultAsync().Result;
+            var player = this.playersCollection.Find(filter).FirstOrDefaultAsync().Result;
 
             if (player == null)
             {
@@ -345,7 +346,7 @@ namespace MukMafiaTool.Database
         {
             var filter = Builders<BsonDocument>.Filter.Eq("_id", dayNumber);
 
-            var doc = _days.Find(filter).FirstOrDefaultAsync().Result;
+            var doc = this.daysCollection.Find(filter).FirstOrDefaultAsync().Result;
 
             if (doc == null)
             {
@@ -358,7 +359,7 @@ namespace MukMafiaTool.Database
         public void UpsertUser(User user)
         {
             BsonArray roles = new BsonArray();
-            
+
             foreach (var role in user.Roles)
             {
                 roles.Add(role);
@@ -373,14 +374,14 @@ namespace MukMafiaTool.Database
 
             var filter = Builders<BsonDocument>.Filter.Eq("UserName", user.UserName);
 
-            Upsert(_users, newDoc, filter);
+            Upsert(this.usersCollection, newDoc, filter);
         }
 
         public User FindUser(string userName)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("UserName", userName);
 
-            var doc = _users.Find(filter).FirstOrDefaultAsync().Result;
+            var doc = this.usersCollection.Find(filter).FirstOrDefaultAsync().Result;
 
             if (doc == null)
             {
@@ -395,12 +396,12 @@ namespace MukMafiaTool.Database
             BsonDocument doc = new BsonDocument();
             doc["Message"] = message;
 
-            _logs.InsertOneAsync(doc).Wait();
+            this.logsCollection.InsertOneAsync(doc).Wait();
         }
 
         public IEnumerable<string> FindAllLogMessages()
         {
-            var docs = _logs.Find(new BsonDocument()).ToListAsync().Result;
+            var docs = this.logsCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             return docs.Select(d => d["Message"].ToString());
         }
@@ -417,7 +418,7 @@ namespace MukMafiaTool.Database
         {
             IList<string> aliases = new List<string>();
 
-            if(playerName.StartsWith("MS "))
+            if (playerName.StartsWith("MS "))
             {
                 aliases.Add(playerName.Substring(3));
                 aliases.Add(playerName.Remove(2, 1));

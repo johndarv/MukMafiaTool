@@ -1,11 +1,11 @@
-﻿using System;
-using System.Net;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MukMafiaTool.Controllers;
-using MukMafiaTool.Database;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using System.Net;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using MukMafiaTool.Controllers;
+    using MukMafiaTool.Database;
+
     [TestClass]
     public class DayControllerTests
     {

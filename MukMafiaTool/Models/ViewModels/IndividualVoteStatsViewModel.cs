@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MukMafiaTool.Models.ViewModels
+﻿namespace MukMafiaTool.Models.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class IndividualVoteStatsViewModel
     {
         public string Name { get; set; }

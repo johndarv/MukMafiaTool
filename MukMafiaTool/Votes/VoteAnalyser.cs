@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MukMafiaTool.Model;
-using MukMafiaTool.Models;
-
-namespace MukMafiaTool.Votes
+﻿namespace MukMafiaTool.Votes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using MukMafiaTool.Model;
+    using MukMafiaTool.Models;
+
     public static class VoteAnalyser
     {
         public static VoteSituation DetermineCurrentVoteSituation(IEnumerable<Vote> allVotes, IEnumerable<Player> players, IEnumerable<Day> days)
@@ -76,7 +75,7 @@ namespace MukMafiaTool.Votes
 
             var voterRecruitment = DetermineRecruitment(voter, vote.ForumPostNumber);
             result.VoterFactionName = voterRecruitment.FactionName;
-            result.VoterFactionAllegiance = voterRecruitment.Allegiance;            
+            result.VoterFactionAllegiance = voterRecruitment.Allegiance;
 
             var recipient = players.FirstOrDefault(p => p.Name == vote.Recipient);
             if (recipient == null)
@@ -90,24 +89,6 @@ namespace MukMafiaTool.Votes
             result.TargetFactionName = recruitment.FactionName;
 
             return result;
-        }
-
-        private static Recruitment DetermineRecruitment(Player player, string forumPostNumber)
-        {
-            foreach (var recruitment in player.Recruitments)
-            {
-                if (string.Compare(forumPostNumber, recruitment.ForumPostNumber) >= 0)
-                {
-                    return recruitment;
-                }
-            }
-
-            string msg = string.Format(
-                "Something went wrong with recruitments and stuff. Player name: {0}. Forum Post Number: {1}.",
-                player.Name,
-                forumPostNumber);
-
-            throw new InvalidOperationException(msg);
         }
 
         public static double CalculatePercentage(
@@ -127,7 +108,25 @@ namespace MukMafiaTool.Votes
                 }
             }
 
-            return ((double)matchingVotes.Count() / votes.Count());
+            return (double)matchingVotes.Count() / votes.Count();
+        }
+
+        private static Recruitment DetermineRecruitment(Player player, string forumPostNumber)
+        {
+            foreach (var recruitment in player.Recruitments)
+            {
+                if (string.Compare(forumPostNumber, recruitment.ForumPostNumber) >= 0)
+                {
+                    return recruitment;
+                }
+            }
+
+            string msg = string.Format(
+                "Something went wrong with recruitments and stuff. Player name: {0}. Forum Post Number: {1}.",
+                player.Name,
+                forumPostNumber);
+
+            throw new InvalidOperationException(msg);
         }
     }
 }

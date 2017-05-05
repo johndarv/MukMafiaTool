@@ -1,36 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Mvc;
-using MukMafiaTool.Database;
-using MukMafiaTool.Common;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Mvc;
+    using MukMafiaTool.Common;
+
     public class DayController : Controller
     {
-        IRepository _repo;
+        private IRepository repo;
 
         public DayController(IRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
         }
 
         // GET: Day
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage RedetermineDays()
         {
-            var posts = _repo.FindAllPosts(includeDayZeros: true);
+            var posts = this.repo.FindAllPosts(includeDayZeros: true);
 
             foreach (var post in posts)
             {
-                post.Day = post.DetermineDay(_repo);
-                _repo.UpsertPost(post);
+                post.Day = post.DetermineDay(this.repo);
+                this.repo.UpsertPost(post);
             }
-            
+
             var response = new HttpResponseMessage();
             response.StatusCode = HttpStatusCode.OK;
             return response;

@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using MukMafiaTool.Common;
-using MukMafiaTool.Database;
-using MukMafiaTool.Model;
-using MukMafiaTool.Models.ViewModels;
-using MukMafiaTool.Votes;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using System.Web.Mvc;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Database;
+    using MukMafiaTool.Model;
+    using MukMafiaTool.Models.ViewModels;
+    using MukMafiaTool.Votes;
+
     public class VoteStatsController : Controller
     {
-        private IRepository _repo;
+        private IRepository repo;
 
         public VoteStatsController(IRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
         }
 
         // GET: VoteStats
@@ -26,8 +26,8 @@ namespace MukMafiaTool.Controllers
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();
 
-            var allVotes = _repo.FindAllVotes();
-            var allPlayers = _repo.FindAllPlayers();
+            var allVotes = this.repo.FindAllVotes();
+            var allPlayers = this.repo.FindAllPlayers();
 
             var meaningfulVotes = allVotes.Where(v => !v.IsUnvote);
             var meaningfulVoteGroups = meaningfulVotes.GroupBy(v => new { v.Voter, v.Recipient, v.Day });
@@ -37,9 +37,9 @@ namespace MukMafiaTool.Controllers
 
             viewModel.IndividualVoteStats = CalculateIndividualStats(votes, allPlayers);
 
-            viewModel.FactionVoteStats = CalculateFactionStats(votes, allPlayers);
+            viewModel.FactionVoteStats = this.CalculateFactionStats(votes, allPlayers);
 
-            return View(viewModel);
+            return this.View(viewModel);
         }
 
         private static void CalculateTotalStats(VoteStatsViewModel viewModel, IEnumerable<Vote> votes, IEnumerable<Player> allPlayers)

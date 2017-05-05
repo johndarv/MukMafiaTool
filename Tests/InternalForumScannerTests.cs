@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ForumScanApi;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MukMafiaTool.Database;
-using MukMafiaTool.Model;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using ForumScanApi;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using MukMafiaTool.Database;
+    using MukMafiaTool.Model;
+
     [TestClass]
     public class InternalForumScannerTests
     {
@@ -41,7 +41,7 @@ namespace Tests
 
             repo.EnsurePlayersInRepo(postersNotInRepo, "1");
         }
-        
+
         [Ignore]
         [TestMethod]
         public void SetDay()
@@ -52,7 +52,7 @@ namespace Tests
             {
                 Number = 2,
                 StartForumPostNumber = "11375085",
-                EndForumPostNumber = "",
+                EndForumPostNumber = string.Empty,
             };
 
             repo.UpsertDay(day);
@@ -83,7 +83,7 @@ namespace Tests
                 repo.UpsertUser(user);
             }
         }
-        
+
         [Ignore]
         [TestMethod]
         public void UpdatePlayer()
@@ -98,7 +98,7 @@ namespace Tests
                 repo.UpsertPlayer(player);
             }
         }
-        
+
         [Ignore]
         [TestMethod]
         public void KillPlayer()

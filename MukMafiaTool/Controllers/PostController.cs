@@ -1,26 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web.Mvc;
-using MukMafiaTool.Common;
-using MukMafiaTool.Model;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web.Mvc;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Model;
+
     public class PostController : Controller
     {
-        private IRepository _repo;
+        private IRepository repo;
 
         public PostController(IRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
         }
 
         // GET: Player
         public ActionResult Index(string playerName, string searchString, string forumPostNumber, bool includeQuoteBlocks = false)
         {
-            var posts = _repo.FindAllPosts();
+            var posts = this.repo.FindAllPosts();
 
             if (!string.IsNullOrEmpty(playerName))
             {
@@ -37,7 +37,7 @@ namespace MukMafiaTool.Controllers
                 posts = posts.Where(p => string.Equals(forumPostNumber, p.ForumPostNumber, StringComparison.OrdinalIgnoreCase)).ToList();
             }
 
-            return View(posts.ToList());
+            return this.View(posts.ToList());
         }
 
         private static IList<ForumPost> FilterOnSearchString(string searchString, bool includeQuoteBlocks, IList<ForumPost> posts)

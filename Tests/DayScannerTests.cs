@@ -1,21 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using MukMafiaTool.Common;
-using MukMafiaTool.Model;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using System.Web;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Model;
+
     [TestClass]
     public class DayScannerTests
     {
-        IRepository _repo;
-        DayScanner _target;
+        private IRepository repo;
+        private DayScanner target;
 
         public DayScannerTests()
         {
@@ -24,9 +24,9 @@ namespace Tests
             mockRepo.Setup(r => r.FindDay(10))
                 .Returns(new Day { Number = 10, StartForumPostNumber = "100", EndForumPostNumber = string.Empty });
 
-            _repo = mockRepo.Object;
+            this.repo = mockRepo.Object;
 
-            _target = new DayScanner(_repo);
+            this.target = new DayScanner(this.repo);
         }
 
         [TestMethod]
@@ -42,9 +42,9 @@ namespace Tests
                 Content = new HtmlString(@"[start of day 3]"),
             };
 
-            _target.UpdateDays(new ForumPost[] { post });
+            this.target.UpdateDays(new ForumPost[] { post });
 
-            var mock = Mock.Get<IRepository>(_repo);
+            var mock = Mock.Get<IRepository>(this.repo);
 
             mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 3 && d.StartForumPostNumber == "1111111")));
         }
@@ -62,9 +62,9 @@ namespace Tests
                 Content = new HtmlString(@"[start of day 1]"),
             };
 
-            _target.UpdateDays(new ForumPost[] { post });
+            this.target.UpdateDays(new ForumPost[] { post });
 
-            var mock = Mock.Get<IRepository>(_repo);
+            var mock = Mock.Get<IRepository>(this.repo);
 
             mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 1 && d.StartForumPostNumber == "1111111")));
         }
@@ -82,9 +82,9 @@ namespace Tests
                 Content = new HtmlString(@"[start of Day 1]"),
             };
 
-            _target.UpdateDays(new ForumPost[] { post });
+            this.target.UpdateDays(new ForumPost[] { post });
 
-            var mock = Mock.Get<IRepository>(_repo);
+            var mock = Mock.Get<IRepository>(this.repo);
 
             mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 1 && d.StartForumPostNumber == "1111111")));
         }
@@ -111,9 +111,9 @@ namespace Tests
 				</div>"),
             };
 
-            _target.UpdateDays(new ForumPost[] { post });
+            this.target.UpdateDays(new ForumPost[] { post });
 
-            var mock = Mock.Get<IRepository>(_repo);
+            var mock = Mock.Get<IRepository>(this.repo);
 
             mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 3 && d.StartForumPostNumber == "1111111")));
         }
@@ -140,9 +140,9 @@ namespace Tests
 				</div>"),
             };
 
-            _target.UpdateDays(new ForumPost[] { post });
+            this.target.UpdateDays(new ForumPost[] { post });
 
-            var mock = Mock.Get<IRepository>(_repo);
+            var mock = Mock.Get<IRepository>(this.repo);
 
             mock.Verify(m => m.UpsertDay(It.Is<Day>(d => d.Number == 10 && d.StartForumPostNumber == "100" && d.EndForumPostNumber == "1111111")));
         }

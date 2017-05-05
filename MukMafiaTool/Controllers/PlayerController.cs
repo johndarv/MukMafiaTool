@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
-using System.Web.Mvc;
-using MukMafiaTool.Common;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Web;
+    using System.Web.Mvc;
+    using MukMafiaTool.Common;
+
     public class PlayerController : Controller
     {
-        private IRepository _repo;
+        private IRepository repo;
 
         public PlayerController(IRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
         }
 
         // GET: Player
@@ -26,14 +26,14 @@ namespace MukMafiaTool.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var player = _repo.FindPlayer(playerName);
+            var player = this.repo.FindPlayer(playerName);
 
             if (player == null)
             {
-                return HttpNotFound();
+                return this.HttpNotFound();
             }
 
-            return View(player);
+            return this.View(player);
         }
     }
 }

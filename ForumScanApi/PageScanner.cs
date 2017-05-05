@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Web;
-using HtmlAgilityPack;
-using MukMafiaTool.Model;
-
-namespace ForumScanApi
+﻿namespace ForumScanApi
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Web;
+    using HtmlAgilityPack;
+    using MukMafiaTool.Model;
+
     public class PageScanner
     {
-        IList<Day> _days;
+        private IList<Day> days;
 
         public PageScanner(IList<Day> days)
         {
-            _days = days;
+            this.days = days;
         }
 
         public IList<ForumPost> RetrieveAllPosts(string pageContent, int currentPageNumber)
@@ -29,7 +29,7 @@ namespace ForumScanApi
 
             foreach (var postElement in postElements)
             {
-                var newPost = ConvertElementToForumPost(_days, postElement);
+                var newPost = this.ConvertElementToForumPost(this.days, postElement);
                 newPost.PageNumber = currentPageNumber;
 
                 forumPosts.Add(newPost);
@@ -75,7 +75,7 @@ namespace ForumScanApi
                     var currentQuoteContents = blockquote.SelectSingleNode(".//div[@class='ipsQuote_contents']");
 
                     currentQuoteHeaderNode.Remove();
-                    
+
                     blockquote.InsertBefore(replacementQuoteHeaderNode, currentQuoteContents);
                 }
             }
@@ -98,13 +98,13 @@ namespace ForumScanApi
             newPost.ForumPostNumber = commentDiv.Attributes["data-commentid"].Value;
 
             // Find Day
-            newPost.Day = DetermineDay(newPost.ForumPostNumber);
+            newPost.Day = this.DetermineDay(newPost.ForumPostNumber);
 
             // Find DateTime
             var dateTimeNode = commentDiv.SelectSingleNode(".//time");
             var dateTimeString = dateTimeNode.Attributes["datetime"].Value;
 
-            newPost.DateTime = ConvertDate(dateTimeString);
+            newPost.DateTime = this.ConvertDate(dateTimeString);
 
             // Find Content
             var contentHtml = postNode.SelectSingleNode(".//div[@data-role='commentContent']").InnerHtml;
@@ -118,7 +118,7 @@ namespace ForumScanApi
 
         private int DetermineDay(string forumPostNumber)
         {
-            foreach (var day in _days)
+            foreach (var day in this.days)
             {
                 if (string.Compare(forumPostNumber, day.StartForumPostNumber) >= 0)
                 {

@@ -1,37 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Mvc;
-using MukMafiaTool.Common;
-using MukMafiaTool.Database;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web;
+    using System.Web.Mvc;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Database;
+
     public class VoteController : Controller
     {
-        private IRepository _repo;
-        private VoteScanner _voteScanner;
+        private IRepository repo;
+        private VoteScanner voteScanner;
 
         public VoteController(IRepository repo)
         {
-            _repo = repo;
-            _voteScanner = new VoteScanner(_repo);
+            this.repo = repo;
+            this.voteScanner = new VoteScanner(this.repo);
         }
 
         // GET: Vote
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage RedetermineVotes()
         {
-            _repo.DeleteAllVotes();
-            
-            foreach (var post in _repo.FindAllPosts())
+            this.repo.DeleteAllVotes();
+
+            foreach (var post in this.repo.FindAllPosts())
             {
-                foreach (var vote in _voteScanner.ScanForVotes(post))
+                foreach (var vote in this.voteScanner.ScanForVotes(post))
                 {
-                    _repo.UpsertVote(vote);
+                    this.repo.UpsertVote(vote);
                 }
             }
 

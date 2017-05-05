@@ -1,28 +1,28 @@
-﻿using MukMafiaTool.Common;
-using MukMafiaTool.Models.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Web;
-using System.Web.Mvc;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Web;
+    using System.Web.Mvc;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Models.ViewModels;
+
     public class LogController : Controller
     {
-        private IRepository _repo;
+        private IRepository repo;
 
         public LogController(IRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
         }
 
         // GET: Log
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var messages = _repo.FindAllLogMessages();
+            var messages = this.repo.FindAllLogMessages();
             IList<LogMessage> logMessages = new List<LogMessage>();
 
             var postNumberRegex = new Regex("Forum Post Number: [0-9]+");
@@ -45,7 +45,7 @@ namespace MukMafiaTool.Controllers
                 logMessages.Add(logMessage);
             }
 
-            return View(logMessages);
+            return this.View(logMessages);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace MukMafiaTool.App_Start
     {
         public void Configuration(IAppBuilder app)
         {
-            ConfigureAuthentication(app);
+            this.ConfigureAuthentication(app);
         }
 
         public void ConfigureAuthentication(IAppBuilder app)

@@ -1,39 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using MukMafiaTool.Common;
-using MukMafiaTool.Model;
-
-namespace MukMafiaTool.Controllers
+﻿namespace MukMafiaTool.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Security.Claims;
+    using System.Web;
+    using System.Web.Mvc;
+    using Microsoft.AspNet.Identity;
+    using Microsoft.Owin.Security;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Model;
+
     public class AuthenticationController : Controller
     {
-        private IRepository _repo;
-
-        IAuthenticationManager Authentication
-        {
-            get { return HttpContext.GetOwinContext().Authentication; }
-        }
+        private IRepository repo;
 
         public AuthenticationController(IRepository repo)
         {
-            _repo = repo;
+            this.repo = repo;
+        }
+
+        public IAuthenticationManager Authentication
+        {
+            get { return this.HttpContext.GetOwinContext().Authentication; }
         }
 
         // GET: Authentication
         public ActionResult Index()
         {
-            return View();
+            return this.View();
         }
 
         public ActionResult Login(string userName, string password)
         {
-            var user = Authenticate(userName, password);
+            var user = this.Authenticate(userName, password);
 
             if (user != null)
             {
@@ -49,7 +49,7 @@ namespace MukMafiaTool.Controllers
                 {
                     identity.AddClaim(new Claim(ClaimTypes.Role, role));
                 }
-                
+
                 // Tell OWIN the identity provider, optional
                 // identity.AddClaim(new Claim(IdentityProvider, "Simplest Auth"));
 
@@ -57,18 +57,18 @@ namespace MukMafiaTool.Controllers
                 {
                     IsPersistent = false,
                 };
-                Authentication.SignIn(properties, identity);
+                this.Authentication.SignIn(properties, identity);
 
-                return RedirectToAction("index", "home");
+                return this.RedirectToAction("index", "home");
             }
 
-            return View("index", "Could not log you in");
+            return this.View("index", "Could not log you in");
         }
 
         public ActionResult Logout()
         {
-            Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("index", "home");
+            this.Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return this.RedirectToAction("index", "home");
         }
 
         private User Authenticate(string userName, string password)
@@ -78,7 +78,7 @@ namespace MukMafiaTool.Controllers
                 return null;
             }
 
-            var user = _repo.FindUser(userName);
+            var user = this.repo.FindUser(userName);
 
             if (user != null)
             {

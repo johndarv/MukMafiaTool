@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Web;
-
-namespace MukMafiaTool.Common
+﻿namespace MukMafiaTool.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Web;
+
     public static class StringExtensions
     {
         public static string FilterOutContentInQuoteBlocks(this string content)
@@ -55,12 +55,12 @@ namespace MukMafiaTool.Common
 
             while (i < content.Length)
             {
-                if (content.Length - i >= 5 && (string.Equals(content.Substring(i, 5), "<span")))
+                if (content.Length - i >= 5 && string.Equals(content.Substring(i, 5), "<span"))
                 {
                     chevronLevel++;
                     i = i + 5;
                 }
-                else if (content.Length - i >= 6 && (string.Equals(content.Substring(i, 6), "</span")))
+                else if (content.Length - i >= 6 && string.Equals(content.Substring(i, 6), "</span"))
                 {
                     chevronLevel++;
                     i = i + 6;
@@ -165,12 +165,18 @@ namespace MukMafiaTool.Common
         public static IEnumerable<int> AllIndexesOf(this string str, string value)
         {
             if (string.IsNullOrEmpty(value))
+            {
                 throw new ArgumentException("the string to find may not be empty", "value");
+            }
+
             for (int index = 0; ; index += value.Length)
             {
                 index = str.IndexOf(value, index);
                 if (index == -1)
+                {
                     break;
+                }
+
                 yield return index;
             }
         }
@@ -197,7 +203,7 @@ namespace MukMafiaTool.Common
                         boldLevel--;
                     }
                 }
-                
+
                 if (i == index)
                 {
                     if (boldLevel > 0)
@@ -219,7 +225,7 @@ namespace MukMafiaTool.Common
         public static string StripHtml(this string htmlText, bool decode = true)
         {
             Regex reg = new Regex("<[^>]+>", RegexOptions.IgnoreCase);
-            var stripped = reg.Replace(htmlText, "");
+            var stripped = reg.Replace(htmlText, string.Empty);
             return decode ? HttpUtility.HtmlDecode(stripped) : stripped;
         }
 

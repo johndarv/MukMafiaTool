@@ -1,17 +1,17 @@
-﻿using System;
-using System.Linq;
-using System.Web;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using MukMafiaTool.Common;
-using MukMafiaTool.Model;
-
-namespace Tests
+﻿namespace Tests
 {
+    using System;
+    using System.Linq;
+    using System.Web;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using Moq;
+    using MukMafiaTool.Common;
+    using MukMafiaTool.Model;
+
     [TestClass]
     public class VoteScannerTests
     {
-        private VoteScanner _voteScanner;
+        private VoteScanner voteScanner;
 
         public VoteScannerTests()
         {
@@ -32,7 +32,7 @@ namespace Tests
                 new Player { Name = "Don Wiskerando", Participating = true, Aliases = new string[0] },
                 new Player { Name = "The Grand Pursuivant", Participating = true, Aliases = new string[0] },
                 new Player { Name = "Mr. Blonde", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Mr. Violet", Participating = true, Aliases =  new string[] { "Mr Violet", "Violet", "Mr.Violet", "MrViolet" } },
+                new Player { Name = "Mr. Violet", Participating = true, Aliases = new string[] { "Mr Violet", "Violet", "Mr.Violet", "MrViolet" } },
                 new Player { Name = "Mr. Viridian", Participating = true, Aliases = new string[] { "Mr.Viridian", "Mr Viridian", "Viridian", "MrViridian" } },
                 new Player { Name = "Moderator", Participating = false, Aliases = new string[0] },
                 new Player { Name = "Player With Aliases", Participating = true, Aliases = new string[] { "PlayerWithAliases", "PWA" } },
@@ -42,7 +42,7 @@ namespace Tests
             mockRepo.Setup(m => m.FindAllPlayers())
                 .Returns(players);
 
-            _voteScanner = new VoteScanner(mockRepo.Object, 8);
+            this.voteScanner = new VoteScanner(mockRepo.Object, 8);
         }
 
         [TestMethod]
@@ -66,7 +66,7 @@ namespace Tests
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 2);
         }
@@ -105,7 +105,7 @@ namespace Tests
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 2);
         }
@@ -134,7 +134,7 @@ namespace Tests
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 2);
         }
@@ -168,7 +168,7 @@ What?!
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 1);
         }
@@ -195,7 +195,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 0);
         }
@@ -222,7 +222,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 2);
         }
@@ -248,7 +248,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 2);
         }
@@ -282,7 +282,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 0);
         }
@@ -315,7 +315,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 1);
         }
@@ -343,7 +343,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.First().IsUnvote == true);
@@ -399,7 +399,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 				</div>"),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.First().IsUnvote == false);
@@ -440,7 +440,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 2);
             Assert.IsTrue(votes.Last().Recipient == "John0");
@@ -472,7 +472,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.Single().Recipient == "The Grand Pursuivant");
@@ -514,7 +514,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.IsTrue(votes.Count() == 1);
             Assert.IsTrue(votes.Single().Recipient == "Mr. Viridian");
@@ -541,7 +541,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 "),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(true, votes.Single().IsUnvote);
@@ -562,7 +562,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 </p>"),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(false, votes.Single().IsUnvote);
@@ -584,7 +584,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 </p>"),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(false, votes.Single().IsUnvote);
@@ -608,7 +608,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 <p>"),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(false, votes.Single().IsUnvote);
@@ -630,7 +630,7 @@ Who did you hide behind on night 2, plums? Or did you mean you hid behind bennet
 </p>"),
             };
 
-            var votes = _voteScanner.ScanForVotes(post);
+            var votes = this.voteScanner.ScanForVotes(post);
 
             Assert.AreEqual(1, votes.Count());
             Assert.AreEqual(false, votes.Single().IsUnvote);

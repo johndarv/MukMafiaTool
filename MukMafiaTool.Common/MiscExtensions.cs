@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Web;
-
-namespace MukMafiaTool.Common
+﻿namespace MukMafiaTool.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Web;
+
     public static class MiscExtensions
     {
         public static HttpResponseMessage Send(this HttpClient client, HttpRequestMessage message)

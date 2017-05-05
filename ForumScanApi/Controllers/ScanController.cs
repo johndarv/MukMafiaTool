@@ -1,14 +1,14 @@
-﻿using System;
-using System.Web.Http;
-using MukMafiaTool.Database;
-
-namespace ForumScanApi.Controllers
+﻿namespace ForumScanApi.Controllers
 {
-    [Route("api/scan")]
+    using System;
+    using System.Web.Http;
+    using MukMafiaTool.Database;
+
+    [Route("scan")]
     public class ScanController : ApiController
     {
         [HttpGet]
-        
+
         public IHttpActionResult DoScan()
         {
             var message = string.Empty;
@@ -36,10 +36,10 @@ namespace ForumScanApi.Controllers
             }
             catch (Exception e)
             {
-                return InternalServerError(e);
+                return this.InternalServerError(e);
             }
 
-            return Ok(message);
+            return this.Ok(message);
         }
     }
 }

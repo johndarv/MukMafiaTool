@@ -1,8 +1,8 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MukMafiaTool.Common;
-
-namespace Tests
+﻿namespace Tests
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using MukMafiaTool.Common;
+
     [TestClass]
     public class StringExtensionsTests
     {

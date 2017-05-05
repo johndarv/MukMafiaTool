@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MukMafiaTool.Model;
-
-namespace MukMafiaTool.Common
+﻿namespace MukMafiaTool.Common
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using MukMafiaTool.Model;
+
     public static class ForumPostHelper
     {
         public static int DetermineDay(this ForumPost post, IRepository repo)

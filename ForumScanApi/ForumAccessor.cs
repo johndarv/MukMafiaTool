@@ -1,27 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using MukMafiaTool.Common;
-
-namespace ForumScanApi
+﻿namespace ForumScanApi
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Configuration;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Net;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using MukMafiaTool.Common;
+
     public class ForumAccessor
     {
-        HttpResponseHeaders _signedInHeaders;
-        string _forumUsername;
-        string _forumPassword;
+        private HttpResponseHeaders signedInHeaders;
+        private string forumUsername;
+        private string forumPassword;
 
         public ForumAccessor()
         {
-            _forumUsername = ConfigurationManager.AppSettings["ForumUsername"];
-            _forumPassword = ConfigurationManager.AppSettings["ForumPassword"];
+            this.forumUsername = ConfigurationManager.AppSettings["ForumUsername"];
+            this.forumPassword = ConfigurationManager.AppSettings["ForumPassword"];
             //_signedInHeaders = SignIn();
         }
 
@@ -65,34 +64,6 @@ namespace ForumScanApi
             }
         }
 
-        private HttpResponseHeaders SignIn()
-        {
-            using (var handler = new HttpClientHandler())
-            {
-                handler.AllowAutoRedirect = false;
-
-                using (HttpClient client = new HttpClient(handler))
-                {
-                    client.BaseAddress = new Uri("https://www.rllmukforum.com"); //?app=core&module=global&section=login&do=process
-
-                    var content = CreateContentToSignIn();
-
-                    HttpRequestMessage message = CreateMessageToSignIn(content);
-
-                    var response = client.Send(message);
-
-                    var responseContent = DecodeHttpContentToString(response);
-
-                    if (response.StatusCode != HttpStatusCode.RedirectMethod)
-                    {
-                        throw new Exception("Could not sign in to the forum. Maybe username / password incorrect or not set?");
-                    }
-
-                    return response.Headers;
-                }
-            }
-        }
-
         private static string DecodeHttpContentToString(HttpResponseMessage response)
         {
             // Read in the input stream, then decompress in to the outputstream.
@@ -132,7 +103,7 @@ namespace ForumScanApi
             message.Headers.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
             message.Headers.Add("Accept-Encoding", "gzip, deflate, br");
             message.Headers.Add("Accept-Language", "en-US,en;q=0.8");
-            message.Headers.Add("Cache-Control","max-age=0");
+            message.Headers.Add("Cache-Control", "max-age=0");
             message.Headers.Add("Connection", "keep-alive");
             message.Headers.Add("Origin", "https://www.rllmukforum.com");
             message.Headers.Add("Referer", "https://www.rllmukforum.com/?_fromLogin=1&_fromLogout=1");
@@ -146,8 +117,8 @@ namespace ForumScanApi
             var content = new FormUrlEncodedContent(new[]
                 {
                     new KeyValuePair<string, string>("csrfKey", "af5213a6610a082fe44d6300e96c5c5c"),
-                    new KeyValuePair<string, string>("auth", _forumUsername),
-                    new KeyValuePair<string, string>("password", _forumPassword),
+                    new KeyValuePair<string, string>("auth", this.forumUsername),
+                    new KeyValuePair<string, string>("password", this.forumPassword),
                     new KeyValuePair<string, string>("login__standard_submitted", "1"),
                     new KeyValuePair<string, string>("remember_me", "0"),
                     new KeyValuePair<string, string>("signin_anonymous", "0"),
@@ -155,6 +126,34 @@ namespace ForumScanApi
 
             content.Headers.ContentType = new MediaTypeHeaderValue("application/x-www-form-urlencoded");
             return content;
+        }
+
+        private HttpResponseHeaders SignIn()
+        {
+            using (var handler = new HttpClientHandler())
+            {
+                handler.AllowAutoRedirect = false;
+
+                using (HttpClient client = new HttpClient(handler))
+                {
+                    client.BaseAddress = new Uri("https://www.rllmukforum.com"); //?app=core&module=global&section=login&do=process
+
+                    var content = this.CreateContentToSignIn();
+
+                    HttpRequestMessage message = CreateMessageToSignIn(content);
+
+                    var response = client.Send(message);
+
+                    var responseContent = DecodeHttpContentToString(response);
+
+                    if (response.StatusCode != HttpStatusCode.RedirectMethod)
+                    {
+                        throw new Exception("Could not sign in to the forum. Maybe username / password incorrect or not set?");
+                    }
+
+                    return response.Headers;
+                }
+            }
         }
     }
 }

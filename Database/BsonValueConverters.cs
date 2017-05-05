@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using MongoDB.Bson;
-using MukMafiaTool.Model;
-
-namespace MukMafiaTool.Database
+﻿namespace MukMafiaTool.Database
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Web;
+    using MongoDB.Bson;
+    using MukMafiaTool.Model;
+
     internal static class BsonValueConverters
     {
         public static ForumPost ToForumPost(this BsonValue doc)
