@@ -58,7 +58,6 @@
             repo.UpsertDay(day);
         }
 
-        [Ignore]
         [TestMethod]
         public void SignInTest()
         {

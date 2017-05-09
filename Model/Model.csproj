@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="Allegiance.cs" />
     <Compile Include="Day.cs" />
-    <Compile Include="Exclusions.cs" />
+    <Compile Include="Exclusion.cs" />
     <Compile Include="Recruitment.cs" />
     <Compile Include="ForumPost.cs" />
     <Compile Include="Player.cs" />

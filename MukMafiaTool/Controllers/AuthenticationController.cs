@@ -50,8 +50,8 @@
                     identity.AddClaim(new Claim(ClaimTypes.Role, role));
                 }
 
-                // Tell OWIN the identity provider, optional
-                // identity.AddClaim(new Claim(IdentityProvider, "Simplest Auth"));
+                //// Tell OWIN the identity provider, optional
+                //// identity.AddClaim(new Claim(IdentityProvider, "Simplest Auth"));
 
                 var properties = new AuthenticationProperties
                 {

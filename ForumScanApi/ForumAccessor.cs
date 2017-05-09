@@ -5,6 +5,7 @@
     using System.Configuration;
     using System.IO;
     using System.IO.Compression;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Net.Http.Headers;
@@ -21,7 +22,7 @@
         {
             this.forumUsername = ConfigurationManager.AppSettings["ForumUsername"];
             this.forumPassword = ConfigurationManager.AppSettings["ForumPassword"];
-            //_signedInHeaders = SignIn();
+            this.signedInHeaders = this.SignIn();
         }
 
         public string RetrievePageHtml(int pageNumber)
@@ -40,12 +41,10 @@
 
                     var requestUri = message.RequestUri;
 
-                    //foreach (var cookieHeader in _signedInHeaders.Where(h => string.Equals(h.Key, "Set-Cookie")))
-                    //{
-                    //    message.Headers.Add("Cookie", cookieHeader.Value);
-                    //}
-
-                    message.Headers.Add("Cookie", "ips4_hasJS=true; ips4_IPSSessionFront=5jencfkslja241brpr2dlth960; ips4_member_id=26672; ips4_pass_hash=82f819607d76629af392bd7cc3c12493; ips4_ipsTimezone=Europe/London");
+                    foreach (var cookieHeader in this.signedInHeaders.Where(h => string.Equals(h.Key, "Set-Cookie")))
+                    {
+                        message.Headers.Add("Cookie", cookieHeader.Value);
+                    }
 
                     var response = client.Send(message);
 
@@ -109,7 +108,7 @@
             message.Headers.Add("Referer", "https://www.rllmukforum.com/?_fromLogin=1&_fromLogout=1");
             message.Headers.Add("Upgrade-Insecure-Requests", "1");
             message.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.98 Safari/537.36");
-            message.Headers.Add("Cookie", "ips4_hasJS=true; ips4_IPSSessionFront=tnu7hl1a5cpcljllh730d9gq40; ips4_ipsTimezone=Europe/London");
+            message.Headers.Add("Cookie", "ips4_IPSSessionFront=kjhgc0i3396q0mj1i32e6mtpd3; ips4_ipsTimezone=Europe/London; ips4_hasJS=true");
         }
 
         private FormUrlEncodedContent CreateContentToSignIn()
@@ -136,7 +135,7 @@
 
                 using (HttpClient client = new HttpClient(handler))
                 {
-                    client.BaseAddress = new Uri("https://www.rllmukforum.com"); //?app=core&module=global&section=login&do=process
+                    client.BaseAddress = new Uri("https://www.rllmukforum.com");
 
                     var content = this.CreateContentToSignIn();
 
@@ -148,7 +147,14 @@
 
                     if (response.StatusCode != HttpStatusCode.RedirectMethod)
                     {
-                        throw new Exception("Could not sign in to the forum. Maybe username / password incorrect or not set?");
+                        //// TODO: Log the fact that we couldn't sign in to the forum
+
+                        var forumCookie = ConfigurationManager.AppSettings["ForumCookie"];
+
+                        var fakeResponse = new HttpResponseMessage();
+                        fakeResponse.Headers.Add("Set-Cookie", forumCookie);
+
+                        response = fakeResponse;
                     }
 
                     return response.Headers;
