@@ -1,6 +1,5 @@
 ﻿namespace Tests
 {
-    using System;
     using System.Net;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MukMafiaTool.Controllers;

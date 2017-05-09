@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MukMafiaTool", "MukMafiaToo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{C7031144-B2C5-4C73-9541-67C520585934}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{37965B39-2981-4138-BD2B-374CE37CA7E0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{152292E7-FCD4-4A8D-A758-C3574CC324CA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MukMafiaTool.Common", "MukMafiaTool.Common\MukMafiaTool.Common.csproj", "{44622A9A-2A61-4A88-9ABA-E689B18582C3}"
@@ -50,8 +48,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{AB0B4E92-E092-46EE-8FD1-882540D12DAF} = {37965B39-2981-4138-BD2B-374CE37CA7E0}
 	EndGlobalSection
 EndGlobal
