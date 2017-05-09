@@ -44,21 +44,6 @@
 
         [Ignore]
         [TestMethod]
-        public void SetDay()
-        {
-            var repo = new MongoRepository();
-
-            var day = new Day
-            {
-                Number = 2,
-                StartForumPostNumber = "11375085",
-                EndForumPostNumber = string.Empty,
-            };
-
-            repo.UpsertDay(day);
-        }
-
-        [TestMethod]
         public void SignInTest()
         {
             var forumAccessor = new ForumAccessor();
@@ -74,27 +59,12 @@
             {
                 var user = new User
                 {
-                    UserName = "jd1",
-                    Password = "B1gly",
+                    UserName = "jd",
+                    Password = string.Empty,
                     Roles = new string[] { "Admin" },
                 };
 
                 repo.UpsertUser(user);
-            }
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void UpdatePlayer()
-        {
-            using (var repo = new MongoRepository())
-            {
-                var player = repo.FindPlayer("John0");
-
-                player.Recruitments = new List<Recruitment>();
-                player.Participating = false;
-
-                repo.UpsertPlayer(player);
             }
         }
 

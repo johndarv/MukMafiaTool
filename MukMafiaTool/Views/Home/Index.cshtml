@@ -15,6 +15,8 @@
     <br />
     @Html.ActionLink("View Log Messages", "index", "log");
     <br />
+    <a href="http://rllmukmafiascumscanner.azurewebsites.net/scan">Do a Scan</a>
+    <br />
 }
 
 <br />
@@ -61,16 +63,28 @@ List of Participants:
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
+        var editActionLink = Html.ActionLink("Edit", "index", "player", new { playerName = player.Name }, null);
+
+        object htmlAttributes = null;
+
         if (!player.IsInGame)
         {
-            var htmlAttributes = new { style = "text-decoration: line-through" };
-            
-            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount) @player.ExtraInfo</li>
+            htmlAttributes = new { style = "text-decoration: line-through" };
         }
-        else
-        {
-            <li>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, null) (@player.PostCount)</li>
-        }
+
+        <li>
+            @Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount)
+
+            @if (!string.IsNullOrEmpty(@player.ExtraInfo))
+            {
+                @player.ExtraInfo
+            }
+
+            @if (User.IsInRole("Admin"))
+            {
+                @: - @editActionLink
+            }
+        </li>
 
     }
 

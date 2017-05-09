@@ -35,9 +35,7 @@
                 }
             }
 
-            var response = new HttpResponseMessage();
-            response.StatusCode = HttpStatusCode.OK;
-            return response;
+            return HttpResponseMessageGenerator.GenerateOKMessage();
         }
     }
 }
