@@ -53,26 +53,17 @@
 
         [Ignore]
         [TestMethod]
-        public void SignInTest()
-        {
-            var forumAccessor = new ForumAccessor();
-
-            forumAccessor.RetrievePageHtml(1);
-        }
-
-        [Ignore]
-        [TestMethod]
         public void KillPlayer()
         {
             using (var repo = new MongoRepository())
             {
-                var player = repo.FindPlayer("Mr Eagle");
+                var player = repo.FindPlayer("Mr Salamander");
                 var players = repo.FindAllPlayers();
 
-                player.Character = "Bashar Al Assad (Jailor)";
+                player.Character = "Xi Jinping (Oneshot Role Cop)";
                 player.Notes = string.Empty;
-                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Bad Dudes", ForumPostNumber = "0" } };
-                player.Fatality = "Killed on Night 1";
+                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Allies", ForumPostNumber = "0" } };
+                player.Fatality = "Lynched on Day 2";
 
                 repo.UpsertPlayer(player);
             }

@@ -1,5 +1,6 @@
 ﻿namespace Tests
 {
+    using FluentAssertions;
     using ForumScanApi;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MukMafiaTool.Database;
@@ -23,6 +24,17 @@
             ForumScanner scanner = new ForumScanner(new MongoRepository());
 
             scanner.DoEndOfGameScan();
+        }
+
+        [TestMethod]
+        public void SignInTest()
+        {
+            var forumAccessor = new ForumAccessor();
+
+            var pageHtml = forumAccessor.RetrievePageHtml(1);
+
+            pageHtml.Should().NotBeNull(because: "otherwise the reuqest has definitely failed!");
+            pageHtml.Contains("permission").Should().BeFalse(because: "any message about permission will probably mean that the sign in has failed.");
         }
     }
 }
