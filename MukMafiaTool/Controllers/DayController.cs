@@ -33,6 +33,11 @@
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage SetDay(int dayNumber, string startForumPostNumber, string endForumPostNumber)
         {
+            if (endForumPostNumber == null)
+            {
+                endForumPostNumber = string.Empty;
+            }
+
             var day = new Day
             {
                 Number = dayNumber,

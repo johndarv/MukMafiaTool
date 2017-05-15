@@ -27,6 +27,8 @@
 
         IEnumerable<Vote> FindAllVotes();
 
+        Vote FindVote(string forumPostNumber, int postContentIndex);
+
         DateTime FindLastUpdatedDateTime();
 
         ForumPost FindSpecificPost(string forumPostNumber);

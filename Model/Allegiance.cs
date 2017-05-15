@@ -14,6 +14,7 @@
         Survivor,
         ItchyScratchy,
         Cult,
+        Neutral,
         Unknown,
     }
 }

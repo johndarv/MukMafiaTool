@@ -1,0 +1,79 @@
+﻿@model IEnumerable<MukMafiaTool.Model.Vote>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.IsUnvote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Voter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Recipient)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ForumPostNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PostContentIndex)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManuallyEdited)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Day)
+            </th>
+            <th></th>
+        </tr>
+    
+    @foreach (var vote in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => vote.IsUnvote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.Voter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.Recipient)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.DateTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.ForumPostNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.PostContentIndex)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.ManuallyEdited)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => vote.Day)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { forumPostNumber = vote.ForumPostNumber, postContentIndex = vote.PostContentIndex }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+    }
+    
+    </table>
+</body>
+</html>

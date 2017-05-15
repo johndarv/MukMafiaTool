@@ -27,8 +27,8 @@
             var databaseName = ConfigurationManager.AppSettings["MongoDatabaseName"];
 
             MongoClientSettings settings = MongoClientSettings.FromUrl(new MongoUrl(connectionString));
-            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls12 };
-            var mongoClient = new MongoClient(settings);
+            settings.SslSettings = new SslSettings() { EnabledSslProtocols = SslProtocols.Tls };
+            var mongoClient = new MongoClient(connectionString);
             var database = mongoClient.GetDatabase(databaseName);
 
             this.postsCollection = database.GetCollection<BsonDocument>("Posts");
@@ -70,6 +70,27 @@
             var documents = this.votesCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             return documents.Select(d => d.ToVote());
+        }
+
+        public IEnumerable<Vote> FindAllNonUnvotes()
+        {
+            var filter = Builders<BsonDocument>.Filter.Eq("IsUnovte", false);
+
+            var documents = this.votesCollection.Find(filter).ToListAsync().Result;
+
+            return documents.Select(d => d.ToVote());
+        }
+
+        public Vote FindVote(string forumPostNumber, int postContentIndex)
+        {
+            var builder = Builders<BsonDocument>.Filter;
+
+            var filter = builder.Eq("ForumPostNumber", forumPostNumber)
+                & builder.Eq("PostContentIndex", postContentIndex);
+
+            var document = this.votesCollection.Find(filter).FirstOrDefaultAsync().Result;
+
+            return document.ToVote();
         }
 
         public IList<ForumPost> FindAllPosts(string playerName)

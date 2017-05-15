@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using ForumScanApi;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MukMafiaTool.Database;
     using MukMafiaTool.Model;
@@ -17,7 +16,7 @@
         {
             var repo = new MongoRepository();
 
-            repo.UpdateLastUpdatedTime(DateTime.UtcNow);
+            repo.UpdateLastUpdatedTime(DateTime.UtcNow.AddMonths(-1));
         }
 
         [Ignore]
@@ -53,17 +52,32 @@
 
         [Ignore]
         [TestMethod]
+        public void UpdatePlayer()
+        {
+            using (var repository = new MongoRepository())
+            {
+                var player = repository.FindPlayer("The Grand Pursuivant");
+
+                player.Participating = false;
+                player.Notes = "Moderator";
+                player.Recruitments = new List<Recruitment>();
+
+                repository.UpsertPlayer(player);
+            }
+        }
+
+        [Ignore]
+        [TestMethod]
         public void KillPlayer()
         {
             using (var repo = new MongoRepository())
             {
-                var player = repo.FindPlayer("Mr Salamander");
-                var players = repo.FindAllPlayers();
+                var player = repo.FindPlayer("Mr Lion");
 
-                player.Character = "Xi Jinping (Oneshot Role Cop)";
+                player.Character = "Mike Pence (Vengeful Priest)";
                 player.Notes = string.Empty;
-                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Allies", ForumPostNumber = "0" } };
-                player.Fatality = "Lynched on Day 2";
+                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Town, FactionName = "Team USA", ForumPostNumber = "0" } };
+                player.Fatality = "Modkilled on Day 3";
 
                 repo.UpsertPlayer(player);
             }
@@ -98,6 +112,18 @@
                         repo.UpsertPlayer(player);
                     }
                 }
+            }
+        }
+
+        [TestMethod]
+        public void ResetDayForPost()
+        {
+            using (var repository = new MongoRepository())
+            {
+                var posts = repository.FindAllPosts();
+                var day3 = repository.FindDay(3);
+
+                var postsWithIncorrectDay0Value = posts.Where(p => p.Day != 3 && string.Compare(p.ForumPostNumber, day3.StartForumPostNumber) >= 0);
             }
         }
     }

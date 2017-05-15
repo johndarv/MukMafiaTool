@@ -62,7 +62,7 @@
                 var newPostsAfterDay0 = latestPost == null ? postsAfterDay0 : this.FindAllPostsAfter(postsAfterDay0, latestPost.ForumPostNumber);
                 this.repo.EnsurePlayersInRepo(newPostsAfterDay0.Select(p => p.Poster), this.firstForumPostNumber);
 
-                this.dayScanner.UpdateDays(postsAfterDay0);
+                this.dayScanner.UpdateDays(scannedPosts);
 
                 this.UpdateVotes(postsAfterDay0);
 

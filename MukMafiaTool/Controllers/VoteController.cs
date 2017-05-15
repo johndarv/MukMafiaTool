@@ -1,41 +1,66 @@
 ﻿namespace MukMafiaTool.Controllers
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
-    using System.Web;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
-    using MukMafiaTool.Database;
+    using MukMafiaTool.Model;
 
     public class VoteController : Controller
     {
-        private IRepository repo;
+        private IRepository repository;
         private VoteScanner voteScanner;
 
         public VoteController(IRepository repo)
         {
-            this.repo = repo;
-            this.voteScanner = new VoteScanner(this.repo);
+            this.repository = repo;
+            this.voteScanner = new VoteScanner(this.repository);
         }
 
         // GET: Vote
         [Authorize(Roles = "Admin")]
         public HttpResponseMessage RedetermineVotes()
         {
-            this.repo.DeleteAllVotes();
+            this.repository.DeleteAllVotes();
 
-            foreach (var post in this.repo.FindAllPosts())
+            foreach (var post in this.repository.FindAllPosts())
             {
                 foreach (var vote in this.voteScanner.ScanForVotes(post))
                 {
-                    this.repo.UpsertVote(vote);
+                    this.repository.UpsertVote(vote);
                 }
             }
 
             return HttpResponseMessageGenerator.GenerateOKMessage();
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult Index()
+        {
+            var votes = this.repository.FindAllVotes();
+
+            votes.OrderBy(v => v.ForumPostNumber);
+
+            return this.View(votes);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit(string forumPostNumber, int postContentIndex)
+        {
+            var vote = this.repository.FindVote(forumPostNumber, postContentIndex);
+
+            return this.View("Edit", vote);
+        }
+
+        [HttpPost]
+        [ActionName("Edit")]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditPost(Vote vote)
+        {
+            this.repository.UpsertVote(vote);
+
+            return this.View("Index");
         }
     }
 }

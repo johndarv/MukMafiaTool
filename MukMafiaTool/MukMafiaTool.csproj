@@ -242,11 +242,12 @@
     <Content Include="Views\Player\Index.cshtml" />
     <Content Include="Views\Log.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
+    <Content Include="Views\Vote\Index.cshtml" />
+    <Content Include="Views\Vote\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Day\" />
-    <Folder Include="Views\Vote\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

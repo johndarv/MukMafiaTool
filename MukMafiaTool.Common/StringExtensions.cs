@@ -2,10 +2,10 @@
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
+    using Model;
 
     public static class StringExtensions
     {
@@ -276,6 +276,22 @@
             result.Add(currentElement);
 
             return result;
+        }
+
+        public static int DetermineDay(this string forumPostNumber, IEnumerable<Day> days)
+        {
+            foreach (var day in days)
+            {
+                if (long.Parse(forumPostNumber) >= long.Parse(day.StartForumPostNumber))
+                {
+                    if (string.IsNullOrEmpty(day.EndForumPostNumber) || long.Parse(forumPostNumber) <= long.Parse(day.EndForumPostNumber))
+                    {
+                        return day.Number;
+                    }
+                }
+            }
+
+            return 0;
         }
     }
 }

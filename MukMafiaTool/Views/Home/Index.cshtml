@@ -57,14 +57,12 @@ Not Voted (@Model.VoteSituation.NotVoted.Count()) - @string.Join(", ", Model.Vot
 <br />
 <br />
 
-List of Participants:
+List of Participants (@Model.Players.Where(p => p.IsInGame).Count() remain alive):
 
 <ol>
 
     @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
     {
-        var editActionLink = Html.ActionLink("Edit", "index", "player", new { playerName = player.Name }, null);
-
         object htmlAttributes = null;
 
         if (!player.IsInGame)
@@ -82,7 +80,8 @@ List of Participants:
 
             @if (User.IsInRole("Admin"))
             {
-                @: - @editActionLink
+                @: - @Html.ActionLink("Edit", "index", "player", new { playerName = player.Name }, null)
+                @: - @Html.ActionLink("Toggle", "ToggleParticipant", "Player", new { playerName = player.Name }, null)
             }
         </li>
 

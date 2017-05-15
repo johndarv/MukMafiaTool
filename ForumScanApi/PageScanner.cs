@@ -6,6 +6,7 @@
     using System.Linq;
     using System.Web;
     using HtmlAgilityPack;
+    using MukMafiaTool.Common;
     using MukMafiaTool.Model;
 
     public class PageScanner
@@ -98,7 +99,7 @@
             newPost.ForumPostNumber = commentDiv.Attributes["data-commentid"].Value;
 
             // Find Day
-            newPost.Day = this.DetermineDay(newPost.ForumPostNumber);
+            newPost.Day = newPost.ForumPostNumber.DetermineDay(this.days);
 
             // Find DateTime
             var dateTimeNode = commentDiv.SelectSingleNode(".//time");
@@ -114,22 +115,6 @@
             newPost.LastScanned = DateTime.UtcNow;
 
             return newPost;
-        }
-
-        private int DetermineDay(string forumPostNumber)
-        {
-            foreach (var day in this.days)
-            {
-                if (string.Compare(forumPostNumber, day.StartForumPostNumber) >= 0)
-                {
-                    if (string.IsNullOrEmpty(day.EndForumPostNumber) || string.Compare(forumPostNumber, day.EndForumPostNumber) <= 0)
-                    {
-                        return day.Number;
-                    }
-                }
-            }
-
-            return 0;
         }
 
         private DateTime ConvertDate(string dateTimeString)
