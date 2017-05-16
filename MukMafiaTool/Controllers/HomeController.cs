@@ -5,11 +5,8 @@
     using System.Configuration;
     using System.Linq;
     using System.Text;
-    using System.Threading.Tasks;
-    using System.Web;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
-    using MukMafiaTool.Database;
     using MukMafiaTool.Model;
     using MukMafiaTool.Models;
     using MukMafiaTool.Models.ViewModels;

@@ -254,6 +254,11 @@
 
         public void UpsertVote(Vote vote)
         {
+            this.UpsertVote(vote, false);
+        }
+
+        public void UpsertVote(Vote vote, bool overrideManuallyEditedVotes)
+        {
             var newDoc = new BsonDocument
             {
                 { "IsUnvote", vote.IsUnvote },
@@ -264,12 +269,17 @@
                 { "PostContentIndex", vote.PostContentIndex },
                 { "ManuallyEdited", vote.ManuallyEdited },
                 { "Day", vote.Day },
+                { "Invalid", vote.Invalid },
             };
 
             var builder = Builders<BsonDocument>.Filter;
             var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber)
-                & builder.Eq("PostContentIndex", vote.PostContentIndex)
-                & builder.Eq("ManuallyEdited", false);
+                & builder.Eq("PostContentIndex", vote.PostContentIndex);
+
+            if (overrideManuallyEditedVotes == false)
+            {
+                filter = filter & builder.Eq("ManuallyEdited", false);
+            }
 
             Upsert(this.votesCollection, newDoc, filter);
         }
@@ -425,6 +435,11 @@
             var docs = this.logsCollection.Find(new BsonDocument()).ToListAsync().Result;
 
             return docs.Select(d => d["Message"].ToString());
+        }
+
+        public void DeleteAllLogMessages()
+        {
+            this.logsCollection.DeleteManyAsync(Builders<BsonDocument>.Filter.Empty).Wait();
         }
 
         private static void Upsert(IMongoCollection<BsonDocument> collection, BsonDocument newDoc, FilterDefinition<BsonDocument> filter)

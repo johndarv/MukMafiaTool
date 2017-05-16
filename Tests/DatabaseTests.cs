@@ -72,12 +72,12 @@
         {
             using (var repo = new MongoRepository())
             {
-                var player = repo.FindPlayer("Mr Lion");
+                var player = repo.FindPlayer("Mr Quail");
 
-                player.Character = "Mike Pence (Vengeful Priest)";
+                player.Character = "Ayatollah Al-Kameini (Odd/Even Watcher)";
                 player.Notes = string.Empty;
-                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Town, FactionName = "Team USA", ForumPostNumber = "0" } };
-                player.Fatality = "Modkilled on Day 3";
+                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Bad Dudes", ForumPostNumber = "0" } };
+                player.Fatality = "Killed on Night 3";
 
                 repo.UpsertPlayer(player);
             }

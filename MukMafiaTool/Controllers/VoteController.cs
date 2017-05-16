@@ -39,7 +39,7 @@
         {
             var votes = this.repository.FindAllVotes();
 
-            votes.OrderBy(v => v.ForumPostNumber);
+            votes = votes.OrderBy(v => long.Parse(v.ForumPostNumber));
 
             return this.View(votes);
         }
@@ -58,9 +58,9 @@
         [Authorize(Roles = "Admin")]
         public ActionResult EditPost(Vote vote)
         {
-            this.repository.UpsertVote(vote);
+            this.repository.UpsertVote(vote, overrideManuallyEditedVotes: true);
 
-            return this.View("Index");
+            return this.RedirectToAction("Index", "Vote");
         }
     }
 }

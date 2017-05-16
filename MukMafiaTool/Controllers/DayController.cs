@@ -20,11 +20,18 @@
         public HttpResponseMessage RedetermineDays()
         {
             var posts = this.repository.FindAllPosts(includeDayZeros: true);
+            var days = this.repository.FindAllDays();
 
             foreach (var post in posts)
             {
-                post.Day = post.DetermineDay(this.repository);
-                this.repository.UpsertPost(post);
+                var initialDay = post.Day;
+                var redeterminedDay = post.DetermineDay(days);
+
+                if (redeterminedDay != initialDay)
+                {
+                    post.Day = redeterminedDay;
+                    this.repository.UpsertPost(post);
+                }
             }
 
             return HttpResponseMessageGenerator.GenerateOKMessage();

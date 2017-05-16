@@ -12,6 +12,9 @@
     <title>Index</title>
 </head>
 <body>
+    <p>
+        @Html.ActionLink("Home", "Index", "Home")
+    </p>
     <table class="table">
         <tr>
             <th>
@@ -38,38 +41,46 @@
             <th>
                 @Html.DisplayNameFor(model => model.Day)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Invalid)
+            </th>
             <th></th>
         </tr>
     
-    @foreach (var vote in Model) {
+    @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => vote.IsUnvote)
+                @Html.DisplayFor(modelItem => item.IsUnvote)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.Voter)
+                @Html.DisplayFor(modelItem => item.Voter)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.Recipient)
+                @Html.DisplayFor(modelItem => item.Recipient)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.DateTime)
+                @Html.DisplayFor(modelItem => item.DateTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.ForumPostNumber)
+                @{
+                    var forumPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", item.ForumPostNumber);
+                }
+                <a href="@forumPostLink">@item.ForumPostNumber</a>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.PostContentIndex)
+                @Html.DisplayFor(modelItem => item.PostContentIndex)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.ManuallyEdited)
+                @Html.DisplayFor(modelItem => item.ManuallyEdited)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => vote.Day)
+                @Html.DisplayFor(modelItem => item.Day)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { forumPostNumber = vote.ForumPostNumber, postContentIndex = vote.PostContentIndex }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                @Html.DisplayFor(modelItem => item.Invalid)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { forumPostNumber = item.ForumPostNumber, postContentIndex = item.PostContentIndex })
             </td>
         </tr>
     }

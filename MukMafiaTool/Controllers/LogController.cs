@@ -11,18 +11,18 @@
 
     public class LogController : Controller
     {
-        private IRepository repo;
+        private IRepository repository;
 
         public LogController(IRepository repo)
         {
-            this.repo = repo;
+            this.repository = repo;
         }
 
         // GET: Log
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
-            var messages = this.repo.FindAllLogMessages();
+            var messages = this.repository.FindAllLogMessages();
             IList<LogMessage> logMessages = new List<LogMessage>();
 
             var postNumberRegex = new Regex("Forum Post Number: [0-9]+");
@@ -46,6 +46,14 @@
             }
 
             return this.View(logMessages);
+        }
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult DeleteAll()
+        {
+            this.repository.DeleteAllLogMessages();
+
+            return this.RedirectToAction("Index");
         }
     }
 }

@@ -130,6 +130,7 @@
                 PostContentIndex = index,
                 ManuallyEdited = false,
                 Day = post.Day,
+                Invalid = false,
             };
         }
 
@@ -198,6 +199,7 @@
                 PostContentIndex = index,
                 ManuallyEdited = false,
                 Day = post.Day,
+                Invalid = false,
             };
         }
     }

@@ -37,6 +37,13 @@ Keyword Search:
 <br />
 Last Updated: @Model.LastUpdated.ToLocalTime().ToString("dddd dd MMMM - HH:mm") (UTC time)
 
+@if (User.IsInRole("Admin"))
+{
+    <br />
+    <br />
+    @Html.ActionLink("Set Last Updated Time To Three Months Ago", "SetLastUpdateTimeToThreeMonthsAgo", "LastUpdatedTime")
+}
+
 <br />
 <br />
 
@@ -54,6 +61,12 @@ Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here 
 
 Not Voted (@Model.VoteSituation.NotVoted.Count()) - @string.Join(", ", Model.VoteSituation.NotVoted.Select(p => p.Name))
 
+@if (User.IsInRole("Admin"))
+{
+    <br />
+    <br />
+    @Html.ActionLink("View All Votes", "index", "vote");
+}
 <br />
 <br />
 
@@ -96,8 +109,15 @@ Days:
 <ul>
     @foreach(var day in @Model.Days.OrderBy(d => d.Number))
     {
-        var FirstPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
-        
-        <li>Day @day.Number - <a href="@FirstPostLink">First Post</a></li>
+        var firstPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
+        var lastPostLinkHtml = string.Empty;
+
+        if (!string.IsNullOrEmpty(day.EndForumPostNumber))
+        {
+            var lastPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.EndForumPostNumber);
+            lastPostLinkHtml = string.Format(" - <a href=\"{0}\">Last Post</a>", lastPostLink);
+        }
+
+        <li>Day @day.Number - <a href="@firstPostLink">First Post</a>@Html.Raw(lastPostLinkHtml)</li>
     }
 </ul>

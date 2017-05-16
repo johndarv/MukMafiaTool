@@ -21,7 +21,8 @@
                 };
             }
 
-            var todaysVotes = allVotes.Where(v => string.Compare(v.ForumPostNumber, currentDay.StartForumPostNumber) >= 0);
+            var allValidVotes = allVotes.Where(v => !v.Invalid);
+            var todaysVotes = allValidVotes.Where(v => string.Compare(v.ForumPostNumber, currentDay.StartForumPostNumber) >= 0);
             var todaysVotesOrdered = todaysVotes.OrderBy(v => v.ForumPostNumber).ThenBy(v => v.PostContentIndex);
             var activePlayers = players.Where(p => p.Participating && string.IsNullOrEmpty(p.Fatality));
 

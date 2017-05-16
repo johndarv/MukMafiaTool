@@ -77,7 +77,7 @@
         [InlineData("21", 4)]
         [InlineData("25", 4)]
         [InlineData("10000", 4)]
-        private static void DetermineDay(string forumPostNumber, int expectedDay)
+        private static void DetermineDayTest(string forumPostNumber, int expectedDay)
         {
             var days = new List<Day>
             {
@@ -85,6 +85,19 @@
                 new Day { Number = 2, StartForumPostNumber = "6", EndForumPostNumber = "10" },
                 new Day { Number = 3, StartForumPostNumber = "15", EndForumPostNumber = "20" },
                 new Day { Number = 4, StartForumPostNumber = "21", EndForumPostNumber = string.Empty },
+            };
+
+            forumPostNumber.DetermineDay(days).ShouldBeEquivalentTo(expectedDay, because: "the day should have been determined correctly.");
+        }
+
+        [Theory]
+        [InlineData("11375129", 2)]
+        private static void DetermineDayTest_WithRealisticForumPostNumbers(string forumPostNumber, int expectedDay)
+        {
+            var days = new List<Day>
+            {
+                new Day { Number = 1, StartForumPostNumber = "11368576", EndForumPostNumber = "11373503" },
+                new Day { Number = 2, StartForumPostNumber = "11375085", EndForumPostNumber = "11384381" },
             };
 
             forumPostNumber.DetermineDay(days).ShouldBeEquivalentTo(expectedDay, because: "the day should have been determined correctly.");

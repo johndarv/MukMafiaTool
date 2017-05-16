@@ -37,11 +37,15 @@
 
         IEnumerable<string> FindAllLogMessages();
 
+        void DeleteAllLogMessages();
+
         void UpdateLastUpdatedTime();
 
         void UpsertPost(ForumPost post);
 
         void UpsertVote(Vote vote);
+
+        void UpsertVote(Vote vote, bool overrideManuallyEditedVotes);
 
         void DeleteAllVotes();
 

@@ -25,7 +25,7 @@
         /// </summary>
         [Display(Name = "Date and Time of Post")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
         public DateTime DateTime { get; set; }
 
         /// <summary>
@@ -47,5 +47,10 @@
         /// Gets or sets the day (in game day terms) on which the vote was cast.
         /// </summary>
         public int Day { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the vote is valid.
+        /// </summary>
+        public bool Invalid { get; set; }
     }
 }

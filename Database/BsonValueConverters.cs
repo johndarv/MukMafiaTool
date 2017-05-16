@@ -36,6 +36,7 @@
                 PostContentIndex = doc["PostContentIndex"].ToInt32(),
                 ManuallyEdited = doc["ManuallyEdited"] != null ? doc["ManuallyEdited"].ToBoolean() : false,
                 Day = doc["Day"].ToInt32(),
+                Invalid = doc["Invalid"].ToBoolean(),
             };
         }
 
