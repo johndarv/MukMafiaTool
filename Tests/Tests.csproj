@@ -123,9 +123,9 @@
       <Project>{c7031144-b2c5-4c73-9541-67c520585934}</Project>
       <Name>Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ForumScanApi\ForumScanApi.csproj">
-      <Project>{e9d3c1db-489f-46ec-bb10-0b4542d62471}</Project>
-      <Name>ForumScanApi</Name>
+    <ProjectReference Include="..\ForumScanning\ForumScanning.csproj">
+      <Project>{d2ffecf7-8953-4480-948d-7f5ff3df1ff8}</Project>
+      <Name>ForumScanning</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{152292e7-fcd4-4a8d-a758-c3574cc324ca}</Project>

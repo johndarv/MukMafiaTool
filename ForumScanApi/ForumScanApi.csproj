@@ -91,13 +91,9 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ScanController.cs" />
-    <Compile Include="ForumAccessor.cs" />
-    <Compile Include="ForumScanner.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="IForumScanner.cs" />
-    <Compile Include="PageScanner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +115,10 @@
     <ProjectReference Include="..\Database\Database.csproj">
       <Project>{c7031144-b2c5-4c73-9541-67c520585934}</Project>
       <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ForumScanning\ForumScanning.csproj">
+      <Project>{d2ffecf7-8953-4480-948d-7f5ff3df1ff8}</Project>
+      <Name>ForumScanning</Name>
     </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{152292e7-fcd4-4a8d-a758-c3574cc324ca}</Project>

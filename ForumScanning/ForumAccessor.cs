@@ -1,4 +1,4 @@
-﻿namespace ForumScanApi
+﻿namespace MukMafiaTool.ForumScanning
 {
     using System;
     using System.Collections.Generic;

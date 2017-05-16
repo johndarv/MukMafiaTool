@@ -3,6 +3,7 @@
     using System;
     using System.Web.Http;
     using MukMafiaTool.Database;
+    using MukMafiaTool.ForumScanning;
 
     [Route("scan")]
     public class ScanController : ApiController

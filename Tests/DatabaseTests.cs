@@ -115,6 +115,7 @@
             }
         }
 
+        [Ignore]
         [TestMethod]
         public void ResetDayForPost()
         {

@@ -1,9 +1,9 @@
 ﻿namespace Tests
 {
     using FluentAssertions;
-    using ForumScanApi;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using MukMafiaTool.Database;
+    using MukMafiaTool.ForumScanning;
 
     [TestClass]
     public class InternalForumScannerTests

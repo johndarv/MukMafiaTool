@@ -1,4 +1,4 @@
-﻿namespace ForumScanApi
+﻿namespace MukMafiaTool.ForumScanning
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@
     using MukMafiaTool.Common;
     using MukMafiaTool.Model;
 
-    public class ForumScanner : IForumScanner
+    public class ForumScanner
     {
         private IRepository repo;
         private ForumAccessor forumAccessor;
