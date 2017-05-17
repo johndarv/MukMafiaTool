@@ -21,6 +21,7 @@
             this.repo = repo;
         }
 
+        [AllowAnonymous]
         public ActionResult Index()
         {
             HomeViewModel viewModel = new HomeViewModel();
@@ -44,20 +45,6 @@
             viewModel.Days = days;
 
             return this.View(viewModel);
-        }
-
-        public ActionResult About()
-        {
-            this.ViewBag.Message = "Your application description page.";
-
-            return this.View();
-        }
-
-        public ActionResult Contact()
-        {
-            this.ViewBag.Message = "Your contact page.";
-
-            return this.View();
         }
 
         private IEnumerable<HomePagePlayer> DeterminePlayers(IEnumerable<Model.Player> players)

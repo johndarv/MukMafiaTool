@@ -17,7 +17,8 @@
             this.repo = repo;
         }
 
-        // GET: Player
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult Index(string playerName, string searchString, string forumPostNumber, bool includeQuoteBlocks = false)
         {
             var posts = this.repo.FindAllPosts();

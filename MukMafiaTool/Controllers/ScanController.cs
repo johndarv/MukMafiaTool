@@ -5,7 +5,7 @@
 
     public class ScanController : Controller
     {
-        // GET: Scan
+        [HttpGet]
         public ActionResult Index()
         {
             using (var repository = new MongoRepository())

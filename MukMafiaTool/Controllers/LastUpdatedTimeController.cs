@@ -13,7 +13,6 @@
             this.repository = new MongoRepository();
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult SetLastUpdatedTime(DateTime dateTime)
         {
@@ -22,7 +21,6 @@
             return this.RedirectToAction("Index", "Home");
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpGet]
         public ActionResult SetLastUpdateTimeToThreeMonthsAgo()
         {

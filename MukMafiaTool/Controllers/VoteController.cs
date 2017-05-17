@@ -17,8 +17,7 @@
             this.voteScanner = new VoteScanner(this.repository);
         }
 
-        // GET: Vote
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public HttpResponseMessage RedetermineVotes()
         {
             this.repository.DeleteAllVotes();
@@ -34,7 +33,7 @@
             return HttpResponseMessageGenerator.GenerateOKMessage();
         }
 
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public ActionResult Index()
         {
             var votes = this.repository.FindAllVotes();
@@ -45,7 +44,6 @@
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
         public ActionResult Edit(string forumPostNumber, int postContentIndex)
         {
             var vote = this.repository.FindVote(forumPostNumber, postContentIndex);
@@ -55,7 +53,6 @@
 
         [HttpPost]
         [ActionName("Edit")]
-        [Authorize(Roles = "Admin")]
         public ActionResult EditPost(Vote vote)
         {
             this.repository.UpsertVote(vote, overrideManuallyEditedVotes: true);

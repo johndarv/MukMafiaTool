@@ -1,10 +1,7 @@
 ﻿namespace MukMafiaTool.Controllers
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text.RegularExpressions;
-    using System.Web;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
     using MukMafiaTool.Models.ViewModels;
@@ -18,8 +15,7 @@
             this.repository = repo;
         }
 
-        // GET: Log
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public ActionResult Index()
         {
             var messages = this.repository.FindAllLogMessages();
@@ -48,7 +44,7 @@
             return this.View(logMessages);
         }
 
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public ActionResult DeleteAll()
         {
             this.repository.DeleteAllLogMessages();

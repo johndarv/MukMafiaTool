@@ -20,8 +20,7 @@
             this.repo = repo;
         }
 
-        // GET: VoteStats
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public ActionResult Index()
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();

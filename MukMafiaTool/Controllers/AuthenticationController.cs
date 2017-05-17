@@ -23,12 +23,15 @@
             get { return this.HttpContext.GetOwinContext().Authentication; }
         }
 
-        // GET: Authentication
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return this.View();
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult Login(string userName, string password)
         {
             var user = this.Authenticate(userName, password);
@@ -63,6 +66,8 @@
             return this.View("index", "Could not log you in");
         }
 
+        [HttpGet]
+        [AllowAnonymous]
         public ActionResult Logout()
         {
             this.Authentication.SignOut(DefaultAuthenticationTypes.ApplicationCookie);

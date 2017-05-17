@@ -19,7 +19,7 @@
         }
 
 
-        @using (Html.BeginForm("login", "authentication", FormMethod.Post))
+        @using (Html.BeginForm("login", "authentication", FormMethod.Get))
         {
             @Html.TextBox("userName")
             @Html.TextBox("password")

@@ -15,8 +15,7 @@
             this.repository = repo;
         }
 
-        // GET: Day
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public HttpResponseMessage RedetermineDays()
         {
             var posts = this.repository.FindAllPosts(includeDayZeros: true);
@@ -37,7 +36,7 @@
             return HttpResponseMessageGenerator.GenerateOKMessage();
         }
 
-        [Authorize(Roles = "Admin")]
+        [HttpPost]
         public HttpResponseMessage SetDay(int dayNumber, string startForumPostNumber, string endForumPostNumber)
         {
             if (endForumPostNumber == null)

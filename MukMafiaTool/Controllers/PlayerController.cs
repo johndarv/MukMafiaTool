@@ -1,10 +1,7 @@
 ﻿namespace MukMafiaTool.Controllers
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
-    using System.Web;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
     using MukMafiaTool.Model;
@@ -18,8 +15,7 @@
             this.repository = repo;
         }
 
-        // GET: Player
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public ActionResult Index(string playerName)
         {
             if (string.IsNullOrEmpty(playerName))
@@ -37,7 +33,7 @@
             return this.View(player);
         }
 
-        [Authorize(Roles = "Admin")]
+        [HttpPost]
         public ActionResult Edit(Player player)
         {
             if (player == null)
@@ -50,7 +46,7 @@
             return this.View("index");
         }
 
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
         public ActionResult ToggleParticipant(string playerName)
         {
             if (string.IsNullOrEmpty(playerName))
@@ -72,26 +68,10 @@
             return this.RedirectToAction("index", "home");
         }
 
-        [Authorize(Roles = "Admin")]
-        public ActionResult Kill(string playerName)
+        [HttpPost]
+        public ActionResult Kill(Player player)
         {
-            if (string.IsNullOrEmpty(playerName))
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            var player = this.repository.FindPlayer(playerName);
-
-            if (player == null)
-            {
-                return this.HttpNotFound();
-            }
-
-            player.Participating = player.Participating ? false : true;
-
-            this.repository.UpsertPlayer(player);
-
-            return this.RedirectToAction("index", "home");
+            throw new NotImplementedException();
         }
     }
 }
