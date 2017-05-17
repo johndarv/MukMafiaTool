@@ -1,6 +1,7 @@
 ﻿@model System.Collections.Generic.IList<MukMafiaTool.Model.ForumPost>
 
 @using System.Linq
+@using MukMafiaTool.Extensions
 
 @{
     Layout = null;
@@ -39,8 +40,7 @@
                             @post.Poster
                         </strong>
                     </h3>
-                    @{ var postUrl = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", post.ForumPostNumber); }
-                    <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half"><a href="@postUrl" class="ipsType_blendLinks">@post.ForumPostNumber</a></p>
+                    <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half">@ForumLinkGenerator.LinkToForumPost(post.ForumPostNumber, post.ForumPostNumber, "ipsType_blendLinks")</p>
                     <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half">Day @post.Day</p>
                     <p class="ipsType_reset ipsType_blendLinks ipsSpacer_bottom ipsSpacer_half">@post.DateTime.ToLocalTime().ToString("dddd dd MMMM - HH:mm")</p>
                 </aside>

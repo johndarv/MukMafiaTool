@@ -1,6 +1,7 @@
 ﻿@model MukMafiaTool.Models.ViewModels.HomeViewModel
 
 @using System.Linq
+@using MukMafiaTool.Extensions
 
 @{
     ViewBag.Title = "RLLMUK Mafiascum Helper";
@@ -52,7 +53,7 @@ Current Vote Situation (cannot guarantee 100% accuracy, if your vote isn't here 
 <ul>
     @foreach (var voteGroup in Model.VoteSituation.CurrentVotes.GroupBy(v => v.Recipient).OrderByDescending(g => g.Count()).ThenBy(g => g.First().ForumPostNumber))
     {
-        var listOfVoters = string.Join(", ", voteGroup.OrderBy(g => g.ForumPostNumber).Select(g => "<a href=\"http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid=" + g.ForumPostNumber + "\">" + g.Voter + "</a>"));
+        var listOfVoters = string.Join(", ", voteGroup.OrderBy(g => g.ForumPostNumber).Select(g => ForumLinkGenerator.LinkToForumPost(g.ForumPostNumber, g.Voter)));
 
         <li><strong>@voteGroup.Key (@voteGroup.Count())</strong> - @Html.Raw(listOfVoters) </li>
     }
@@ -109,15 +110,14 @@ Days:
 <ul>
     @foreach(var day in @Model.Days.OrderBy(d => d.Number))
     {
-        var firstPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.StartForumPostNumber);
-        var lastPostLinkHtml = string.Empty;
+        var firstPostLink = ForumLinkGenerator.LinkToForumPost(day.StartForumPostNumber, "First Post");
+        string lastPostLinkHtml = string.Empty;
 
         if (!string.IsNullOrEmpty(day.EndForumPostNumber))
         {
-            var lastPostLink = string.Format("http://www.rllmukforum.com/index.php?app=forums&module=forums&section=findpost&pid={0}", day.EndForumPostNumber);
-            lastPostLinkHtml = string.Format(" - <a href=\"{0}\">Last Post</a>", lastPostLink);
+            lastPostLinkHtml = string.Format(" - {0}", ForumLinkGenerator.LinkToForumPost(day.EndForumPostNumber, "Last Post"));
         }
 
-        <li>Day @day.Number - <a href="@firstPostLink">First Post</a>@Html.Raw(lastPostLinkHtml)</li>
+        <li>Day @day.Number - @firstPostLink @Html.Raw(lastPostLinkHtml)</li>
     }
 </ul>

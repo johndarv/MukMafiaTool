@@ -180,6 +180,7 @@
     <Compile Include="Controllers\ScanController.cs" />
     <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="Controllers\VoteStatsController.cs" />
+    <Compile Include="Extensions\ForumLinkGenerator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
