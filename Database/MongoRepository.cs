@@ -277,9 +277,9 @@
 
             if (overrideManuallyEditedVotes == false)
             {
-                var existingVote = this.votesCollection.Find(filter).FirstOrDefaultAsync().Result.ToVote();
+                var document = this.votesCollection.Find(filter).FirstOrDefaultAsync().Result;
 
-                if (existingVote != null && existingVote.ManuallyEdited)
+                if (document != null && document.ToVote().ManuallyEdited)
                 {
                     return;
                 }
@@ -297,7 +297,7 @@
                 { "Day", vote.Day },
                 { "Invalid", vote.Invalid },
             };
-            
+
             Upsert(this.votesCollection, newDoc, filter);
         }
 
