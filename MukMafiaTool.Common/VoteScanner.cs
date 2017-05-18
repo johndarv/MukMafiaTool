@@ -71,7 +71,7 @@
                     // else if there's a semi colon then we determine this is a vote
                     var recipientSubString = content.Substring(index + 4, Math.Min(10, content.Length - (index + 4)));
 
-                    var successfulSplit = recipientSubString.Split(':').Count() == 2;
+                    var successfulSplit = recipientSubString.Split(':').Count() > 1;
 
                     if (successfulSplit)
                     {
