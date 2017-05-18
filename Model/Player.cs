@@ -12,6 +12,8 @@
 
         public string Character { get; set; }
 
+        public string Role { get; set; }
+
         public string Fatality { get; set; }
 
         public string Notes { get; set; }

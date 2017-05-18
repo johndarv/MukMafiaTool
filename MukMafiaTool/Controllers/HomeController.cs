@@ -53,7 +53,7 @@
             var postGroups = allPosts.GroupBy(p => p.Poster);
 
             // filter out players not participating who aren't the Games Master/Moderator
-            players = players.Where(p => p.Participating || string.Equals(p.Notes, "Games Master") || string.Equals(p.Notes, "Moderator"));
+            players = players.Where(p => p.Participating || string.Equals(p.Role, "Games Master") || string.Equals(p.Role, "Moderator"));
 
             var homePagePlayers = players.Select(player => this.ToHomePagePlayer(player, postGroups));
 
@@ -74,40 +74,25 @@
 
             var isInGame = player.Participating && string.IsNullOrEmpty(player.Fatality);
 
-            var extraInfoBuilder = new StringBuilder();
+            var factionNames = player.Recruitments.OrderBy(r => r.ForumPostNumber).Select(r => r.FactionName);
+            var factions = string.Join(", ", factionNames);
 
-            if (!isInGame)
-            {
-                if (!string.IsNullOrEmpty(player.Character))
-                {
-                    extraInfoBuilder.Append($" - {player.Character}");
-                }
-
-                if (player.Recruitments.Any())
-                {
-                    var factionNames = player.Recruitments.OrderBy(r => r.ForumPostNumber).Select(r => r.FactionName);
-
-                    extraInfoBuilder.Append($", {string.Join(", ", factionNames)}");
-                }
-
-                if (!string.IsNullOrEmpty(player.Fatality))
-                {
-                    extraInfoBuilder.Append($" - {player.Fatality}");
-                }
-
-                if (!string.IsNullOrEmpty(player.Notes))
-                {
-                    extraInfoBuilder.Append($" - {player.Notes}");
-                }
-            }
-
-            return new HomePagePlayer
+            var homePagePlayer = new HomePagePlayer
             {
                 Name = player.Name,
                 PostCount = posts != null ? posts.Count() : 0,
                 IsInGame = isInGame,
-                ExtraInfo = extraInfoBuilder.ToString(),
             };
+
+            if (isInGame == false)
+            {
+                homePagePlayer.Character = player.Character;
+                homePagePlayer.Role = player.Role;
+                homePagePlayer.Fatality = player.Fatality;
+                homePagePlayer.Factions = factions;
+            }
+
+            return homePagePlayer;
         }
     }
 }

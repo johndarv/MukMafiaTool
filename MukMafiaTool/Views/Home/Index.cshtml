@@ -73,35 +73,44 @@ Not Voted (@Model.VoteSituation.NotVoted.Count()) - @string.Join(", ", Model.Vot
 
 List of Participants (@Model.Players.Where(p => p.IsInGame).Count() remain alive):
 
-<ol>
+<table class="table-bordered table-condensed">
+    <tr>
+        <th>Forum Name</th>
+        <th>Post Count</th>
+        <th>Character</th>
+        <th>Role(s)</th>
+        <th>Faction(s)</th>
+        <th>Fatality</th>
+    </tr>
+@foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
+{
+    string htmlAttributesString = string.Empty;
+    string deadBackgroundColor = string.Empty;
+    object htmlAttributes = null;
 
-    @foreach (var player in @Model.Players.OrderByDescending(p => p.PostCount))
+    if (!player.IsInGame)
     {
-        object htmlAttributes = null;
-
-        if (!player.IsInGame)
-        {
-            htmlAttributes = new { style = "text-decoration: line-through" };
-        }
-
-        <li>
-            @Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes) (@player.PostCount)
-
-            @if (!string.IsNullOrEmpty(@player.ExtraInfo))
-            {
-                @player.ExtraInfo
-            }
-
-            @if (User.IsInRole("Admin"))
-            {
-                @: - @Html.ActionLink("Edit", "index", "player", new { playerName = player.Name }, null)
-                @: - @Html.ActionLink("Toggle", "ToggleParticipant", "Player", new { playerName = player.Name }, null)
-            }
-        </li>
-
+        htmlAttributesString = "text-decoration: line-through";
+        htmlAttributes = new { style = htmlAttributesString };
+        deadBackgroundColor = "background-color: lavenderblush";
     }
 
-</ol>
+    <tr style="@deadBackgroundColor">
+        <td>@Html.ActionLink(player.Name, "index", "post", new { playerName = player.Name }, htmlAttributes)</td>
+        <td style="@htmlAttributesString">@player.PostCount</td>
+        <td>@player.Character</td>
+        <td>@player.Role</td>
+        <td>@player.Factions</td>
+        <td>@player.Fatality</td>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <td>@Html.ActionLink("Edit", "index", "player", new { playerName = player.Name }, null)</td>
+        <td>@Html.ActionLink("Toggle", "ToggleParticipant", "Player", new { playerName = player.Name }, null)</td>
+    }
+    </tr>
+}
+</table>
 
 <br />
 

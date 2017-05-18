@@ -73,6 +73,7 @@
                 Participating = doc["Participating"].ToBoolean(),
                 Fatality = doc["Fatality"].ToString(),
                 Character = doc["Character"].ToString(),
+                Role = doc["Role"].ToString(),
                 Notes = doc["Notes"].ToString(),
                 Aliases = aliases.ToArray(),
             };

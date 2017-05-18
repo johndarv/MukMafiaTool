@@ -8,8 +8,23 @@
     using MukMafiaTool.Model;
 
     [TestClass]
-    public class DatabaseTests
+    public sealed class DatabaseTests : IDisposable
     {
+        private readonly MongoRepository repository;
+
+        public DatabaseTests()
+        {
+            this.repository = new MongoRepository();
+        }
+
+        public void Dispose()
+        {
+            if (this.repository != null)
+            {
+                this.repository.Dispose();
+            }
+        }
+
         [Ignore]
         [TestMethod]
         public void UpsertLastUpdatedTime()
@@ -54,33 +69,20 @@
         [TestMethod]
         public void UpdatePlayer()
         {
-            using (var repository = new MongoRepository())
-            {
-                var player = repository.FindPlayer("The Grand Pursuivant");
+            var player = this.repository.FindPlayer("Mr Elephant");
 
-                player.Participating = false;
-                player.Notes = "Moderator";
-                player.Recruitments = new List<Recruitment>();
+            player.Role = "One Shot Governor, Watcher Enabler";
 
-                repository.UpsertPlayer(player);
-            }
+            this.repository.UpsertPlayer(player);
         }
 
         [Ignore]
         [TestMethod]
-        public void KillPlayer()
+        public void KillPlayers()
         {
-            using (var repo = new MongoRepository())
-            {
-                var player = repo.FindPlayer("Mr Quail");
-
-                player.Character = "Ayatollah Al-Kameini (Odd/Even Watcher)";
-                player.Notes = string.Empty;
-                player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Bad Dudes", ForumPostNumber = "0" } };
-                player.Fatality = "Killed on Night 3";
-
-                repo.UpsertPlayer(player);
-            }
+            this.KillPlayer("Mr Elephant", "Reince Preibus", "One Shot Governor - Watcher Enabler", "Lynched on Day 4", Allegiance.Town, "Team USA", "0");
+            this.KillPlayer("Mr Tarantula", "Rick Perry", "Tracker", "Lynched on Day 4", Allegiance.Town, "Team USA", "0");
+            this.KillPlayer("Mr Xerus", "Angela Merkel", "Odd/Even Jailor", "Modkilled on Day 4", Allegiance.Mafia, "Allies, Definitely Allies", "0");
         }
 
         [Ignore]
@@ -126,6 +128,19 @@
 
                 var postsWithIncorrectDay0Value = posts.Where(p => p.Day != 3 && string.Compare(p.ForumPostNumber, day3.StartForumPostNumber) >= 0);
             }
+        }
+
+        private void KillPlayer(string playerName, string playerCharacter, string playerRole, string fatality, Allegiance allegiance, string factionName, string recruitmentPostNumber)
+        {
+            var player = this.repository.FindPlayer(playerName);
+
+            player.Character = playerCharacter;
+            player.Role = playerRole;
+            player.Notes = string.Empty;
+            player.Fatality = fatality;
+            player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = allegiance, FactionName = factionName, ForumPostNumber = recruitmentPostNumber } };
+
+            this.repository.UpsertPlayer(player);
         }
     }
 }

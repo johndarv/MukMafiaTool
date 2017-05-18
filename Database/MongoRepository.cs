@@ -313,6 +313,7 @@
                         { "Participating", true },
                         { "Fatality", string.Empty },
                         { "Character", string.Empty },
+                        { "Role", string.Empty },
                         { "Notes", string.Empty },
                         { "Aliases", aliases },
                     };
@@ -350,6 +351,7 @@
                 { "Participating", player.Participating },
                 { "Fatality", player.Fatality },
                 { "Character", player.Character },
+                { "Role", player.Role },
                 { "Notes", player.Notes },
                 { "Aliases", aliases }
             };

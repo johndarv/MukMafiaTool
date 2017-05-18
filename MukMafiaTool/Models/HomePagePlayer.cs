@@ -1,10 +1,5 @@
 ﻿namespace MukMafiaTool.Models
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Web;
-
     public class HomePagePlayer
     {
         public string Name { get; set; }
@@ -13,6 +8,12 @@
 
         public bool IsInGame { get; set; }
 
-        public string ExtraInfo { get; set; }
+        public string Character { get; set; }
+
+        public string Role { get; set; }
+
+        public string Factions { get; set; }
+
+        public string Fatality { get; set; }
     }
 }
