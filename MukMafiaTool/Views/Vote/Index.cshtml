@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<MukMafiaTool.Model.Vote>
 
 @{
-    Layout = null;
+    ViewBag.Title = "Votes";
 }
 
 <!DOCTYPE html>
@@ -9,13 +9,13 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Votes</title>
 </head>
 <body>
     <p>
         @Html.ActionLink("Home", "Index", "Home")
     </p>
-    <table class="table">
+    <table class="table-condensed">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.IsUnvote)

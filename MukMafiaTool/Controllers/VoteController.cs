@@ -38,7 +38,7 @@
         {
             var votes = this.repository.FindAllVotes();
 
-            votes = votes.OrderBy(v => long.Parse(v.ForumPostNumber));
+            votes = votes.OrderBy(v => long.Parse(v.ForumPostNumber)).ThenBy(v => v.PostContentIndex);
 
             return this.View(votes);
         }
