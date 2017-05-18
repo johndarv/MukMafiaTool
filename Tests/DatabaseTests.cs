@@ -130,6 +130,26 @@
             }
         }
 
+        [Ignore]
+        [TestMethod]
+        public void UpsertVoteTest()
+        {
+            var vote = new Vote
+            {
+                DateTime = new DateTime(2017, 5, 2, 20, 27, 35),
+                Voter = "Mr Coyote",
+                Recipient = "Mr Antelope",
+                IsUnvote = false,
+                ForumPostNumber = "11373467",
+                PostContentIndex = 33,
+                ManuallyEdited = false,
+                Day = 1,
+                Invalid = false,
+            };
+
+            this.repository.UpsertVote(vote);
+        }
+
         private void KillPlayer(string playerName, string playerCharacter, string playerRole, string fatality, Allegiance allegiance, string factionName, string recruitmentPostNumber)
         {
             var player = this.repository.FindPlayer(playerName);

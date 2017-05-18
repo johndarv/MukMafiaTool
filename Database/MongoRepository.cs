@@ -271,11 +271,25 @@
 
         public void UpsertVote(Vote vote, bool overrideManuallyEditedVotes)
         {
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber)
+                    & builder.Eq("PostContentIndex", vote.PostContentIndex);
+
+            if (overrideManuallyEditedVotes == false)
+            {
+                var existingVote = this.votesCollection.Find(filter).FirstOrDefaultAsync().Result.ToVote();
+
+                if (existingVote != null && existingVote.ManuallyEdited)
+                {
+                    return;
+                }
+            }
+
             var newDoc = new BsonDocument
             {
                 { "IsUnvote", vote.IsUnvote },
                 { "DateTime", vote.DateTime },
-                { "Recipient", vote.Recipient },
+                { "Recipient", vote.Recipient ?? string.Empty },
                 { "Voter", vote.Voter },
                 { "ForumPostNumber", vote.ForumPostNumber },
                 { "PostContentIndex", vote.PostContentIndex },
@@ -283,16 +297,7 @@
                 { "Day", vote.Day },
                 { "Invalid", vote.Invalid },
             };
-
-            var builder = Builders<BsonDocument>.Filter;
-            var filter = builder.Eq("ForumPostNumber", vote.ForumPostNumber)
-                & builder.Eq("PostContentIndex", vote.PostContentIndex);
-
-            if (overrideManuallyEditedVotes == false)
-            {
-                filter = filter & builder.Eq("ManuallyEdited", false);
-            }
-
+            
             Upsert(this.votesCollection, newDoc, filter);
         }
 
