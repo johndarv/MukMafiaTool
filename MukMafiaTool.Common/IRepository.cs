@@ -27,6 +27,8 @@
 
         IEnumerable<Vote> FindAllVotes();
 
+        IEnumerable<Vote> FindAllValidNonUnotes();
+
         Vote FindVote(string forumPostNumber, int postContentIndex);
 
         DateTime FindLastUpdatedDateTime();

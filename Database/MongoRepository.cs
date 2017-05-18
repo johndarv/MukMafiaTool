@@ -81,6 +81,18 @@
             return documents.Select(d => d.ToVote());
         }
 
+        public IEnumerable<Vote> FindAllValidNonUnotes()
+        {
+            var builder = Builders<BsonDocument>.Filter;
+
+            var filter = builder.Eq("IsUnovte", false)
+                & builder.Eq("Invalid", false);
+
+            var documents = this.votesCollection.Find(filter).ToListAsync().Result;
+
+            return documents.Select(d => d.ToVote());
+        }
+
         public Vote FindVote(string forumPostNumber, int postContentIndex)
         {
             var builder = Builders<BsonDocument>.Filter;

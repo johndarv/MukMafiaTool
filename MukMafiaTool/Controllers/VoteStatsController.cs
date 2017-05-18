@@ -25,10 +25,9 @@
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();
 
-            var allVotes = this.repo.FindAllVotes();
+            var meaningfulVotes = this.repo.FindAllValidNonUnotes();
             var allPlayers = this.repo.FindAllPlayers();
 
-            var meaningfulVotes = allVotes.Where(v => !v.IsUnvote);
             var meaningfulVoteGroups = meaningfulVotes.GroupBy(v => new { v.Voter, v.Recipient, v.Day });
             var votes = meaningfulVoteGroups.Select(g => g.First());
 
