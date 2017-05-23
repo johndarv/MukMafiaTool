@@ -246,6 +246,7 @@
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Vote\Edit.cshtml" />
     <Content Include="Views\Vote\Index.cshtml" />
+    <Content Include="Views\Player\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

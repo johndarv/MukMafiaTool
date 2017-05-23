@@ -16,6 +16,14 @@
         }
 
         [HttpGet]
+        public ActionResult Index()
+        {
+            var players = this.repository.FindAllPlayers();
+
+            return this.View(players);
+        }
+
+        [HttpGet]
         public ActionResult Edit(string playerName)
         {
             if (string.IsNullOrEmpty(playerName))

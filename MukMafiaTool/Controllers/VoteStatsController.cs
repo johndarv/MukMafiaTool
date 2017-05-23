@@ -1,12 +1,9 @@
 ﻿namespace MukMafiaTool.Controllers
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Web;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
-    using MukMafiaTool.Database;
     using MukMafiaTool.Model;
     using MukMafiaTool.Models.ViewModels;
     using MukMafiaTool.Votes;
@@ -35,7 +32,7 @@
 
             viewModel.IndividualVoteStats = CalculateIndividualStats(votes, allPlayers);
 
-            viewModel.FactionVoteStats = this.CalculateFactionStats(votes, allPlayers);
+            viewModel.FactionVoteStats = CalculateFactionStats(votes, allPlayers);
 
             return this.View(viewModel);
         }
@@ -90,7 +87,7 @@
             return individualStats;
         }
 
-        private IEnumerable<FactionVoteStatsViewModel> CalculateFactionStats(IEnumerable<Vote> votes, IEnumerable<Player> allPlayers)
+        private static IEnumerable<FactionVoteStatsViewModel> CalculateFactionStats(IEnumerable<Vote> votes, IEnumerable<Player> allPlayers)
         {
             var factionVoteStatsCollection = new List<FactionVoteStatsViewModel>();
 
