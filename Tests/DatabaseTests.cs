@@ -89,9 +89,9 @@
         [TestMethod]
         public void AddPlayerAliases()
         {
-            using (var repo = new MongoRepository())
+            using (var repository = new MongoRepository())
             {
-                var players = repo.FindAllPlayers();
+                var players = repository.FindAllPlayers();
 
                 var participatingPlayers = players.Where(p => p.Participating);
 
@@ -109,9 +109,9 @@
                             baseName,
                         };
 
-                        player.Aliases = aliases;
+                        player.AddAliases(aliases);
 
-                        repo.UpsertPlayer(player);
+                        repository.UpsertPlayer(player);
                     }
                 }
             }
@@ -158,7 +158,8 @@
             player.Role = playerRole;
             player.Notes = string.Empty;
             player.Fatality = fatality;
-            player.Recruitments = new List<Recruitment> { new Recruitment { Allegiance = allegiance, FactionName = factionName, ForumPostNumber = recruitmentPostNumber } };
+            player.Recruitments.Clear();
+            player.AddRecruitments(new List<Recruitment> { new Recruitment { Allegiance = allegiance, FactionName = factionName, ForumPostNumber = recruitmentPostNumber } });
 
             this.repository.UpsertPlayer(player);
         }

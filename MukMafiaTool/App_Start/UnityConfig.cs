@@ -20,6 +20,7 @@ namespace MukMafiaTool.App_Start
         /// <summary>
         /// Gets the configured Unity container.
         /// </summary>
+        /// <returns>The unity container.</returns>
         public static IUnityContainer GetConfiguredContainer()
         {
             return container.Value;

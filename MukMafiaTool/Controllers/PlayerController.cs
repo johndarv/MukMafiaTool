@@ -16,7 +16,7 @@
         }
 
         [HttpGet]
-        public ActionResult Index(string playerName)
+        public ActionResult Edit(string playerName)
         {
             if (string.IsNullOrEmpty(playerName))
             {
@@ -34,7 +34,8 @@
         }
 
         [HttpPost]
-        public ActionResult Edit(Player player)
+        [ActionName("Edit")]
+        public ActionResult EditPost(Player player)
         {
             if (player == null)
             {

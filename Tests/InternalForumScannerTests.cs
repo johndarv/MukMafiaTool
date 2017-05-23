@@ -26,6 +26,7 @@
             scanner.DoEndOfGameScan();
         }
 
+        [Ignore]
         [TestMethod]
         public void SignInTest()
         {

@@ -57,6 +57,8 @@
 
         void UpsertPlayer(Player player);
 
+        void AddRecruitmentsToPlayer(string playerName, IEnumerable<Recruitment> recruitments);
+
         void EnsurePlayersInRepo(IEnumerable<string> playerNames, string defaultForumPostNumber);
 
         Day FindDay(int dayNumber);

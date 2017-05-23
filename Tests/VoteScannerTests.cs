@@ -7,6 +7,7 @@
     using Moq;
     using MukMafiaTool.Common;
     using MukMafiaTool.Model;
+    using Tests.Helpers;
 
     [TestClass]
     public class VoteScannerTests
@@ -17,25 +18,25 @@
         {
             var players = new Player[]
             {
-                new Player { Name = "John0", Participating = true, Aliases = new string[] { "John" } },
-                new Player { Name = "Xevious", Participating = true, Aliases = new string[0] },
-                new Player { Name = "snowbind", Participating = true, Aliases = new string[0] },
-                new Player { Name = "GMass", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Liamness", Participating = true, Aliases = new string[0] },
-                new Player { Name = "spork", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Alask", Participating = true, Aliases = new string[0] },
-                new Player { Name = "PaulM", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Danster", Participating = true, Aliases = new string[0] },
-                new Player { Name = "gospvg", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Strategos", Participating = true, Aliases = new string[0] },
-                new Player { Name = "bennette98", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Don Wiskerando", Participating = true, Aliases = new string[0] },
-                new Player { Name = "The Grand Pursuivant", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Mr. Blonde", Participating = true, Aliases = new string[0] },
-                new Player { Name = "Mr. Violet", Participating = true, Aliases = new string[] { "Mr Violet", "Violet", "Mr.Violet", "MrViolet" } },
-                new Player { Name = "Mr. Viridian", Participating = true, Aliases = new string[] { "Mr.Viridian", "Mr Viridian", "Viridian", "MrViridian" } },
-                new Player { Name = "Moderator", Participating = false, Aliases = new string[0] },
-                new Player { Name = "Player With Aliases", Participating = true, Aliases = new string[] { "PlayerWithAliases", "PWA" } },
+                PlayerGenerator.GeneratePlayer(name: "John0", aliases: new string[] { "John" }),
+                PlayerGenerator.GeneratePlayer(name: "Xevious", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "snowbind", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "GMass", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Liamness", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "spork", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Alask", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "PaulM", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Danster", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "gospvg", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Strategos", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "bennette98", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Don Wiskerando", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "The Grand Pursuivant", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Mr. Blonde", aliases: new string[0]),
+                PlayerGenerator.GeneratePlayer(name: "Mr. Violet", aliases: new string[] { "Mr Violet", "Violet", "Mr.Violet", "MrViolet" }),
+                PlayerGenerator.GeneratePlayer(name: "Mr. Viridian", aliases: new string[] { "Mr.Viridian", "Mr Viridian", "Viridian", "MrViridian" }),
+                PlayerGenerator.GeneratePlayer(name: "Moderator", aliases: new string[0], participating: false),
+                PlayerGenerator.GeneratePlayer(name: "Player With Aliases", aliases: new string[] { "PlayerWithAliases", "PWA" }),
             };
 
             var mockRepo = new Mock<IRepository>();

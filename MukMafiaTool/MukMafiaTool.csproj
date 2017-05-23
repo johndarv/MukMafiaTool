@@ -242,7 +242,6 @@
     <Content Include="Views\VoteStats\Index.cshtml" />
     <Content Include="Views\Authentication\Index.cshtml" />
     <Content Include="Views\Player\Edit.cshtml" />
-    <Content Include="Views\Player\Index.cshtml" />
     <Content Include="Views\Log.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Vote\Edit.cshtml" />

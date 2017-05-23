@@ -371,6 +371,20 @@
             Upsert(this.playersCollection, newDoc, filter);
         }
 
+        public void AddRecruitmentsToPlayer(string playerName, IEnumerable<Recruitment> recruitments)
+        {
+            var playerFromRepository = this.FindPlayer(playerName);
+
+            BsonArray recruitmentsBsonArray = new BsonArray();
+
+            foreach (var recruitment in recruitments)
+            {
+                playerFromRepository.Recruitments.Add(recruitment);
+            }
+
+            this.UpsertPlayer(playerFromRepository);
+        }
+
         public Player FindPlayer(string name)
         {
             var filter = Builders<BsonDocument>.Filter.Eq("Name", name);

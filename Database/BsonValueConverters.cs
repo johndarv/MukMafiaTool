@@ -66,17 +66,20 @@
                 aliases.Add(alias.ToString());
             }
 
-            return new Player
+            var player = new Player
             {
                 Name = doc["Name"].ToString(),
-                Recruitments = recruitments,
                 Participating = doc["Participating"].ToBoolean(),
                 Fatality = doc["Fatality"].ToString(),
                 Character = doc["Character"].ToString(),
                 Role = doc["Role"].ToString(),
                 Notes = doc["Notes"].ToString(),
-                Aliases = aliases.ToArray(),
             };
+
+            player.AddRecruitments(recruitments);
+            player.AddAliases(aliases);
+
+            return player;
         }
 
         public static Recruitment ToRecruitment(this BsonValue doc)
