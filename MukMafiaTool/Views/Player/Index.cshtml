@@ -16,6 +16,9 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.Aliases)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Participating)
         </th>
         <th>
@@ -23,6 +26,9 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Role)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Recruitments)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Fatality)
@@ -39,6 +45,9 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
+            @item.Aliases.Count()
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Participating)
         </td>
         <td>
@@ -46,6 +55,15 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Role)
+        </td>
+        <td>
+            @foreach (var recruitment in item.Recruitments)
+            {
+                <div class="table-bordered">
+                    @Html.DisplayTextFor(r => recruitment.FactionName) - @Html.DisplayTextFor(r => recruitment.Allegiance) <br />
+                    Recruited on: @Html.DisplayTextFor(r => recruitment.ForumPostNumber)
+                </div>
+            }
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Fatality)

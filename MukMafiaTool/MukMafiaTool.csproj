@@ -180,7 +180,8 @@
     <Compile Include="Controllers\ScanController.cs" />
     <Compile Include="Controllers\VoteController.cs" />
     <Compile Include="Controllers\VoteStatsController.cs" />
-    <Compile Include="Extensions\ForumLinkGenerator.cs" />
+    <Compile Include="Helpers\AllegianceHelper.cs" />
+    <Compile Include="Helpers\ForumLinkGenerator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -241,12 +242,14 @@
     <Content Include="Views\Post\Index.cshtml" />
     <Content Include="Views\VoteStats\Index.cshtml" />
     <Content Include="Views\Authentication\Index.cshtml" />
-    <Content Include="Views\Player\Edit.cshtml" />
     <Content Include="Views\Log.cshtml" />
     <Content Include="Views\Log\Index.cshtml" />
     <Content Include="Views\Vote\Edit.cshtml" />
     <Content Include="Views\Vote\Index.cshtml" />
     <Content Include="Views\Player\Index.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Recruitment.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Recruitment.cshtml" />
+    <Content Include="Views\Player\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

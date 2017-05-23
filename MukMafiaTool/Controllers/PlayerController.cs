@@ -1,6 +1,7 @@
 ﻿namespace MukMafiaTool.Controllers
 {
     using System;
+    using System.Linq;
     using System.Net;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
@@ -20,7 +21,7 @@
         {
             var players = this.repository.FindAllPlayers();
 
-            return this.View(players);
+            return this.View(players.OrderBy(p => p.Name));
         }
 
         [HttpGet]

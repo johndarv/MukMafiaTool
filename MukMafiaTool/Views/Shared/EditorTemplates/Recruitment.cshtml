@@ -1,0 +1,9 @@
+﻿@model MukMafiaTool.Model.Recruitment
+
+@using MukMafiaTool.Helpers
+
+@Html.EditorFor(r => r.FactionName)
+<br/>
+@Html.DropDownListFor(r => r.Allegiance, AllegianceHelper.GenerateAllegiencesForDropDown())
+<br/>
+@Html.EditorFor(r => r.ForumPostNumber)

@@ -1,4 +1,4 @@
-﻿namespace MukMafiaTool.Extensions
+﻿namespace MukMafiaTool.Helpers
 {
     using System;
     using System.Web;
