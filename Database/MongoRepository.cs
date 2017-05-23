@@ -307,13 +307,6 @@
             {
                 if (this.FindPlayer(playerName) == null)
                 {
-                    var recruitmentDoc = new BsonDocument
-                    {
-                        { "FactionName", "Town" },
-                        { "Allegiance", Allegiance.Town.ToString() },
-                        { "ForumPostNumber", firstForumPostNumber },
-                    };
-
                     var determinedAliases = DetermineAliases(playerName);
 
                     var aliases = new BsonArray();
@@ -326,7 +319,7 @@
                     var playerDoc = new BsonDocument
                     {
                         { "Name", playerName },
-                        { "Recruitments", new BsonArray { recruitmentDoc } },
+                        { "Recruitments", new BsonArray { } },
                         { "Participating", true },
                         { "Fatality", string.Empty },
                         { "Character", string.Empty },
