@@ -289,7 +289,7 @@ Hmm scratch that 1 Mafia and 1 failed recruitment perhaps.
         }
 
         [TestMethod]
-        public void GetVotesTestSemiColon()
+        public void GetVotesTestSemicolon()
         {
             ForumPost post = new ForumPost
             {

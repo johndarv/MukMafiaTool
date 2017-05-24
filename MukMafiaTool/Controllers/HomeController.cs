@@ -47,7 +47,7 @@
             return this.View(viewModel);
         }
 
-        private IEnumerable<HomePagePlayer> DeterminePlayers(IEnumerable<Model.Player> players)
+        private IEnumerable<HomepagePlayer> DeterminePlayers(IEnumerable<Model.Player> players)
         {
             var allPosts = this.repo.FindAllPosts();
             var postGroups = allPosts.GroupBy(p => p.Poster);
@@ -68,7 +68,7 @@
             return homePagePlayers;
         }
 
-        private HomePagePlayer ToHomePagePlayer(Player player, IEnumerable<IGrouping<string, ForumPost>> postGroups)
+        private HomepagePlayer ToHomePagePlayer(Player player, IEnumerable<IGrouping<string, ForumPost>> postGroups)
         {
             var posts = postGroups.SingleOrDefault(g => g.Key == player.Name);
 
@@ -77,7 +77,7 @@
             var factionNames = player.Recruitments.OrderBy(r => r.ForumPostNumber).Select(r => r.FactionName);
             var factions = string.Join(", ", factionNames);
 
-            var homePagePlayer = new HomePagePlayer
+            var homePagePlayer = new HomepagePlayer
             {
                 Name = player.Name,
                 PostCount = posts != null ? posts.Count() : 0,

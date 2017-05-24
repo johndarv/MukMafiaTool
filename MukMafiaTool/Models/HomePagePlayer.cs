@@ -1,6 +1,6 @@
 ﻿namespace MukMafiaTool.Models
 {
-    public class HomePagePlayer
+    public class HomepagePlayer
     {
         public string Name { get; set; }
 

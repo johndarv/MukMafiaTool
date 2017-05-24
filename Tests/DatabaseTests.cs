@@ -89,44 +89,28 @@
         [TestMethod]
         public void AddPlayerAliases()
         {
-            using (var repository = new MongoRepository())
+            var players = repository.FindAllPlayers();
+
+            var participatingPlayers = players.Where(p => p.Participating);
+
+            foreach (var player in participatingPlayers)
             {
-                var players = repository.FindAllPlayers();
-
-                var participatingPlayers = players.Where(p => p.Participating);
-
-                foreach (var player in participatingPlayers)
+                if (player.Name.StartsWith("Mr ", System.StringComparison.OrdinalIgnoreCase))
                 {
-                    if (player.Name.StartsWith("Mr ", System.StringComparison.OrdinalIgnoreCase))
+                    var baseName = player.Name.Substring(3);
+
+                    var aliases = new List<string>
                     {
-                        var baseName = player.Name.Substring(3);
+                        $"Mr. {baseName}",
+                        $"Mr.{baseName}",
+                        $"Mr{baseName}",
+                        baseName,
+                    };
 
-                        var aliases = new List<string>
-                        {
-                            $"Mr. {baseName}",
-                            $"Mr.{baseName}",
-                            $"Mr{baseName}",
-                            baseName,
-                        };
+                    player.AddAliases(aliases);
 
-                        player.AddAliases(aliases);
-
-                        repository.UpsertPlayer(player);
-                    }
+                    this.repository.UpsertPlayer(player);
                 }
-            }
-        }
-
-        [Ignore]
-        [TestMethod]
-        public void ResetDayForPost()
-        {
-            using (var repository = new MongoRepository())
-            {
-                var posts = repository.FindAllPosts();
-                var day3 = repository.FindDay(3);
-
-                var postsWithIncorrectDay0Value = posts.Where(p => p.Day != 3 && string.Compare(p.ForumPostNumber, day3.StartForumPostNumber) >= 0);
             }
         }
 

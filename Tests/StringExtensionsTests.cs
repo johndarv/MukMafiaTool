@@ -77,7 +77,7 @@
         [InlineData("21", 4)]
         [InlineData("25", 4)]
         [InlineData("10000", 4)]
-        private static void DetermineDayTest(string forumPostNumber, int expectedDay)
+        internal static void DetermineDayTest(string forumPostNumber, int expectedDay)
         {
             var days = new List<Day>
             {
@@ -92,7 +92,7 @@
 
         [Theory]
         [InlineData("11375129", 2)]
-        private static void DetermineDayTest_WithRealisticForumPostNumbers(string forumPostNumber, int expectedDay)
+        internal static void DetermineDayTest_WithRealisticForumPostNumbers(string forumPostNumber, int expectedDay)
         {
             var days = new List<Day>
             {

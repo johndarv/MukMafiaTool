@@ -39,8 +39,6 @@
 
                     HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, url);
 
-                    var requestUri = message.RequestUri;
-
                     foreach (var cookieHeader in this.signedInHeaders.Where(h => string.Equals(h.Key, "Set-Cookie")))
                     {
                         message.Headers.Add("Cookie", cookieHeader.Value);

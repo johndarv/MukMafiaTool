@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Database.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Edq.Build.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>Database.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MongoDB.Bson, Version=2.4.3.23, Culture=neutral, processorArchitecture=MSIL">
@@ -61,6 +62,9 @@
     <Compile Include="MongoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Edq.Build.ruleset">
+      <Link>Edq.Build.ruleset</Link>
+    </None>
     <None Include="Database.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

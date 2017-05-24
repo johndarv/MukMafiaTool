@@ -30,7 +30,7 @@
 
             foreach (var postElement in postElements)
             {
-                var newPost = this.ConvertElementToForumPost(this.days, postElement);
+                var newPost = this.ConvertElementToForumPost(postElement);
                 newPost.PageNumber = currentPageNumber;
 
                 forumPosts.Add(newPost);
@@ -84,7 +84,7 @@
             return new HtmlString(parentNode.InnerHtml);
         }
 
-        private ForumPost ConvertElementToForumPost(IList<Day> days, HtmlNode postNode)
+        private ForumPost ConvertElementToForumPost(HtmlNode postNode)
         {
             var newPost = new ForumPost()
             {

@@ -31,7 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MukMafiaTool.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Edq.Build.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,7 +40,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MukMafiaTool.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.AspNet.Identity.Core">
@@ -186,7 +187,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HttpResponseMessageGenerator.cs" />
-    <Compile Include="Models\HomePagePlayer.cs" />
+    <Compile Include="Models\HomepagePlayer.cs" />
     <Compile Include="Models\ThreadPage.cs" />
     <Compile Include="Models\ViewModels\FactionVoteStatsViewModel.cs" />
     <Compile Include="Models\ViewModels\HomeViewModel.cs" />
@@ -207,7 +208,9 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="MukMafiaTool.ruleset" />
+    <Content Include="..\Edq.Build.ruleset">
+      <Link>Edq.Build.ruleset</Link>
+    </Content>
     <None Include="Properties\PublishProfiles\MafiascumLV.pubxml" />
     <None Include="Properties\PublishProfiles\mukmafiascumhelper.pubxml" />
     <None Include="Properties\PublishProfiles\mukmafiascumwebsite.pubxml" />

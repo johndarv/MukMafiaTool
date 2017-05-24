@@ -39,10 +39,10 @@
                 .FilterOutSpanTags()
                 .ReplaceNonBreakingSpacesWithSpaces()
                 .RemoveNewLineAndTabChars()
-                .RemoveUnecessaryClosedOpenHtmlTags()
+                .RemoveUnnecessaryClosedOpenHtmlTags()
                 .ReplaceAtMentionsWithPlainNameText()
                 .FilterOutStrongTagsAfterTheWordVote()
-                .ReplaceNonBreakingSpaceCharactersWithRegularWhitespaceCharacters()
+                .ReplaceNonBreakingSpaceCharactersWithRegularWhiteSpaceCharacters()
                 .ToLower();
 
             var indexes = content.AllIndexesOf("vote");

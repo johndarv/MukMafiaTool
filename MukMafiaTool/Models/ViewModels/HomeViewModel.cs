@@ -10,7 +10,7 @@
 
     public class HomeViewModel
     {
-        public IEnumerable<HomePagePlayer> Players { get; set; }
+        public IEnumerable<HomepagePlayer> Players { get; set; }
 
         public IEnumerable<SelectListItem> PlayerNames { get; set; }
 

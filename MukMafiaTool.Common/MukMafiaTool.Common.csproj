@@ -21,7 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MukMafiaTool.Common.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\Edq.Build.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,7 +30,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>MukMafiaTool.Common.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>
+    </CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -46,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DayScanner.cs" />
     <Compile Include="ForumPostHelper.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="MiscExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -59,6 +61,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Edq.Build.ruleset">
+      <Link>Edq.Build.ruleset</Link>
+    </None>
     <None Include="MukMafiaTool.Common.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>

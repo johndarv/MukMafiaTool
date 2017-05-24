@@ -135,7 +135,7 @@
             return str;
         }
 
-        public static string RemoveUnecessaryClosedOpenHtmlTags(this string value)
+        public static string RemoveUnnecessaryClosedOpenHtmlTags(this string value)
         {
             value = value.Replace("</strong> <strong>", string.Empty);
             value = value.Replace("</strong><strong>", string.Empty);
@@ -155,7 +155,7 @@
             return value;
         }
 
-        public static string ReplaceNonBreakingSpaceCharactersWithRegularWhitespaceCharacters(this string value)
+        public static string ReplaceNonBreakingSpaceCharactersWithRegularWhiteSpaceCharacters(this string value)
         {
             value = value.Replace(" ", " ");
 

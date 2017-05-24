@@ -14,7 +14,7 @@
         {
             var dayController = new DayController(new MongoRepository());
 
-            var result = dayController.RedetermineDays();
+            var result = dayController.ReDetermineDays();
 
             Assert.AreEqual(HttpStatusCode.OK, result.StatusCode);
         }

@@ -16,7 +16,7 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage RedetermineDays()
+        public HttpResponseMessage ReDetermineDays()
         {
             var posts = this.repository.FindAllPosts(includeDayZeros: true);
             var days = this.repository.FindAllDays();
