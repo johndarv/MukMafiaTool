@@ -114,6 +114,13 @@ List of Participants (@Model.Players.Where(p => p.IsInGame).Count() remain alive
 
 <br />
 
+@if (User.IsInRole("Admin"))
+{
+    @Html.ActionLink("View All Posters", "index", "player");
+    <br />
+    <br />
+}
+
 Days:
 
 <ul>
