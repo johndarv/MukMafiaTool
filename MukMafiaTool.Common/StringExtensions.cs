@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -280,14 +281,11 @@
 
         public static int DetermineDay(this string forumPostNumber, IEnumerable<Day> days)
         {
-            foreach (var day in days)
+            foreach (var day in days.OrderByDescending(d => d.Number))
             {
                 if (long.Parse(forumPostNumber) >= long.Parse(day.StartForumPostNumber))
                 {
-                    if (string.IsNullOrEmpty(day.EndForumPostNumber) || long.Parse(forumPostNumber) <= long.Parse(day.EndForumPostNumber))
-                    {
-                        return day.Number;
-                    }
+                    return day.Number;
                 }
             }
 
