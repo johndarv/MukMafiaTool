@@ -1,6 +1,7 @@
 ﻿namespace MukMafiaTool.Controllers
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Web.Mvc;
@@ -78,10 +79,22 @@
             return this.RedirectToAction("index", "home");
         }
 
-        [HttpPost]
-        public ActionResult Kill(Player player)
+        [HttpGet]
+        public ActionResult Kill(string playerName, string characterName, string roles, string fatality, string allegiance, string factionName)
         {
-            throw new NotImplementedException();
+            var player = this.repository.FindPlayer(playerName);
+
+            player.Character = characterName;
+            player.Role = roles;
+            player.Notes = string.Empty;
+            player.Fatality = fatality;
+            player.Recruitments.Clear();
+            player.AddRecruitments(
+                new List<Recruitment> { new Recruitment { Allegiance = (Allegiance)Enum.Parse(typeof(Allegiance), allegiance), FactionName = factionName, ForumPostNumber = "0" } });
+
+            this.repository.UpsertPlayer(player);
+
+            return this.RedirectToAction("index", "home");
         }
     }
 }
