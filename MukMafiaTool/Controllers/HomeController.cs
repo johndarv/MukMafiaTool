@@ -24,6 +24,8 @@
         [AllowAnonymous]
         public ActionResult Index()
         {
+            ViewBag.Message = DetermineHomepageMessage();
+
             HomeViewModel viewModel = new HomeViewModel();
 
             var players = this.repo.FindAllPlayers();
@@ -93,6 +95,23 @@
             }
 
             return homePagePlayer;
+        }
+
+        private string DetermineHomepageMessage()
+        {
+            var appSettingsMessage = ConfigurationManager.AppSettings["HomepageMessage"];
+            var tempDataMessage = TempData["HomepageMessage"];
+
+            if (appSettingsMessage != null)
+            {
+                return appSettingsMessage;
+            }
+            else if (tempDataMessage != null)
+            {
+                return tempDataMessage.ToString();
+            }
+
+            return string.Empty;
         }
     }
 }

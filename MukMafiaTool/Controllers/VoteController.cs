@@ -1,7 +1,6 @@
 ﻿namespace MukMafiaTool.Controllers
 {
     using System.Linq;
-    using System.Net.Http;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
     using MukMafiaTool.Model;
@@ -18,7 +17,7 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage RedetermineVotes()
+        public ActionResult RedetermineVotes()
         {
             this.repository.DeleteAllVotes();
 
@@ -30,7 +29,9 @@
                 }
             }
 
-            return HttpResponseMessageGenerator.GenerateOKMessage();
+            TempData["HomepageMessage"] = "Scanned and re-determined votes successfully.";
+
+            return this.RedirectToAction("index", "home");
         }
 
         [HttpGet]

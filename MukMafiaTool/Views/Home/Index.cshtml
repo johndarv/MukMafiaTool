@@ -7,6 +7,11 @@
     ViewBag.Title = "Home";
 }
 
+@if (!string.IsNullOrWhiteSpace(ViewBag.Message))
+{
+    <p style="color: red"><strong>@ViewBag.Message</strong></p>
+}
+
 @if(User.IsInRole("Admin"))
 {
     <p>You are logged in as an admin!</p>
@@ -15,9 +20,6 @@
     @Html.ActionLink("Re-determine Votes", "redeterminevotes", "vote");
     <br />
     @Html.ActionLink("View Log Messages", "index", "log");
-    <br />
-    <a href="http://rllmukmafiascumscanner.azurewebsites.net/scan">Do a Scan</a>
-    <br />
 }
 
 <br />
@@ -37,6 +39,8 @@ Keyword Search:
 <br />
 <br />
 Last Updated: @Model.LastUpdated.ToLocalTime().ToString("dddd dd MMMM - HH:mm") (UTC time)
+<br />
+@Html.ActionLink("Trigger a scan of the forum", "index", "scan")
 
 @if (User.IsInRole("Admin"))
 {

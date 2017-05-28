@@ -211,7 +211,7 @@
 
             var doc = this.metadataCollection.Find(filter).FirstOrDefaultAsync().Result;
 
-            return doc["LastUpdatedDateTime"].ToLocalTime();
+            return doc["LastUpdatedDateTime"].ToUniversalTime();
         }
 
         public IList<Day> FindAllDays()

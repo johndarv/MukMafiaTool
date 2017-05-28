@@ -1,7 +1,5 @@
 ﻿namespace MukMafiaTool.Controllers
 {
-    using System.Net;
-    using System.Net.Http;
     using System.Web.Mvc;
     using MukMafiaTool.Common;
     using MukMafiaTool.Model;
@@ -16,7 +14,7 @@
         }
 
         [HttpGet]
-        public HttpResponseMessage ReDetermineDays()
+        public ActionResult ReDetermineDays()
         {
             var posts = this.repository.FindAllPosts(includeDayZeros: true);
             var days = this.repository.FindAllDays();
@@ -33,11 +31,13 @@
                 }
             }
 
-            return HttpResponseMessageGenerator.GenerateOKMessage();
+            TempData["HomepageMessage"] = "Scanned and re-determined days successfully.";
+
+            return this.RedirectToAction("index", "home");
         }
 
         [HttpPost]
-        public HttpResponseMessage SetDay(int dayNumber, string startForumPostNumber, string endForumPostNumber)
+        public ActionResult SetDay(int dayNumber, string startForumPostNumber, string endForumPostNumber)
         {
             if (endForumPostNumber == null)
             {
@@ -53,7 +53,9 @@
 
             this.repository.UpsertDay(day);
 
-            return HttpResponseMessageGenerator.GenerateOKMessage();
+            TempData["HomepageMessage"] = $"Set the day successfully: Day {dayNumber} - Start: {startForumPostNumber} - End: {endForumPostNumber}.";
+
+            return this.RedirectToAction("index", "home");
         }
     }
 }

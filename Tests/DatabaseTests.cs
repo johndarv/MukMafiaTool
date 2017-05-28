@@ -80,7 +80,7 @@
         [TestMethod]
         public void KillPlayers()
         {
-            this.KillPlayer("Mr Elephant", "Reince Preibus", "One Shot Governor - Watcher Enabler", "Lynched on Day 4", Allegiance.Town, "Team USA", "0");
+            this.KillPlayer("Mr Jaguar", "Ben Carson", "Doctor", "Killed on Night 5", Allegiance.Town, "Team USA", "0");
             this.KillPlayer("Mr Tarantula", "Rick Perry", "Tracker", "Lynched on Day 4", Allegiance.Town, "Team USA", "0");
             this.KillPlayer("Mr Xerus", "Angela Merkel", "Odd/Even Jailor", "Modkilled on Day 4", Allegiance.Mafia, "Allies, Definitely Allies", "0");
         }
