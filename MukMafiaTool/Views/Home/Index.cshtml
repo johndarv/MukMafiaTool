@@ -141,3 +141,16 @@ Days:
         <li>Day @day.Number - @firstPostLink @Html.Raw(lastPostLinkHtml)</li>
     }
 </ul>
+
+@if (User.IsInRole("Admin"))
+{
+    <br />
+    <br />
+    using (Html.BeginForm("setday", "day"))
+    {
+        @Html.Label("Day Number:") @Html.TextBox("dayNumber")
+        @Html.Label("Start:") @Html.TextBox("startForumPostNumber")
+        @Html.Label("End:") @Html.TextBox("endForumPostNumber")
+        <input type="submit" value="Set Day" />
+    }
+}
