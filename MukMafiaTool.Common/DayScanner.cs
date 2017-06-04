@@ -1,11 +1,7 @@
 ﻿namespace MukMafiaTool.Common
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading.Tasks;
     using MukMafiaTool.Model;
 
     public class DayScanner
@@ -24,8 +20,19 @@
                 Regex startOfDayRegex = new Regex(@"\[start of day [0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                 Regex endOfDayRegex = new Regex(@"\[end of day [0-9]+\]", RegexOptions.IgnoreCase | RegexOptions.Multiline);
 
-                var startMatched = startOfDayRegex.Match(post.Content.ToString());
-                var endMatched = endOfDayRegex.Match(post.Content.ToString());
+                var relevantPostContent = post.Content
+                    .ToString()
+                    .FilterOutContentInQuoteBlocks()
+                    .FilterOutSpanTags()
+                    .ReplaceNonBreakingSpacesWithSpaces()
+                    .RemoveNewLineAndTabChars()
+                    .RemoveUnnecessaryClosedOpenHtmlTags()
+                    .ReplaceAtMentionsWithPlainNameText()
+                    .FilterOutStrongTagsAfterTheWordVote()
+                    .ReplaceNonBreakingSpaceCharactersWithRegularWhiteSpaceCharacters();
+
+                var startMatched = startOfDayRegex.Match(relevantPostContent);
+                var endMatched = endOfDayRegex.Match(relevantPostContent);
 
                 Regex numbersRegex = new Regex("[0-9]+");
 

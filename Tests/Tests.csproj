@@ -112,7 +112,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DatabaseTests.cs" />
-    <Compile Include="DayControllerTests.cs" />
     <Compile Include="DayScannerTests.cs" />
     <Compile Include="Helpers\PlayerGenerator.cs" />
     <Compile Include="InternalForumScannerTests.cs" />

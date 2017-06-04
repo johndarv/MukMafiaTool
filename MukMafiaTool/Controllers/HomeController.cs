@@ -77,7 +77,7 @@
             var isInGame = player.Participating && string.IsNullOrEmpty(player.Fatality);
 
             var factionNames = player.Recruitments.OrderBy(r => r.ForumPostNumber).Select(r => r.FactionName);
-            var factions = string.Join(", ", factionNames);
+            var factions = string.Join("& ", factionNames);
 
             var homePagePlayer = new HomepagePlayer
             {

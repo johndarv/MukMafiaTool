@@ -60,5 +60,18 @@
 
             return this.RedirectToAction("Index", "Vote");
         }
+
+        [HttpGet]
+        public ActionResult ToggleInvalidAndManuallyEdited(string forumPostNumber, int postContentIndex)
+        {
+            var vote = this.repository.FindVote(forumPostNumber, postContentIndex);
+
+            vote.Invalid = !vote.Invalid;
+            vote.ManuallyEdited = !vote.ManuallyEdited;
+
+            this.repository.UpsertVote(vote);
+
+            return this.RedirectToAction("Index", "Vote");
+        }
     }
 }

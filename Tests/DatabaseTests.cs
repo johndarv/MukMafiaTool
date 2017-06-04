@@ -69,9 +69,17 @@
         [TestMethod]
         public void UpdatePlayer()
         {
-            var player = this.repository.FindPlayer("Mr Elephant");
+            var player = this.repository.FindPlayer("The Donald");
+            player.Character = "Donald Trump";
 
-            player.Role = "One Shot Governor, Watcher Enabler";
+            var recruitments = new List<Recruitment>
+            {
+                new Recruitment { Allegiance = Allegiance.Town, FactionName = "Team USA", ForumPostNumber = "0" },
+                new Recruitment { Allegiance = Allegiance.Mafia, FactionName = "Allies, Definitely Allies", ForumPostNumber = "0" },
+            };
+
+            player.Recruitments.Clear();
+            player.AddRecruitments(recruitments);
 
             this.repository.UpsertPlayer(player);
         }
@@ -80,9 +88,10 @@
         [TestMethod]
         public void KillPlayers()
         {
-            this.KillPlayer("Mr Jaguar", "Ben Carson", "Doctor", "Killed on Night 5", Allegiance.Town, "Team USA", "0");
-            this.KillPlayer("Mr Tarantula", "Rick Perry", "Tracker", "Lynched on Day 4", Allegiance.Town, "Team USA", "0");
-            this.KillPlayer("Mr Xerus", "Angela Merkel", "Odd/Even Jailor", "Modkilled on Day 4", Allegiance.Mafia, "Allies, Definitely Allies", "0");
+            this.KillPlayer("Mr Bison", "Kim Jong-Un", "Mafia Framer", "Lynched on Day 8", Allegiance.Mafia, "Bad Dudes", "0");
+            this.KillPlayer("Mr Gorilla", "Donald Trump Jr.", "Off Roleblocker", "Killed on Night 8", Allegiance.Town, "Team USA", "0");
+            this.KillPlayer("Mr Walrus", "Turned Jeff Sessions", "Former Weak Cop", "Killed on Night 7", Allegiance.Mafia, "Allies, Definitely Allies", "0");
+            this.KillPlayer("Mr Horse", "Vladimir Putin", "Unblockable Godfather", "Killed on Night 6", Allegiance.Mafia, "Bad Dudes", "0");
         }
 
         [Ignore]

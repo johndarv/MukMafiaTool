@@ -8,7 +8,7 @@
     [TestClass]
     public class InternalForumScannerTests
     {
-        //[Ignore]
+        [Ignore]
         [TestMethod]
         public void DoWholeUpdateTest()
         {

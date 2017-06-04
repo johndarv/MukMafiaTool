@@ -85,7 +85,7 @@
         {
             var builder = Builders<BsonDocument>.Filter;
 
-            var filter = builder.Eq("IsUnovte", false)
+            var filter = builder.Eq("IsUnvote", false)
                 & builder.Eq("Invalid", false);
 
             var documents = this.votesCollection.Find(filter).ToListAsync().Result;

@@ -82,6 +82,9 @@
             <td>
                 @Html.ActionLink("Edit", "Edit", new { forumPostNumber = item.ForumPostNumber, postContentIndex = item.PostContentIndex })
             </td>
+            <td>
+                @Html.ActionLink("Toggle Invalid", "ToggleInvalidAndManuallyEdited", new { forumPostNumber = item.ForumPostNumber, postContentIndex = item.PostContentIndex })
+            </td>
         </tr>
     }
     

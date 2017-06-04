@@ -35,6 +35,8 @@
                 }
                 catch (Exception e)
                 {
+                    message = $"Error: Could not scan the forum.";
+
                     repository.LogMessage($"Error scanning forum: {e.Message}");
                 }
             }

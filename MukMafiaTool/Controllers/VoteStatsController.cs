@@ -18,6 +18,7 @@
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public ActionResult Index()
         {
             VoteStatsViewModel viewModel = new VoteStatsViewModel();
@@ -56,32 +57,35 @@
 
             foreach (var player in allPlayers)
             {
-                var stats = new IndividualVoteStatsViewModel();
-                stats.Name = player.Name;
-                stats.FactionName = player.Recruitments.Last().FactionName;
-                stats.Character = player.Character;
+                if (player.Participating)
+                {
+                    var stats = new IndividualVoteStatsViewModel();
+                    stats.Name = player.Name;
+                    stats.FactionName = player.Recruitments.Last().FactionName;
+                    stats.Character = player.Character;
 
-                var individualVotes = votes.Where(v => string.Equals(v.Voter, player.Name));
-                stats.VotesCast = individualVotes.Count();
+                    var individualVotes = votes.Where(v => string.Equals(v.Voter, player.Name));
+                    stats.VotesCast = individualVotes.Count();
 
-                stats.PercentageOfVotesOntoMafia =
-                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Mafia, allPlayers);
+                    stats.PercentageOfVotesOntoMafia =
+                        VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Mafia, allPlayers);
 
-                stats.PercentageOfVotesOntoNonTown =
-                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance != Allegiance.Town, allPlayers);
+                    stats.PercentageOfVotesOntoNonTown =
+                        VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance != Allegiance.Town, allPlayers);
 
-                stats.PercentageOfVotesOntoTown =
-                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Town, allPlayers);
+                    stats.PercentageOfVotesOntoTown =
+                        VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == Allegiance.Town, allPlayers);
 
-                stats.PercentageOfVotesOntoOwnAllegiance =
-                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == v.VoterFactionAllegiance, allPlayers);
+                    stats.PercentageOfVotesOntoOwnAllegiance =
+                        VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetAllegiance == v.VoterFactionAllegiance, allPlayers);
 
-                stats.PercentageOfVotesOntoOwnFaction =
-                    VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetFactionName == v.VoterFactionName, allPlayers);
+                    stats.PercentageOfVotesOntoOwnFaction =
+                        VoteAnalyser.CalculatePercentage(individualVotes, (v) => v.TargetFactionName == v.VoterFactionName, allPlayers);
 
-                stats.TimesVotedFor = votes.Where(v => string.Equals(v.Recipient, player.Name)).Count();
+                    stats.TimesVotedFor = votes.Where(v => string.Equals(v.Recipient, player.Name)).Count();
 
-                individualStats.Add(stats);
+                    individualStats.Add(stats);
+                }
             }
 
             return individualStats;
